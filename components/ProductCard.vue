@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Check, GitCompare, Heart } from 'lucide-vue-next'
+import { computed, ref } from 'vue'
+import { Check, GitCompare, Heart, Eye } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
 import { useProducts } from '~/composables/useProducts'
+import ProductQuickPreview from '~/components/ProductQuickPreview.vue'
 
 const props = withDefaults(defineProps<{
   product: Dehumidifier
@@ -18,6 +19,24 @@ const props = withDefaults(defineProps<{
   searchQuery: '',
   categorySlug: 'dehumidifier'
 })
+
+// Quick preview hover state
+const showPreview = ref(false)
+const previewTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+
+const handleMouseEnter = () => {
+  previewTimer.value = setTimeout(() => {
+    showPreview.value = true
+  }, 500) // Show after 500ms hover
+}
+
+const handleMouseLeave = () => {
+  if (previewTimer.value) {
+    clearTimeout(previewTimer.value)
+    previewTimer.value = null
+  }
+  showPreview.value = false
+}
 
 const emit = defineEmits<{
   toggleCompare: []
@@ -109,19 +128,34 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
 <template>
   <div
     :class="[
-      'bg-white rounded-xl shadow-sm border overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-blue-200 group/card',
+      'bg-white rounded-xl shadow-sm border overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 hover:border-blue-200 group/card relative',
       isInCompare ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-100'
     ]"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
   >
+    <!-- Quick Preview Tooltip -->
+    <Transition name="preview">
+      <div
+        v-if="showPreview"
+        class="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-30"
+      >
+        <ProductQuickPreview :product="product" :category-slug="categorySlug" />
+        <div class="absolute left-1/2 -translate-x-1/2 -bottom-2 w-4 h-4 bg-white border-r border-b border-gray-200 rotate-45" />
+      </div>
+    </Transition>
+
     <!-- Image -->
     <NuxtLink :to="productUrl" class="block overflow-hidden">
       <div class="relative aspect-square bg-gray-50 overflow-hidden">
         <img
           :src="product.image_url"
           :alt="`${product.brand} ${product.model} 除濕機`"
-          class="w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-105"
+          class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/card:scale-110"
           loading="lazy"
         />
+        <!-- Hover overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
         <!-- Energy Badge -->
         <span
           v-if="product.energy_efficiency"
@@ -208,3 +242,35 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
     </div>
   </div>
 </template>
+
+<style scoped>
+.preview-enter-active {
+  animation: preview-in 0.2s ease-out;
+}
+
+.preview-leave-active {
+  animation: preview-out 0.15s ease-in forwards;
+}
+
+@keyframes preview-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(calc(-100% + 10px)) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-100%) scale(1);
+  }
+}
+
+@keyframes preview-out {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-100%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(calc(-100% + 10px)) scale(0.95);
+  }
+}
+</style>

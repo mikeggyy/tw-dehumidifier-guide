@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import {
   ExternalLink,
   Share2,
@@ -10,6 +10,7 @@ import {
   Fan,
   Home,
   ChevronRight,
+  ChevronLeft,
   Star,
   Shield,
   Zap,
@@ -23,23 +24,64 @@ import {
   Sofa,
   CircleDollarSign,
   Lightbulb,
+  Moon,
+  Sun,
 } from 'lucide-vue-next'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
-import { useRoute, useHead, createError } from '#imports'
+import { useRoute, useHead, createError, useRouter, navigateTo } from '#imports'
+import { useToast } from '~/composables/useToast'
+import { useDarkMode } from '~/composables/useDarkMode'
+import { useSwipe } from '~/composables/useSwipe'
+import ScrollProgress from '~/components/ScrollProgress.vue'
 
 // SSR 資料預載
 await useProductsSSR()
 
 const route = useRoute()
+const router = useRouter()
+const { success } = useToast()
+const { isDark, toggle: toggleDarkMode } = useDarkMode()
+
 const categorySlug = computed(() => route.params.category as string)
 const productSlug = computed(() => route.params.slug as string)
 
-const { getProductBySlug } = useProducts()
+const { getProductBySlug, allProducts, getProductSlug } = useProducts()
 const { getCategoryConfig, formatSpecValue } = useCategoryConfig()
 
 const product = computed(() => getProductBySlug(productSlug.value))
 const categoryConfig = computed(() => getCategoryConfig(categorySlug.value))
+
+// 相關商品導航（同品類）
+const categoryProducts = computed(() => {
+  return allProducts.value.filter(p => (p as any).category_slug === categorySlug.value)
+})
+
+const currentIndex = computed(() => {
+  return categoryProducts.value.findIndex(p => getProductSlug(p) === productSlug.value)
+})
+
+const prevProduct = computed(() => {
+  if (currentIndex.value <= 0) return null
+  return categoryProducts.value[currentIndex.value - 1]
+})
+
+const nextProduct = computed(() => {
+  if (currentIndex.value >= categoryProducts.value.length - 1) return null
+  return categoryProducts.value[currentIndex.value + 1]
+})
+
+// 手勢滑動支援
+const pageRef = ref<HTMLElement | null>(null)
+const { direction } = useSwipe(pageRef)
+
+watch(direction, (dir) => {
+  if (dir === 'left' && nextProduct.value) {
+    navigateTo(`/${categorySlug.value}/${getProductSlug(nextProduct.value)}`)
+  } else if (dir === 'right' && prevProduct.value) {
+    navigateTo(`/${categorySlug.value}/${getProductSlug(prevProduct.value)}`)
+  }
+})
 
 // 如果商品不存在，顯示 404
 if (!product.value) {
@@ -95,12 +137,13 @@ const shareProduct = async () => {
   if (navigator.share) {
     try {
       await navigator.share(shareData)
+      success('分享成功！')
     } catch (err) {
       // 用戶取消分享
     }
   } else {
     await navigator.clipboard.writeText(window.location.href)
-    alert('已複製連結！')
+    success('已複製連結！')
   }
 }
 
@@ -387,22 +430,38 @@ const airChangeRate = computed(() => {
     </div>
   </div>
 
-  <div v-else class="min-h-screen bg-gray-50">
+  <div v-else ref="pageRef" class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <!-- Scroll Progress -->
+    <ScrollProgress />
+
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-1 z-40">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <NuxtLink to="/" class="flex items-center gap-2">
-            <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">比比看</span>
+            <img src="/favicon.svg" alt="比比看" class="w-8 h-8" />
+            <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">比比看</span>
             <span class="text-sm text-gray-500 hidden sm:inline">{{ categoryConfig?.name }}</span>
           </NuxtLink>
-          <button
-            class="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-            @click="shareProduct"
-          >
-            <Share2 :size="18" />
-            <span class="hidden sm:inline text-sm">分享</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <!-- Dark Mode Toggle -->
+            <button
+              class="p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              @click="toggleDarkMode"
+              :title="isDark ? '切換淺色模式' : '切換深色模式'"
+            >
+              <Sun v-if="isDark" :size="18" />
+              <Moon v-else :size="18" />
+            </button>
+            <!-- Share Button -->
+            <button
+              class="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              @click="shareProduct"
+            >
+              <Share2 :size="18" />
+              <span class="hidden sm:inline text-sm">分享</span>
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -919,10 +978,53 @@ const airChangeRate = computed(() => {
       </div>
     </div>
 
+    <!-- Product Navigation (Desktop) -->
+    <div class="hidden md:block">
+      <!-- Previous Product -->
+      <NuxtLink
+        v-if="prevProduct"
+        :to="`/${categorySlug}/${getProductSlug(prevProduct)}`"
+        class="fixed left-4 top-1/2 -translate-y-1/2 z-30 group"
+      >
+        <div class="flex items-center gap-2 bg-white dark:bg-gray-800 shadow-lg rounded-full p-3 hover:shadow-xl transition-all hover:scale-105">
+          <ChevronLeft :size="24" class="text-gray-600 dark:text-gray-300" />
+          <span class="hidden group-hover:block text-sm text-gray-600 dark:text-gray-300 max-w-[120px] truncate">
+            {{ prevProduct.brand }}
+          </span>
+        </div>
+      </NuxtLink>
+
+      <!-- Next Product -->
+      <NuxtLink
+        v-if="nextProduct"
+        :to="`/${categorySlug}/${getProductSlug(nextProduct)}`"
+        class="fixed right-4 top-1/2 -translate-y-1/2 z-30 group"
+      >
+        <div class="flex items-center gap-2 bg-white dark:bg-gray-800 shadow-lg rounded-full p-3 hover:shadow-xl transition-all hover:scale-105">
+          <span class="hidden group-hover:block text-sm text-gray-600 dark:text-gray-300 max-w-[120px] truncate">
+            {{ nextProduct.brand }}
+          </span>
+          <ChevronRight :size="24" class="text-gray-600 dark:text-gray-300" />
+        </div>
+      </NuxtLink>
+    </div>
+
+    <!-- Swipe Hint (Mobile) -->
+    <div
+      v-if="prevProduct || nextProduct"
+      class="md:hidden fixed bottom-28 left-0 right-0 flex justify-center pointer-events-none z-30"
+    >
+      <div class="bg-black/60 backdrop-blur-sm text-white text-xs px-4 py-2 rounded-full flex items-center gap-2">
+        <ChevronLeft v-if="prevProduct" :size="14" />
+        <span>左右滑動切換商品</span>
+        <ChevronRight v-if="nextProduct" :size="14" />
+      </div>
+    </div>
+
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-16 pb-24 md:pb-0">
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16 pb-24 md:pb-0">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="text-center text-gray-500 text-sm">
+        <div class="text-center text-gray-500 dark:text-gray-400 text-sm">
           <p>© 2025 比比看. 本站包含聯盟行銷連結。</p>
           <p class="mt-1">價格與規格僅供參考，請以官方公告為準。</p>
         </div>
