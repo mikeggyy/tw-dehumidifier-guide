@@ -1,0 +1,23 @@
+{
+  "name": "dehumidifier-compare",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "lucide-vue-next": "^0.468.0",
+    "nuxt": "3.12.4",
+    "vue": "3.4.38",
+    "vue-router": "4.4.3"
+  },
+  "devDependencies": {
+    "@nuxtjs/sitemap": "^7.5.0",
+    "@nuxtjs/tailwindcss": "^6.12.2",
+    "typescript": "^5.7.2"
+  }
+}
