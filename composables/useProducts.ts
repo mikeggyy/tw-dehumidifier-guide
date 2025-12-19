@@ -1,16 +1,18 @@
-import { ref, readonly } from 'vue'
+import { ref, readonly, computed } from 'vue'
 import type { Dehumidifier, FilterState, SortOption } from '~/types'
 
 // Supabase 配置
 const SUPABASE_URL = 'https://tqyefifafabyudtyjfam.supabase.co'
 const SUPABASE_ANON_KEY = 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD5'
 
-// 產品資料快取
-let productsCache: Dehumidifier[] | null = null
+// 全域響應式產品資料（跨組件共享）
+const globalProducts = ref<Dehumidifier[]>([])
+const isGlobalLoading = ref(false)
+let hasLoaded = false
 
 async function fetchProducts(): Promise<Dehumidifier[]> {
-  if (productsCache) {
-    return productsCache
+  if (hasLoaded && globalProducts.value.length > 0) {
+    return globalProducts.value
   }
 
   try {
@@ -29,54 +31,53 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
     }
 
     const data = await response.json()
-    productsCache = data as Dehumidifier[]
-    return productsCache
+    globalProducts.value = data as Dehumidifier[]
+    hasLoaded = true
+    return globalProducts.value
   } catch (error) {
     console.error('Failed to fetch products from Supabase:', error)
     // 備用方案：從本地 JSON 載入
     try {
       const localData = await import('~/data/products.json')
-      productsCache = localData.products as Dehumidifier[]
-      return productsCache
+      globalProducts.value = localData.products as Dehumidifier[]
+      hasLoaded = true
+      return globalProducts.value
     } catch {
       return []
     }
   }
 }
 
-// 同步版本的產品存取（使用快取）
-function getProducts(): Dehumidifier[] {
-  return productsCache || []
-}
-
 export const useProducts = () => {
-  const products = ref<Dehumidifier[]>([])
-  const isLoading = ref(false)
-
   const loadProducts = async (): Promise<Dehumidifier[]> => {
-    isLoading.value = true
+    if (isGlobalLoading.value) {
+      // 等待載入完成
+      while (isGlobalLoading.value) {
+        await new Promise(resolve => setTimeout(resolve, 50))
+      }
+      return globalProducts.value
+    }
+
+    isGlobalLoading.value = true
     try {
-      const data = await fetchProducts()
-      products.value = data
-      return data
+      return await fetchProducts()
     } finally {
-      isLoading.value = false
+      isGlobalLoading.value = false
     }
   }
 
-  const allProducts = readonly(products)
+  const allProducts = readonly(globalProducts)
+  const isLoading = readonly(isGlobalLoading)
 
   const getAllBrands = (): string[] => {
-    const p = getProducts()
-    return [...new Set(p.map(prod => prod.brand))]
+    return [...new Set(globalProducts.value.map(prod => prod.brand))].sort()
   }
 
   const getPriceRange = (): { min: number; max: number } => {
-    const p = getProducts()
-    if (p.length === 0) {
+    if (globalProducts.value.length === 0) {
       return { min: 0, max: 100000 }
     }
-    const prices = p.map(prod => prod.price)
+    const prices = globalProducts.value.map(prod => prod.price)
     return {
       min: Math.min(...prices),
       max: Math.max(...prices)
@@ -84,8 +85,7 @@ export const useProducts = () => {
   }
 
   const filterProducts = (filters: FilterState): Dehumidifier[] => {
-    const p = getProducts()
-    return p.filter(product => {
+    return globalProducts.value.filter(product => {
       // Brand filter
       if (filters.brands.length > 0 && !filters.brands.includes(product.brand)) {
         return false
@@ -126,13 +126,12 @@ export const useProducts = () => {
   }
 
   const getProductBySlug = (slug: string): Dehumidifier | undefined => {
-    const p = getProducts()
     // 優先使用 slug 欄位
-    const bySlug = p.find(prod => prod.slug === slug)
+    const bySlug = globalProducts.value.find(prod => prod.slug === slug)
     if (bySlug) return bySlug
 
     // 備用：使用 brand-model 格式
-    return p.find(prod => {
+    return globalProducts.value.find(prod => {
       const productSlug = `${prod.brand.toLowerCase()}-${prod.model.toLowerCase()}`.replace(/[\s_]/g, '-')
       return productSlug === slug
     })
@@ -144,13 +143,12 @@ export const useProducts = () => {
   }
 
   const getAllSlugs = (): string[] => {
-    const p = getProducts()
-    return p.map(prod => getProductSlug(prod))
+    return globalProducts.value.map(prod => getProductSlug(prod))
   }
 
   return {
     allProducts,
-    isLoading: readonly(isLoading),
+    isLoading,
     loadProducts,
     getAllBrands,
     getPriceRange,
