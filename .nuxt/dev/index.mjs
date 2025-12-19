@@ -1294,15 +1294,15 @@ _F5gvdUYlToo144E4Q4gaMA0XUkvlBlcVh0UPr2EmAE
 const assets = {
   "/index.mjs": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"25ad8-JGM7h2PnH4OE1hcdmu5HASq7KJw\"",
-    "mtime": "2025-12-19T06:46:48.489Z",
-    "size": 154328,
+    "etag": "\"25af4-jXtCEQDLzlHDe6j602SBCMVhEK0\"",
+    "mtime": "2025-12-19T15:11:35.987Z",
+    "size": 154356,
     "path": "index.mjs"
   },
   "/index.mjs.map": {
     "type": "application/json",
     "etag": "\"98d73-5rFtGcOB2mVwqArMSUk2sHWrAHc\"",
-    "mtime": "2025-12-19T06:46:48.490Z",
+    "mtime": "2025-12-19T15:11:35.987Z",
     "size": 626035,
     "path": "index.mjs.map"
   }
@@ -3659,7 +3659,7 @@ const unheadPlugins = true ? [CapoPlugin({ track: true })] : [];
 
 const renderSSRHeadOptions = {"omitLineBreaks":false};
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"2025 最完整的除濕機規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供日除濕量、噪音、能效比較，幫你找到最適合的除濕機。"},{"property":"og:type","content":"website"},{"property":"og:locale","content":"zh_TW"},{"property":"og:site_name","content":"除濕機比較推薦"},{"name":"twitter:card","content":"summary_large_image"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[{"src":"https://www.googletagmanager.com/gtag/js?id=G-P32TQ7V2SZ","async":true},{"innerHTML":"\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('js', new Date());\n            gtag('config', 'G-P32TQ7V2SZ');\n          "}],"noscript":[],"htmlAttrs":{"lang":"zh-TW"},"title":"除濕機比較推薦 2025 | 規格、價格、評價一次看"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"2025 最完整的家電規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供除濕機、空氣清淨機、冷氣等家電的規格、價格比較，幫你找到最適合的家電。"},{"property":"og:type","content":"website"},{"property":"og:locale","content":"zh_TW"},{"property":"og:site_name","content":"比比看"},{"name":"twitter:card","content":"summary_large_image"}],"link":[{"rel":"icon","type":"image/svg+xml","href":"/favicon.svg"}],"style":[],"script":[{"src":"https://www.googletagmanager.com/gtag/js?id=G-P32TQ7V2SZ","async":true},{"innerHTML":"\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('js', new Date());\n            gtag('config', 'G-P32TQ7V2SZ');\n          "}],"noscript":[],"htmlAttrs":{"lang":"zh-TW"},"title":"比比看 | 家電規格比較 2025 - 除濕機、空氣清淨機、冷氣"};
 
 const appRootTag = "div";
 
