@@ -61,3 +61,4 @@ service-account-key.json
 *.bak
 *.orig
 *~
+node_modules

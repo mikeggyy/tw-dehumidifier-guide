@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import {
   ArrowLeft,
   Droplets,
@@ -14,19 +14,28 @@ import { useProducts } from '~/composables/useProducts'
 import { useRoute, useHead, createError } from '#imports'
 
 const route = useRoute()
-const { getProductBySlug, getProductSlug, allProducts } = useProducts()
+const { loadProducts, getProductBySlug, getProductSlug, allProducts } = useProducts()
 
 // Get product from slug
 const slug = computed(() => route.params.model as string)
-const product = computed(() => getProductBySlug(slug.value))
 
-// Redirect to 404 if product not found
-if (!product.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: '找不到此產品'
-  })
-}
+// 載入產品資料
+const isReady = ref(false)
+const product = ref<ReturnType<typeof getProductBySlug>>(undefined)
+
+onMounted(async () => {
+  await loadProducts()
+  product.value = getProductBySlug(slug.value)
+  isReady.value = true
+
+  // 如果產品不存在，顯示錯誤
+  if (!product.value) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: '找不到此產品'
+    })
+  }
+})
 
 // Format price
 const formatPrice = (price: number): string => {
@@ -53,7 +62,7 @@ const energyColor = computed(() => {
 // Recommended room size based on capacity (rough estimate)
 const recommendedArea = computed(() => {
   if (!product.value) return ''
-  const capacity = product.value.daily_capacity
+  const capacity = product.value.daily_capacity ?? 0
   if (capacity <= 10) return '5-10 坪'
   if (capacity <= 14) return '10-15 坪'
   if (capacity <= 18) return '15-20 坪'
@@ -63,7 +72,7 @@ const recommendedArea = computed(() => {
 // Related products (same brand, different model)
 const relatedProducts = computed(() => {
   if (!product.value) return []
-  return allProducts.filter(
+  return allProducts.value.filter(
     p => p.brand === product.value!.brand && p.id !== product.value!.id
   ).slice(0, 3)
 })
@@ -152,7 +161,12 @@ const specsTable = computed(() => {
 </script>
 
 <template>
-  <div v-if="product" class="min-h-screen bg-gray-50">
+  <!-- Loading State -->
+  <div v-if="!isReady" class="min-h-screen bg-gray-50 flex items-center justify-center">
+    <p class="text-gray-500">載入中...</p>
+  </div>
+
+  <div v-else-if="product" class="min-h-screen bg-gray-50">
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -306,15 +320,15 @@ const specsTable = computed(() => {
             <div class="prose prose-gray max-w-none">
               <p class="text-gray-600 leading-relaxed">
                 {{ product.brand }} {{ product.model }} 是一款適合
-                {{ recommendedArea }}空間使用的除濕機，每日除濕量達到 {{ product.daily_capacity }} 公升。
-                在噪音控制方面，運轉時僅 {{ product.noise_level }} dB，
-                {{ product.noise_level <= 40 ? '屬於安靜機型，適合臥室使用' : '適合客廳或較大空間使用' }}。
+                {{ recommendedArea }}空間使用的除濕機，每日除濕量達到 {{ product.daily_capacity ?? '-' }} 公升。
+                在噪音控制方面，運轉時僅 {{ product.noise_level ?? '-' }} dB，
+                {{ (product.noise_level ?? 50) <= 40 ? '屬於安靜機型，適合臥室使用' : '適合客廳或較大空間使用' }}。
               </p>
               <p class="text-gray-600 leading-relaxed mt-3">
-                能效表現為{{ energyLabel }}，消耗功率 {{ product.power_consumption }}W，
+                能效表現為{{ energyLabel }}，消耗功率 {{ product.power_consumption ?? '-' }}W，
                 {{ product.energy_efficiency === 1 ? '是市面上最省電的等級' : '能效表現符合標準' }}。
-                水箱容量 {{ product.tank_capacity }} 公升，
-                {{ product.tank_capacity >= 4.5 ? '大容量設計減少倒水頻率' : '需要較頻繁清空水箱' }}。
+                水箱容量 {{ product.tank_capacity ?? '-' }} 公升，
+                {{ (product.tank_capacity ?? 0) >= 4.5 ? '大容量設計減少倒水頻率' : '需要較頻繁清空水箱' }}。
               </p>
               <p class="text-gray-500 text-sm mt-4 italic">
                 * 以上為 AI 自動生成的產品摘要，實際使用體驗可能因環境而異。

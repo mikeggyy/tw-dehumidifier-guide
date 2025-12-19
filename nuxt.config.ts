@@ -1,17 +1,26 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-// Product slugs for static generation
+// Product slugs for static generation (auto-generated from scraped data)
 const productSlugs = [
-  'panasonic-f-y22en',
-  'panasonic-f-y28gx',
-  'panasonic-f-y36gx',
-  'hitachi-rd-200hh',
-  'hitachi-rd-280hh',
-  'hitachi-rd-360hh',
-  'lg-md171qsk1',
-  'lg-md191qce0',
-  'sharp-dw-l10ft-w',
-  'mitsubishi-mj-e195hm'
+  'electrolux-14631265',
+  'only-12896294',
+  'panasonic-14425700',
+  'xiaomi-12537937',
+  'heran-9352697',
+  'sampo-14034959',
+  'hitachi-11627154',
+  'sampo-13652807',
+  'panasonic-14503246',
+  'sharp-14478956',
+  'only-12893995',
+  'xiaomi-12537939',
+  'whirlpool-12984065',
+  'hitachi-12049653',
+  'xiaomi-12419330',
+  'electrolux-13247986',
+  'sampo-9769209',
+  'tatung-14596883',
+  'hitachi-14471077'
 ]
 
 export default defineNuxtConfig({

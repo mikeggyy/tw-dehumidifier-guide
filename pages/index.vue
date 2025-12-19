@@ -1,22 +1,38 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { Filter, SlidersHorizontal, X } from 'lucide-vue-next'
 import type { FilterState, SortOption } from '~/types'
 import ProductCard from '~/components/ProductCard.vue'
 import { useProducts } from '~/composables/useProducts'
 
-const { allProducts, getAllBrands, getPriceRange, filterProducts, sortProducts } = useProducts()
+const { allProducts, isLoading, loadProducts, getAllBrands, getPriceRange, filterProducts, sortProducts } = useProducts()
 
-// Get available brands and price range
-const brands = getAllBrands()
-const priceRange = getPriceRange()
+// 載入產品資料
+const isReady = ref(false)
+
+// Get available brands and price range (reactive)
+const brands = computed(() => getAllBrands())
+const priceRange = computed(() => getPriceRange())
 
 // Filter state
 const filters = reactive<FilterState>({
   brands: [],
   capacityRange: 'all',
-  priceMin: priceRange.min,
-  priceMax: priceRange.max
+  priceMin: 0,
+  priceMax: 100000
+})
+
+// 初始化價格範圍 (在 loadProducts 之後)
+const initPriceRange = () => {
+  const range = priceRange.value
+  filters.priceMin = range.min
+  filters.priceMax = range.max
+}
+
+onMounted(async () => {
+  await loadProducts()
+  initPriceRange()
+  isReady.value = true
 })
 
 // Sort state
@@ -45,8 +61,8 @@ const toggleBrand = (brand: string) => {
 const resetFilters = () => {
   filters.brands = []
   filters.capacityRange = 'all'
-  filters.priceMin = priceRange.min
-  filters.priceMax = priceRange.max
+  filters.priceMin = priceRange.value.min
+  filters.priceMax = priceRange.value.max
 }
 
 // Format price for display
@@ -242,9 +258,17 @@ const capacityOptions = [
             </div>
           </div>
 
+          <!-- Loading State -->
+          <div
+            v-if="!isReady"
+            class="text-center py-16 bg-white rounded-xl border border-gray-200"
+          >
+            <p class="text-gray-500">載入中...</p>
+          </div>
+
           <!-- Product Grid -->
           <div
-            v-if="displayedProducts.length > 0"
+            v-else-if="displayedProducts.length > 0"
             class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
           >
             <ProductCard

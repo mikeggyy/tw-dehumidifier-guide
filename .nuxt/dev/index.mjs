@@ -3,47 +3,47 @@ import { Server } from 'node:http';
 import { resolve as resolve$1, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { setResponseStatus, setResponseHeader, send, getRequestHeaders, getRequestURL, getRequestHeader as getRequestHeader$1, getResponseHeader, setResponseHeaders, eventHandler as eventHandler$1, appendResponseHeader, removeResponseHeader, createError, getRequestProtocol, getRequestHost, setHeader, defineEventHandler as defineEventHandler$1, getHeader, getQuery as getQuery$2, sendRedirect as sendRedirect$1, toNodeListener as toNodeListener$1, getRouterParam, readBody, getResponseStatusText, getResponseStatus as getResponseStatus$1 } from 'file://D:/project/test/node_modules/h3/dist/index.mjs';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, createApp, createRouter as createRouter$2, toNodeListener, lazyEventHandler, setResponseHeader as setResponseHeader$1, send as send$1, getResponseStatus, setResponseStatus as setResponseStatus$1, setResponseHeaders as setResponseHeaders$1, createError as createError$1 } from 'file://d:/project/test/node_modules/h3/dist/index.mjs';
-import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file://D:/project/test/node_modules/vue-bundle-renderer/dist/runtime.mjs';
-import { stringify, uneval } from 'file://D:/project/test/node_modules/devalue/index.js';
-import destr$1 from 'file://D:/project/test/node_modules/destr/dist/index.mjs';
-import { withQuery as withQuery$1, joinURL as joinURL$1, withTrailingSlash, hasProtocol, withHttps, decodePath, withLeadingSlash, withoutTrailingSlash, parseURL as parseURL$1, withBase, getQuery as getQuery$1, withoutBase as withoutBase$1, parsePath, stringifyQuery, parseQuery, encodePath, stringifyParsedURL, joinRelativeURL } from 'file://D:/project/test/node_modules/ufo/dist/index.mjs';
-import { renderToString } from 'file://D:/project/test/node_modules/vue/server-renderer/index.mjs';
-import { hash as hash$1 } from 'file://D:/project/test/node_modules/nuxt/node_modules/ohash/dist/index.mjs';
-import { propsToString, renderSSRHead } from 'file://D:/project/test/node_modules/@unhead/ssr/dist/index.mjs';
-import { createServerHead as createServerHead$1, CapoPlugin } from 'file://D:/project/test/node_modules/unhead/dist/index.mjs';
-import { klona } from 'file://d:/project/test/node_modules/klona/dist/index.mjs';
-import { defuFn, defu as defu$1, createDefu } from 'file://D:/project/test/node_modules/defu/dist/defu.mjs';
-import destr from 'file://d:/project/test/node_modules/destr/dist/index.mjs';
-import { snakeCase } from 'file://d:/project/test/node_modules/scule/dist/index.mjs';
-import { createHooks } from 'file://d:/project/test/node_modules/hookable/dist/index.mjs';
-import { createFetch, Headers as Headers$1 } from 'file://d:/project/test/node_modules/ofetch/dist/node.mjs';
-import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://d:/project/test/node_modules/node-mock-http/dist/index.mjs';
-import { parseURL, withoutBase, joinURL, getQuery, withQuery } from 'file://d:/project/test/node_modules/ufo/dist/index.mjs';
-import { prefixStorage } from 'file://d:/project/test/node_modules/unstorage/dist/index.mjs';
-import { createStorage } from 'file://D:/project/test/node_modules/unstorage/dist/index.mjs';
-import unstorage_47drivers_47fs from 'file://D:/project/test/node_modules/unstorage/drivers/fs.mjs';
-import { digest } from 'file://d:/project/test/node_modules/ohash/dist/index.mjs';
-import defu from 'file://d:/project/test/node_modules/defu/dist/defu.mjs';
-import { toRouteMatcher, createRouter } from 'file://d:/project/test/node_modules/radix3/dist/index.mjs';
+import { setResponseStatus, setResponseHeader, send, getRequestHeaders, getRequestURL, getRequestHeader as getRequestHeader$1, getResponseHeader, setResponseHeaders, eventHandler as eventHandler$1, appendResponseHeader, removeResponseHeader, createError, getRequestProtocol, getRequestHost, setHeader, defineEventHandler as defineEventHandler$1, getHeader, getQuery as getQuery$2, sendRedirect as sendRedirect$1, toNodeListener as toNodeListener$1, getRouterParam, readBody, getResponseStatusText, getResponseStatus as getResponseStatus$1 } from 'file://D:/project/tw-dehumidifier-guide/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, createApp, createRouter as createRouter$2, toNodeListener, lazyEventHandler, setResponseHeader as setResponseHeader$1, send as send$1, getResponseStatus, setResponseStatus as setResponseStatus$1, setResponseHeaders as setResponseHeaders$1, createError as createError$1 } from 'file://d:/project/tw-dehumidifier-guide/node_modules/h3/dist/index.mjs';
+import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file://D:/project/tw-dehumidifier-guide/node_modules/vue-bundle-renderer/dist/runtime.mjs';
+import { stringify, uneval } from 'file://D:/project/tw-dehumidifier-guide/node_modules/devalue/index.js';
+import destr$1 from 'file://D:/project/tw-dehumidifier-guide/node_modules/destr/dist/index.mjs';
+import { withQuery as withQuery$1, joinURL as joinURL$1, withTrailingSlash, hasProtocol, withHttps, decodePath, withLeadingSlash, withoutTrailingSlash, parseURL as parseURL$1, withBase, getQuery as getQuery$1, withoutBase as withoutBase$1, parsePath, stringifyQuery, parseQuery, encodePath, stringifyParsedURL, joinRelativeURL } from 'file://D:/project/tw-dehumidifier-guide/node_modules/ufo/dist/index.mjs';
+import { renderToString } from 'file://D:/project/tw-dehumidifier-guide/node_modules/vue/server-renderer/index.mjs';
+import { hash as hash$1 } from 'file://D:/project/tw-dehumidifier-guide/node_modules/nuxt/node_modules/ohash/dist/index.mjs';
+import { propsToString, renderSSRHead } from 'file://D:/project/tw-dehumidifier-guide/node_modules/@unhead/ssr/dist/index.mjs';
+import { createServerHead as createServerHead$1, CapoPlugin } from 'file://D:/project/tw-dehumidifier-guide/node_modules/unhead/dist/index.mjs';
+import { klona } from 'file://d:/project/tw-dehumidifier-guide/node_modules/klona/dist/index.mjs';
+import { defuFn, defu as defu$1, createDefu } from 'file://D:/project/tw-dehumidifier-guide/node_modules/defu/dist/defu.mjs';
+import destr from 'file://d:/project/tw-dehumidifier-guide/node_modules/destr/dist/index.mjs';
+import { snakeCase } from 'file://d:/project/tw-dehumidifier-guide/node_modules/scule/dist/index.mjs';
+import { createHooks } from 'file://d:/project/tw-dehumidifier-guide/node_modules/hookable/dist/index.mjs';
+import { createFetch, Headers as Headers$1 } from 'file://d:/project/tw-dehumidifier-guide/node_modules/ofetch/dist/node.mjs';
+import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://d:/project/tw-dehumidifier-guide/node_modules/node-mock-http/dist/index.mjs';
+import { parseURL, withoutBase, joinURL, getQuery, withQuery } from 'file://d:/project/tw-dehumidifier-guide/node_modules/ufo/dist/index.mjs';
+import { prefixStorage } from 'file://d:/project/tw-dehumidifier-guide/node_modules/unstorage/dist/index.mjs';
+import { createStorage } from 'file://D:/project/tw-dehumidifier-guide/node_modules/unstorage/dist/index.mjs';
+import unstorage_47drivers_47fs from 'file://D:/project/tw-dehumidifier-guide/node_modules/unstorage/drivers/fs.mjs';
+import { digest } from 'file://d:/project/tw-dehumidifier-guide/node_modules/ohash/dist/index.mjs';
+import defu from 'file://d:/project/tw-dehumidifier-guide/node_modules/defu/dist/defu.mjs';
+import { toRouteMatcher, createRouter } from 'file://d:/project/tw-dehumidifier-guide/node_modules/radix3/dist/index.mjs';
 import { readFile } from 'node:fs/promises';
-import consola, { consola as consola$1, createConsola } from 'file://D:/project/test/node_modules/consola/dist/index.mjs';
-import { ErrorParser } from 'file://D:/project/test/node_modules/youch-core/build/index.js';
-import { Youch } from 'file://D:/project/test/node_modules/youch/build/index.js';
-import { SourceMapConsumer } from 'file://D:/project/test/node_modules/source-map/source-map.js';
+import consola, { consola as consola$1, createConsola } from 'file://D:/project/tw-dehumidifier-guide/node_modules/consola/dist/index.mjs';
+import { ErrorParser } from 'file://D:/project/tw-dehumidifier-guide/node_modules/youch-core/build/index.js';
+import { Youch } from 'file://D:/project/tw-dehumidifier-guide/node_modules/youch/build/index.js';
+import { SourceMapConsumer } from 'file://D:/project/tw-dehumidifier-guide/node_modules/source-map/source-map.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { getContext } from 'file://D:/project/test/node_modules/unctx/dist/index.mjs';
-import { captureRawStackTrace, parseRawStackTrace } from 'file://D:/project/test/node_modules/errx/dist/index.js';
-import { isVNode, toValue, unref, version } from 'file://D:/project/test/node_modules/vue/index.mjs';
-import devalue from 'file://D:/project/test/node_modules/@nuxt/devalue/dist/devalue.mjs';
+import { getContext } from 'file://D:/project/tw-dehumidifier-guide/node_modules/unctx/dist/index.mjs';
+import { captureRawStackTrace, parseRawStackTrace } from 'file://D:/project/tw-dehumidifier-guide/node_modules/errx/dist/index.js';
+import { isVNode, toValue, unref, version } from 'file://D:/project/tw-dehumidifier-guide/node_modules/vue/index.mjs';
+import devalue from 'file://D:/project/tw-dehumidifier-guide/node_modules/@nuxt/devalue/dist/devalue.mjs';
 import { promises } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname as dirname$1, resolve as resolve$2 } from 'file://D:/project/test/node_modules/pathe/dist/index.mjs';
-import { toRouteMatcher as toRouteMatcher$1, createRouter as createRouter$1 } from 'file://D:/project/test/node_modules/radix3/dist/index.mjs';
-import { defineHeadPlugin } from 'file://D:/project/test/node_modules/@unhead/shared/dist/index.mjs';
+import { dirname as dirname$1, resolve as resolve$2 } from 'file://D:/project/tw-dehumidifier-guide/node_modules/pathe/dist/index.mjs';
+import { toRouteMatcher as toRouteMatcher$1, createRouter as createRouter$1 } from 'file://D:/project/tw-dehumidifier-guide/node_modules/radix3/dist/index.mjs';
+import { defineHeadPlugin } from 'file://D:/project/tw-dehumidifier-guide/node_modules/@unhead/shared/dist/index.mjs';
 
-const serverAssets = [{"baseName":"server","dir":"D:/project/test/server/assets"}];
+const serverAssets = [{"baseName":"server","dir":"D:/project/tw-dehumidifier-guide/server/assets"}];
 
 const assets$1 = createStorage();
 
@@ -55,11 +55,11 @@ const storage = createStorage({});
 
 storage.mount('/assets', assets$1);
 
-storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"D:/project/test"}));
-storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"D:/project/test/server"}));
-storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"D:/project/test/.nuxt"}));
-storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"D:/project/test/.nuxt/cache"}));
-storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"D:/project/test/.data/kv"}));
+storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"D:/project/tw-dehumidifier-guide"}));
+storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"D:/project/tw-dehumidifier-guide/server"}));
+storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"D:/project/tw-dehumidifier-guide/.nuxt"}));
+storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"D:/project/tw-dehumidifier-guide/.nuxt/cache"}));
+storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"D:/project/tw-dehumidifier-guide/.data/kv"}));
 
 function useStorage(base = "") {
   return base ? prefixStorage(storage, base) : storage;
@@ -704,7 +704,6 @@ const _inlineRuntimeConfig = {
         "include": [],
         "exclude": [
           "/_**",
-          "/_nuxt/**",
           "/_nuxt/**"
         ],
         "includeAppSources": true
@@ -716,7 +715,7 @@ const _inlineRuntimeConfig = {
       {
         "_context": "system",
         "_priority": -15,
-        "name": "test",
+        "name": "tw-dehumidifier-guide",
         "env": "development"
       },
       {
@@ -1111,31 +1110,14 @@ async function errorHandler(error, event) {
   // H3 will handle fallback
 }
 
-const script = `
-if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
-  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
-    value: {},
-    enumerable: false,
-    configurable: true,
-  })
-}
-window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
-`;
-
-const _1xCv8Q6YaFvOEcgPyTbz1iDBXBKWvXzJ0WbqMU0l4 = (function(nitro) {
-  nitro.hooks.hook("render:html", (htmlContext) => {
-    htmlContext.head.push(`<script>${script}<\/script>`);
-  });
-});
-
-const rootDir = "D:/project/test";
+const rootDir = "D:/project/tw-dehumidifier-guide";
 
 const devReducers = {
   VNode: (data) => isVNode(data) ? { type: data.type, props: data.props } : void 0,
   URL: (data) => data instanceof URL ? data.toString() : void 0
 };
 const asyncContext = getContext("nuxt-dev", { asyncContext: true, AsyncLocalStorage });
-const _EQXmJ2Vz3KV_uhxPeq13xLHuKhfzyhlFkClViZGPjY = (nitroApp) => {
+const _b74lCOxOTVav1Uj0ibw32OioHdV611U9sISuWVZujXY = (nitroApp) => {
   const handler = nitroApp.h3App.handler;
   nitroApp.h3App.handler = (event) => {
     return asyncContext.callAsync({ logs: [], event }, () => handler(event));
@@ -1295,7 +1277,7 @@ function getSiteConfig(e, _options) {
   return e.context.siteConfig.get(options);
 }
 
-const __3rFjF05Y1xGdgwUXhfwKSClunxiwPttFH27sOlQ6bs = defineNitroPlugin(async (nitroApp) => {
+const _F5gvdUYlToo144E4Q4gaMA0XUkvlBlcVh0UPr2EmAE = defineNitroPlugin(async (nitroApp) => {
   nitroApp.hooks.hook("render:html", async (ctx, { event }) => {
     const routeOptions = getRouteRules(event);
     const isIsland = process.env.NUXT_COMPONENT_ISLANDS && event.path.startsWith("/__nuxt_island");
@@ -1311,24 +1293,23 @@ const __3rFjF05Y1xGdgwUXhfwKSClunxiwPttFH27sOlQ6bs = defineNitroPlugin(async (ni
 });
 
 const plugins = [
-  _1xCv8Q6YaFvOEcgPyTbz1iDBXBKWvXzJ0WbqMU0l4,
-_EQXmJ2Vz3KV_uhxPeq13xLHuKhfzyhlFkClViZGPjY,
-__3rFjF05Y1xGdgwUXhfwKSClunxiwPttFH27sOlQ6bs
+  _b74lCOxOTVav1Uj0ibw32OioHdV611U9sISuWVZujXY,
+_F5gvdUYlToo144E4Q4gaMA0XUkvlBlcVh0UPr2EmAE
 ];
 
 const assets = {
   "/index.mjs": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"25920-qG60saNcesFB3xpXEzvlk0FYii8\"",
-    "mtime": "2025-12-19T03:52:57.935Z",
-    "size": 153888,
+    "etag": "\"25e29-MSO0BCQJAxsQaYCMBhxF6r5Tdaw\"",
+    "mtime": "2025-12-19T06:19:35.166Z",
+    "size": 155177,
     "path": "index.mjs"
   },
   "/index.mjs.map": {
     "type": "application/json",
-    "etag": "\"99240-QJcTgJom8uOQ4A0F5zS0i+1vw3E\"",
-    "mtime": "2025-12-19T03:52:57.936Z",
-    "size": 627264,
+    "etag": "\"992ea-WoE4ayXHevcSZcT7RajMgzZJGPk\"",
+    "mtime": "2025-12-19T06:19:35.166Z",
+    "size": 627434,
     "path": "index.mjs.map"
   }
 };
@@ -1356,7 +1337,7 @@ function getAsset (id) {
 
 const METHODS = /* @__PURE__ */ new Set(["HEAD", "GET"]);
 const EncodingMap = { gzip: ".gz", br: ".br" };
-const _NcGWtM = eventHandler$1((event) => {
+const _UGUrLP = eventHandler$1((event) => {
   if (event.method && !METHODS.has(event.method)) {
     return;
   }
@@ -1471,7 +1452,7 @@ function getNitroOrigin(e) {
   });
 }
 
-const _LxsjuW = eventHandler$1(async (e) => {
+const _r5TJ8o = eventHandler$1(async (e) => {
   if (e.context._initedSiteConfig)
     return;
   const runtimeConfig = useRuntimeConfig(e);
@@ -1522,7 +1503,7 @@ const _LxsjuW = eventHandler$1(async (e) => {
   e.context._initedSiteConfig = true;
 });
 
-const _pB00gA = eventHandler$1(async (e) => {
+const _7dYMrn = eventHandler$1(async (e) => {
   const siteConfig = getSiteConfig(e);
   const nitroOrigin = getNitroOrigin(e);
   const runtimeConfig = useRuntimeConfig(e);
@@ -1970,7 +1951,7 @@ async function parseSitemapXml(xml) {
   if (!xml) {
     throw new Error("Empty XML input provided");
   }
-  const { XMLParser } = await import('file://D:/project/test/node_modules/fast-xml-parser/src/fxp.js');
+  const { XMLParser } = await import('file://D:/project/tw-dehumidifier-guide/node_modules/fast-xml-parser/src/fxp.js');
   const parser = new XMLParser({
     isArray: (tagName) => ["url", "image", "video", "link", "tag", "price"].includes(tagName),
     removeNSPrefix: true,
@@ -2308,7 +2289,7 @@ function createSitePathResolver(e, options = {}) {
   };
 }
 
-const _wON3Qy = defineEventHandler$1(async (e) => {
+const _D4tnDu = defineEventHandler$1(async (e) => {
   const _runtimeConfig = useSitemapRuntimeConfig();
   const siteConfig = getSiteConfig(e);
   const { sitemaps: _sitemaps } = _runtimeConfig;
@@ -2333,7 +2314,7 @@ const _wON3Qy = defineEventHandler$1(async (e) => {
   };
 });
 
-const _bPEeCP = defineEventHandler$1(async (e) => {
+const _XXoz6S = defineEventHandler$1(async (e) => {
   const fixPath = createSitePathResolver(e, { absolute: false, withBase: true });
   const { sitemapName: fallbackSitemapName, cacheMaxAgeSeconds, version, xslColumns, xslTips } = useSitemapRuntimeConfig();
   setHeader(e, "Content-Type", "application/xslt+xml");
@@ -3258,19 +3239,19 @@ async function sitemapXmlEventHandler(e) {
   return createSitemap(e, Object.values(sitemaps)[0], runtimeConfig);
 }
 
-const _ZONUwN = defineEventHandler$1(sitemapXmlEventHandler);
+const _zSPByP = defineEventHandler$1(sitemapXmlEventHandler);
 
-const _lazy_zAIvDl = () => Promise.resolve().then(function () { return renderer$1; });
+const _lazy_ytKh3k = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
-  { route: '', handler: _NcGWtM, lazy: false, middleware: true, method: undefined },
-  { route: '/__nuxt_error', handler: _lazy_zAIvDl, lazy: true, middleware: false, method: undefined },
-  { route: '', handler: _LxsjuW, lazy: false, middleware: true, method: undefined },
-  { route: '/__site-config__/debug.json', handler: _pB00gA, lazy: false, middleware: false, method: undefined },
-  { route: '/__sitemap__/debug.json', handler: _wON3Qy, lazy: false, middleware: false, method: undefined },
-  { route: '/__sitemap__/style.xsl', handler: _bPEeCP, lazy: false, middleware: false, method: undefined },
-  { route: '/sitemap.xml', handler: _ZONUwN, lazy: false, middleware: false, method: undefined },
-  { route: '/**', handler: _lazy_zAIvDl, lazy: true, middleware: false, method: undefined }
+  { route: '', handler: _UGUrLP, lazy: false, middleware: true, method: undefined },
+  { route: '/__nuxt_error', handler: _lazy_ytKh3k, lazy: true, middleware: false, method: undefined },
+  { route: '', handler: _r5TJ8o, lazy: false, middleware: true, method: undefined },
+  { route: '/__site-config__/debug.json', handler: _7dYMrn, lazy: false, middleware: false, method: undefined },
+  { route: '/__sitemap__/debug.json', handler: _D4tnDu, lazy: false, middleware: false, method: undefined },
+  { route: '/__sitemap__/style.xsl', handler: _XXoz6S, lazy: false, middleware: false, method: undefined },
+  { route: '/sitemap.xml', handler: _zSPByP, lazy: false, middleware: false, method: undefined },
+  { route: '/**', handler: _lazy_ytKh3k, lazy: true, middleware: false, method: undefined }
 ];
 
 function createNitroApp() {
@@ -3684,7 +3665,7 @@ const unheadPlugins = true ? [CapoPlugin({ track: true })] : [];
 
 const renderSSRHeadOptions = {"omitLineBreaks":false};
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"2025 最完整的除濕機規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供日除濕量、噪音、能效比較，幫你找到最適合的除濕機。"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"htmlAttrs":{"lang":"zh-TW"},"title":"除濕機比較推薦 2025 | 規格、價格、評價一次看"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"2025 最完整的除濕機規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供日除濕量、噪音、能效比較，幫你找到最適合的除濕機。"},{"property":"og:type","content":"website"},{"property":"og:locale","content":"zh_TW"},{"property":"og:site_name","content":"除濕機比較推薦"},{"name":"twitter:card","content":"summary_large_image"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[{"src":"https://www.googletagmanager.com/gtag/js?id=G-P32TQ7V2SZ","async":true},{"innerHTML":"\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('js', new Date());\n            gtag('config', 'G-P32TQ7V2SZ');\n          "}],"noscript":[],"htmlAttrs":{"lang":"zh-TW"},"title":"除濕機比較推薦 2025 | 規格、價格、評價一次看"};
 
 const appRootTag = "div";
 
@@ -3708,8 +3689,8 @@ function publicAssetsURL(...path) {
 
 globalThis.__buildAssetsURL = buildAssetsURL;
 globalThis.__publicAssetsURL = publicAssetsURL;
-const getClientManifest = () => import('file://D:/project/test/.nuxt/dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
-const getServerEntry = () => import('file://D:/project/test/.nuxt/dist/server/server.mjs').then((r) => r.default || r);
+const getClientManifest = () => import('file://D:/project/tw-dehumidifier-guide/.nuxt/dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
+const getServerEntry = () => import('file://D:/project/tw-dehumidifier-guide/.nuxt/dist/server/server.mjs').then((r) => r.default || r);
 const getSSRStyles = lazyCachedFunction(() => Promise.resolve().then(function () { return styles$1; }).then((r) => r.default || r));
 const getSSRRenderer = lazyCachedFunction(async () => {
   const manifest = await getClientManifest();

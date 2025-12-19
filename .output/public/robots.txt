@@ -1,0 +1,10 @@
+# robots.txt for 除濕機比較推薦
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dehumidifier-compare.vercel.app/sitemap.xml
+
+# Disallow admin/internal paths (if any)
+Disallow: /_nuxt/
+Disallow: /api/

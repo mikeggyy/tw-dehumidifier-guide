@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Droplets, Volume2, Zap } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
 import { useProducts } from '~/composables/useProducts'
 
@@ -18,7 +17,9 @@ const formatPrice = (price: number): string => {
 
 const energyLabel = computed(() => {
   const labels = ['', '一級能效', '二級能效', '三級能效', '四級能效', '五級能效']
-  return labels[props.product.energy_efficiency]
+  const efficiency = props.product.energy_efficiency
+  if (efficiency === null || efficiency === undefined) return ''
+  return labels[efficiency] || ''
 })
 
 const energyColor = computed(() => {
@@ -29,7 +30,9 @@ const energyColor = computed(() => {
     4: 'bg-orange-500',
     5: 'bg-red-500'
   }
-  return colors[props.product.energy_efficiency] || 'bg-gray-500'
+  const efficiency = props.product.energy_efficiency
+  if (efficiency === null || efficiency === undefined) return 'bg-gray-500'
+  return colors[efficiency] || 'bg-gray-500'
 })
 </script>
 
@@ -46,6 +49,7 @@ const energyColor = computed(() => {
         />
         <!-- Energy Badge -->
         <span
+          v-if="product.energy_efficiency"
           :class="[energyColor, 'absolute top-3 left-3 text-white text-xs font-medium px-2 py-1 rounded-full']"
         >
           {{ energyLabel }}
@@ -55,42 +59,17 @@ const energyColor = computed(() => {
 
     <!-- Content -->
     <div class="p-4">
-      <!-- Brand & Model -->
+      <!-- Brand & Name -->
       <NuxtLink :to="`/product/${slug}`" class="block group">
         <p class="text-sm text-gray-500 mb-1">{{ product.brand }}</p>
         <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-          {{ product.model }}
+          {{ product.name }}
         </h3>
       </NuxtLink>
 
       <!-- Price -->
       <div class="mt-2 mb-3">
         <span class="text-2xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</span>
-      </div>
-
-      <!-- Key Specs -->
-      <div class="grid grid-cols-3 gap-2 py-3 border-t border-gray-100">
-        <div class="text-center">
-          <div class="flex items-center justify-center text-blue-500 mb-1">
-            <Droplets :size="18" />
-          </div>
-          <p class="text-xs text-gray-500">日除濕量</p>
-          <p class="text-sm font-medium text-gray-900">{{ product.daily_capacity }}L</p>
-        </div>
-        <div class="text-center">
-          <div class="flex items-center justify-center text-blue-500 mb-1">
-            <Volume2 :size="18" />
-          </div>
-          <p class="text-xs text-gray-500">噪音值</p>
-          <p class="text-sm font-medium text-gray-900">{{ product.noise_level }}dB</p>
-        </div>
-        <div class="text-center">
-          <div class="flex items-center justify-center text-blue-500 mb-1">
-            <Zap :size="18" />
-          </div>
-          <p class="text-xs text-gray-500">功率</p>
-          <p class="text-sm font-medium text-gray-900">{{ product.power_consumption }}W</p>
-        </div>
       </div>
 
       <!-- CTA Button -->
