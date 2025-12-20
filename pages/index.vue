@@ -467,9 +467,9 @@ const categories = computed(() => [
         <div>
           <div class="flex items-center gap-2 mb-1">
             <Droplets :size="24" class="text-blue-600" />
-            <h2 class="text-2xl font-bold text-gray-900">除濕機</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">除濕機</h2>
           </div>
-          <p class="text-gray-600">
+          <p class="text-gray-600 dark:text-gray-300">
             收錄 {{ allProducts.length }} 款熱門除濕機，比較規格、價格
           </p>
         </div>
@@ -586,7 +586,7 @@ const categories = computed(() => [
             <div class="flex items-center justify-between p-4 border-b border-gray-200 lg:hidden">
               <span class="font-semibold text-gray-900">篩選條件</span>
               <button @click="showMobileFilters = false">
-                <X :size="24" class="text-gray-500" />
+                <X :size="24" class="text-gray-500 dark:text-gray-400" />
               </button>
             </div>
 
@@ -687,7 +687,7 @@ const categories = computed(() => [
                       placeholder="最高"
                     />
                   </div>
-                  <p class="text-xs text-gray-500">
+                  <p class="text-xs text-gray-500 dark:text-gray-400">
                     NT$ {{ formatPrice(filters.priceMin) }} - NT$ {{ formatPrice(filters.priceMax) }}
                   </p>
                 </div>
@@ -831,7 +831,7 @@ const categories = computed(() => [
           </nav>
 
           <!-- 頁面資訊 -->
-          <div v-if="totalPages > 1" class="text-center text-sm text-gray-500 mt-4">
+          <div v-if="totalPages > 1" class="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
             第 {{ currentPage }} 頁，共 {{ totalPages }} 頁
           </div>
 
@@ -844,13 +844,13 @@ const categories = computed(() => [
             <p class="text-gray-900 font-medium mb-2">
               {{ showFavoritesOnly ? '您還沒有收藏任何商品' : '沒有找到符合條件的產品' }}
             </p>
-            <p class="text-gray-500 text-sm mb-6">
+            <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">
               {{ showFavoritesOnly ? '點擊商品卡片上的愛心即可收藏' : searchQuery ? `找不到「${searchQuery}」相關的商品` : '試試調整篩選條件' }}
             </p>
 
             <!-- 搜尋建議 -->
             <div v-if="searchSuggestions.length > 0" class="mb-6">
-              <p class="text-sm text-gray-500 mb-2">試試搜尋這些品牌：</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">試試搜尋這些品牌：</p>
               <div class="flex flex-wrap justify-center gap-2">
                 <button
                   v-for="brand in searchSuggestions"
@@ -877,7 +877,7 @@ const categories = computed(() => [
     <!-- Footer -->
     <footer class="bg-white border-t border-gray-200 mt-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="text-center text-gray-500 text-sm">
+        <div class="text-center text-gray-500 dark:text-gray-400 text-sm">
           <p>© 2025 比比看. 本站包含聯盟行銷連結。</p>
           <p class="mt-1">價格與規格僅供參考，請以官方公告為準。</p>
         </div>

@@ -47,13 +47,13 @@ onUnmounted(() => {
   <Transition name="slide-up">
     <div
       v-if="showNav"
-      class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 z-50 md:hidden safe-area-bottom"
+      class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 z-50 md:hidden safe-area-bottom"
     >
       <div class="flex items-center justify-around py-2 px-4">
         <!-- Home -->
         <NuxtLink
           to="/"
-          class="flex flex-col items-center gap-1 p-2 text-gray-600 hover:text-blue-600 transition-colors"
+          class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           <Home :size="22" />
           <span class="text-xs">首頁</span>
@@ -62,7 +62,7 @@ onUnmounted(() => {
         <!-- Filter -->
         <button
           v-if="showFilter"
-          class="flex flex-col items-center gap-1 p-2 text-gray-600 hover:text-blue-600 transition-colors"
+          class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           @click="emit('openFilter')"
         >
           <Filter :size="22" />

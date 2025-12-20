@@ -434,11 +434,11 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
     <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
       <!-- Page Title -->
       <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
           <component :is="CategoryIcon" :size="32" class="text-blue-600" />
           {{ categoryConfig?.name }}規格比較
         </h1>
-        <p class="mt-2 text-gray-600">
+        <p class="mt-2 text-gray-600 dark:text-gray-300">
           收錄 {{ categoryProducts.length }} {{ categoryConfig?.namePlural }}，{{ categoryConfig?.description }}
         </p>
       </div>
@@ -613,7 +613,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
             <div class="flex items-center justify-between p-4 border-b border-gray-200 lg:hidden">
               <span class="font-semibold text-gray-900">篩選條件</span>
               <button @click="showMobileFilters = false">
-                <X :size="24" class="text-gray-500" />
+                <X :size="24" class="text-gray-500 dark:text-gray-400" />
               </button>
             </div>
 
@@ -692,7 +692,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                       placeholder="最高"
                     />
                   </div>
-                  <p class="text-xs text-gray-500">
+                  <p class="text-xs text-gray-500 dark:text-gray-400">
                     NT$ {{ formatPrice(filters.priceMin) }} - NT$ {{ formatPrice(filters.priceMax) }}
                   </p>
                 </div>
@@ -784,12 +784,12 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
             <p class="text-gray-900 font-medium mb-2">
               {{ showFavoritesOnly ? '您還沒有收藏任何商品' : '沒有找到符合條件的產品' }}
             </p>
-            <p class="text-gray-500 text-sm mb-6">
+            <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">
               {{ showFavoritesOnly ? '點擊商品卡片上的愛心即可收藏' : searchQuery ? `找不到「${searchQuery}」相關的商品` : '試試調整篩選條件' }}
             </p>
 
             <div v-if="searchSuggestions.length > 0" class="mb-6">
-              <p class="text-sm text-gray-500 mb-2">試試搜尋這些品牌：</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">試試搜尋這些品牌：</p>
               <div class="flex flex-wrap justify-center gap-2">
                 <button
                   v-for="brand in searchSuggestions"

@@ -101,7 +101,7 @@ const goToPage = (page: number) => {
       </button>
     </nav>
 
-    <div class="text-center text-sm text-gray-500 mt-4" aria-live="polite">
+    <div class="text-center text-sm text-gray-500 dark:text-gray-400 mt-4" aria-live="polite">
       第 {{ currentPage }} 頁，共 {{ totalPages }} 頁
     </div>
   </div>

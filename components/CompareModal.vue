@@ -124,7 +124,7 @@ const getDisplayBrand = (product: Dehumidifier): string => {
     />
 
     <!-- Modal -->
-    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+    <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
       <!-- Header -->
       <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-500">
         <h2 id="compare-modal-title" class="text-lg font-semibold text-white">
@@ -143,10 +143,10 @@ const getDisplayBrand = (product: Dehumidifier): string => {
       <div class="flex-1 overflow-auto">
         <table class="w-full">
           <!-- Product Headers -->
-          <thead class="sticky top-0 bg-white z-10">
+          <thead class="sticky top-0 bg-white dark:bg-gray-800 z-10">
             <tr class="border-b border-gray-200">
               <th class="p-4 text-left w-32 bg-gray-50">
-                <span class="text-sm font-medium text-gray-500">規格項目</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">規格項目</span>
               </th>
               <th
                 v-for="product in products"
@@ -167,8 +167,8 @@ const getDisplayBrand = (product: Dehumidifier): string => {
                     loading="lazy"
                     decoding="async"
                   />
-                  <p v-if="getDisplayBrand(product)" class="text-xs text-gray-500 mb-1">{{ getDisplayBrand(product) }}</p>
-                  <p class="font-medium text-gray-900 text-xs line-clamp-2 leading-tight" :title="product.name">
+                  <p v-if="getDisplayBrand(product)" class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ getDisplayBrand(product) }}</p>
+                  <p class="font-medium text-gray-900 dark:text-white text-xs line-clamp-2 leading-tight" :title="product.name">
                     {{ product.name }}
                   </p>
                 </div>
@@ -207,7 +207,7 @@ const getDisplayBrand = (product: Dehumidifier): string => {
           </tbody>
 
           <!-- CTA Row -->
-          <tfoot class="sticky bottom-0 bg-white border-t border-gray-200">
+          <tfoot class="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
             <tr>
               <td class="p-4 bg-gray-50"></td>
               <td
@@ -236,7 +236,7 @@ const getDisplayBrand = (product: Dehumidifier): string => {
       </div>
 
       <!-- Legend -->
-      <div class="p-4 bg-gray-50 border-t border-gray-200 text-xs text-gray-500">
+      <div class="p-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
         <div class="flex items-center gap-4">
           <span class="flex items-center gap-1">
             <Trophy :size="12" class="text-yellow-500" />

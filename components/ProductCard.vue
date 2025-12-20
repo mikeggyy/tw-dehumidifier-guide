@@ -121,7 +121,7 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
 <template>
   <div
     :class="[
-      'bg-white rounded-xl shadow-sm border overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 hover:border-blue-200 group/card relative',
+      'bg-white dark:bg-gray-800 rounded-xl shadow-sm border overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 hover:border-blue-200 dark:hover:border-blue-400 group/card relative',
       isInCompare ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-100'
     ]"
     @mouseenter="handleMouseEnter"
@@ -190,24 +190,24 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
     <div class="p-4">
       <!-- Brand & Name -->
       <NuxtLink :to="productUrl" class="block group">
-        <p v-if="displayBrand" class="text-sm text-gray-500 mb-1" v-html="highlightedBrand" />
-        <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 min-h-[48px]" v-html="highlightedName" />
+        <p v-if="displayBrand" class="text-sm text-gray-500 dark:text-gray-400 mb-1" v-html="highlightedBrand" />
+        <h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 min-h-[48px]" v-html="highlightedName" />
       </NuxtLink>
 
       <!-- Price -->
       <div class="mt-2 mb-3">
         <div v-if="product.original_price && product.original_price > product.price" class="mb-1">
-          <span class="text-xs text-gray-500">市售價 </span>
-          <span class="text-sm text-gray-400 line-through">NT$ {{ formatPrice(product.original_price) }}</span>
+          <span class="text-xs text-gray-500 dark:text-gray-400">市售價 </span>
+          <span class="text-sm text-gray-400 dark:text-gray-500 line-through">NT$ {{ formatPrice(product.original_price) }}</span>
         </div>
         <div class="flex items-baseline gap-2">
           <div>
-            <span class="text-xs text-gray-500">促銷價 </span>
+            <span class="text-xs text-gray-500 dark:text-gray-400">促銷價 </span>
             <span class="text-2xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</span>
           </div>
         </div>
         <!-- Price update time -->
-        <p v-if="priceUpdateTime" class="text-xs text-gray-400 mt-1">
+        <p v-if="priceUpdateTime" class="text-xs text-gray-400 dark:text-gray-500 mt-1">
           {{ priceUpdateTime }}
         </p>
       </div>
