@@ -721,24 +721,26 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
         <!-- Main Content -->
         <div class="flex-1">
           <!-- Sort Bar -->
-          <div class="flex items-center justify-between mb-6 bg-white rounded-xl p-4 border border-gray-200">
-            <span class="text-sm text-gray-600">
-              顯示 <strong>{{ (currentPage - 1) * ITEMS_PER_PAGE + 1 }}-{{ Math.min(currentPage * ITEMS_PER_PAGE, displayedProducts.length) }}</strong> / {{ displayedProducts.length }} 項結果
-            </span>
-            <div class="flex items-center gap-2">
-              <SlidersHorizontal :size="18" class="text-gray-400" />
-              <select
-                v-model="sortBy"
-                class="text-sm border-0 bg-transparent text-gray-700 font-medium focus:ring-0 cursor-pointer"
-              >
-                <option
-                  v-for="option in categoryConfig?.sortOptions"
-                  :key="option.value"
-                  :value="option.value"
+          <div class="mb-6 bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-end md:justify-between gap-2">
+              <span class="result-count text-sm text-gray-600 dark:text-gray-300">
+                顯示 {{ (currentPage - 1) * ITEMS_PER_PAGE + 1 }}-{{ Math.min(currentPage * ITEMS_PER_PAGE, displayedProducts.length) }} / {{ displayedProducts.length }} 項結果
+              </span>
+              <div class="flex items-center gap-2">
+                <SlidersHorizontal :size="18" class="text-gray-400" />
+                <select
+                  v-model="sortBy"
+                  class="text-sm border-0 bg-transparent text-gray-700 dark:text-gray-200 font-medium focus:ring-0 cursor-pointer"
                 >
-                  {{ option.label }}
-                </option>
-              </select>
+                  <option
+                    v-for="option in categoryConfig?.sortOptions"
+                    :key="option.value"
+                    :value="option.value"
+                  >
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -908,5 +910,16 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* 手機版隱藏結果數量 */
+.result-count {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .result-count {
+    display: block;
+  }
 }
 </style>
