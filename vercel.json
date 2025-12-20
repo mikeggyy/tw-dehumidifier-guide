@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run generate",
   "outputDirectory": ".output/public",
-  "framework": "nuxt",
+  "framework": "nuxtjs",
   "regions": ["hkg1"],
   "headers": [
     {
