@@ -23,6 +23,8 @@ export default defineNuxtConfig({
   ],
 
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+    layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       htmlAttrs: {
         lang: 'zh-TW'
@@ -30,11 +32,17 @@ export default defineNuxtConfig({
       title: '比比看 | 家電規格比較 2025 - 除濕機、空氣清淨機、冷氣',
       meta: [
         { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         {
           name: 'description',
           content: '2025 最完整的家電規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供除濕機、空氣清淨機、冷氣等家電的規格、價格比較，幫你找到最適合的家電。'
         },
+        // PWA
+        { name: 'theme-color', content: '#2563eb' },
+        { name: 'mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
+        { name: 'apple-mobile-web-app-title', content: '比比看' },
         // Open Graph
         { property: 'og:type', content: 'website' },
         { property: 'og:locale', content: 'zh_TW' },
@@ -43,7 +51,9 @@ export default defineNuxtConfig({
         { name: 'twitter:card', content: 'summary_large_image' }
       ],
       link: [
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'manifest', href: '/manifest.json' },
+        { rel: 'apple-touch-icon', href: '/icon-192.png' }
       ],
       // Google Analytics 4
       script: [
@@ -78,7 +88,10 @@ export default defineNuxtConfig({
         '/',
         // Category listing pages (crawler will discover product pages from here)
         ...categorySlugs.map(slug => `/${slug}`),
-      ]
+      ],
+      // Ignore static files that are served from public folder
+      ignore: ['/manifest.json', '/favicon.svg', '/icon-192.png', '/screenshot-wide.png', '/screenshot-narrow.png'],
+      failOnError: false,
     }
   },
 

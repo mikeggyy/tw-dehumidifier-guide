@@ -24,6 +24,17 @@ const props = withDefaults(defineProps<{
 const showPreview = ref(false)
 const previewTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
+// Image fallback
+const imageError = ref(false)
+const handleImageError = () => {
+  imageError.value = true
+}
+const fallbackImage = computed(() => {
+  // 使用品牌名稱生成 placeholder
+  const brandName = props.product.brand || 'Product'
+  return `https://placehold.co/300x300/e2e8f0/64748b?text=${encodeURIComponent(brandName)}`
+})
+
 const handleMouseEnter = () => {
   previewTimer.value = setTimeout(() => {
     showPreview.value = true
@@ -149,10 +160,11 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
     <NuxtLink :to="productUrl" class="block overflow-hidden">
       <div class="relative aspect-square bg-gray-50 overflow-hidden">
         <img
-          :src="product.image_url"
-          :alt="`${product.brand} ${product.model} 除濕機`"
+          :src="imageError ? fallbackImage : product.image_url"
+          :alt="`${product.brand} ${product.model}`"
           class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/card:scale-110"
           loading="lazy"
+          @error="handleImageError"
         />
         <!-- Hover overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />

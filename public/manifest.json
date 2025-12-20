@@ -1,0 +1,53 @@
+{
+  "name": "比比看 - 家電規格比較",
+  "short_name": "比比看",
+  "description": "台灣最完整的家電規格比較網站，幫你找到最適合的除濕機、空氣清淨機、冷氣等家電",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["shopping", "utilities"],
+  "lang": "zh-TW",
+  "dir": "ltr",
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "除濕機",
+      "url": "/dehumidifier",
+      "description": "比較除濕機規格"
+    },
+    {
+      "name": "空氣清淨機",
+      "url": "/air-purifier",
+      "description": "比較空氣清淨機規格"
+    }
+  ]
+}

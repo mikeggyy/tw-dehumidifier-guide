@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import {
   ExternalLink,
   Share2,
@@ -33,7 +33,14 @@ import { useRoute, useHead, createError, useRouter, navigateTo } from '#imports'
 import { useToast } from '~/composables/useToast'
 import { useDarkMode } from '~/composables/useDarkMode'
 import { useSwipe } from '~/composables/useSwipe'
+import { useRecentlyViewed } from '~/composables/useRecentlyViewed'
+import { useProductDetailShortcuts } from '~/composables/useKeyboardShortcuts'
 import ScrollProgress from '~/components/ScrollProgress.vue'
+import SocialShare from '~/components/SocialShare.vue'
+import RecentlyViewed from '~/components/RecentlyViewed.vue'
+import ImageZoom from '~/components/ImageZoom.vue'
+import SimilarProducts from '~/components/SimilarProducts.vue'
+import { useStructuredData } from '~/composables/useStructuredData'
 
 // SSR 資料預載
 await useProductsSSR()
@@ -81,6 +88,29 @@ watch(direction, (dir) => {
   } else if (dir === 'right' && prevProduct.value) {
     navigateTo(`/${categorySlug.value}/${getProductSlug(prevProduct.value)}`)
   }
+})
+
+// 最近瀏覽紀錄
+const { add: addToRecentlyViewed } = useRecentlyViewed()
+
+// 鍵盤快捷鍵
+const goToPrev = () => {
+  if (prevProduct.value) {
+    navigateTo(`/${categorySlug.value}/${getProductSlug(prevProduct.value)}`)
+  }
+}
+
+const goToNext = () => {
+  if (nextProduct.value) {
+    navigateTo(`/${categorySlug.value}/${getProductSlug(nextProduct.value)}`)
+  }
+}
+
+useProductDetailShortcuts({
+  onPrev: goToPrev,
+  onNext: goToNext,
+  onShare: () => shareProduct(),
+  onBack: () => router.back(),
 })
 
 // 如果商品不存在，顯示 404
@@ -146,6 +176,21 @@ const shareProduct = async () => {
     success('已複製連結！')
   }
 }
+
+// 追蹤最近瀏覽
+onMounted(() => {
+  if (product.value) {
+    addToRecentlyViewed({
+      id: product.value.id,
+      slug: productSlug.value,
+      name: product.value.name,
+      brand: product.value.brand || '',
+      price: product.value.price,
+      image_url: product.value.image_url,
+      category_slug: categorySlug.value,
+    })
+  }
+})
 
 // 取得要顯示的規格（根據品類設定）
 const displaySpecs = computed(() => {
@@ -243,6 +288,29 @@ useHead({
     },
   ],
 })
+
+// JSON-LD 結構化資料
+const { setProductStructuredData, setBreadcrumbStructuredData } = useStructuredData()
+
+if (product.value) {
+  setProductStructuredData({
+    name: product.value.name,
+    description: `${product.value.name} - 查看詳細規格、比較價格`,
+    image: product.value.image_url,
+    brand: displayBrand.value,
+    model: product.value.model,
+    price: product.value.price,
+    originalPrice: product.value.original_price || undefined,
+    url: typeof window !== 'undefined' ? window.location.href : '',
+    category: categoryConfig.value?.name,
+  })
+
+  setBreadcrumbStructuredData([
+    { name: '首頁', url: 'https://bibikan.tw/' },
+    { name: categoryConfig.value?.name || '', url: `https://bibikan.tw/${categorySlug.value}` },
+    { name: product.value.name, url: `https://bibikan.tw/${categorySlug.value}/${productSlug.value}` },
+  ])
+}
 
 // 品類圖示對應
 const categoryIcons: Record<string, any> = {
@@ -466,7 +534,7 @@ const airChangeRate = computed(() => {
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
       <!-- Breadcrumb -->
       <nav class="mb-6">
         <div class="flex items-center gap-2 text-sm">
@@ -494,20 +562,18 @@ const airChangeRate = computed(() => {
         <div class="md:flex">
           <!-- Image -->
           <div class="md:w-2/5 relative">
-            <div class="aspect-square bg-gray-100">
-              <img
-                :src="product.image_url"
-                :alt="product.name"
-                class="w-full h-full object-cover"
-              />
-              <!-- 折扣標籤 -->
-              <span
-                v-if="discountPercent"
-                class="absolute top-4 right-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg"
-              >
-                -{{ discountPercent }}%
-              </span>
-            </div>
+            <ImageZoom
+              :src="product.image_url"
+              :alt="product.name"
+              aspect-ratio="aspect-square"
+            />
+            <!-- 折扣標籤 -->
+            <span
+              v-if="discountPercent"
+              class="absolute top-4 right-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg z-10"
+            >
+              -{{ discountPercent }}%
+            </span>
           </div>
 
           <!-- Info -->
@@ -584,6 +650,12 @@ const airChangeRate = computed(() => {
               <ExternalLink :size="20" />
               {{ savingsAmount && savingsAmount >= 500 ? `現省 $${formatPrice(savingsAmount)} - 立即搶購` : '查看優惠價' }}
             </a>
+
+            <!-- Social Share -->
+            <div class="mt-4 pt-4 border-t border-gray-100">
+              <p class="text-sm text-gray-500 mb-2">分享給朋友</p>
+              <SocialShare :title="product.name" />
+            </div>
           </div>
         </div>
       </div>
@@ -1019,6 +1091,20 @@ const airChangeRate = computed(() => {
         <span>左右滑動切換商品</span>
         <ChevronRight v-if="nextProduct" :size="14" />
       </div>
+    </div>
+
+    <!-- Similar Products -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <SimilarProducts
+        :current-product="product"
+        :category-slug="categorySlug"
+        :limit="4"
+      />
+    </div>
+
+    <!-- Recently Viewed -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <RecentlyViewed :exclude-id="product.id" :limit="5" />
     </div>
 
     <!-- Footer -->

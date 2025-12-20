@@ -8,7 +8,10 @@
     "dev:fast": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "scrape:ac": "node scripts/scrape-air-conditioners.mjs",
+    "sync": "node scripts/sync-to-supabase.mjs",
+    "sync:ac": "node scripts/sync-to-supabase.mjs air-conditioner"
   },
   "dependencies": {
     "lucide-vue-next": "^0.468.0",
@@ -19,6 +22,7 @@
   "devDependencies": {
     "@nuxtjs/sitemap": "^7.5.0",
     "@nuxtjs/tailwindcss": "^6.12.2",
+    "puppeteer": "^24.34.0",
     "typescript": "^5.7.2"
   }
 }

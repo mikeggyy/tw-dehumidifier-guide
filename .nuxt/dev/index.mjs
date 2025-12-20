@@ -3,25 +3,30 @@ import { Server } from 'node:http';
 import { resolve as resolve$1, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseStatus, setResponseHeader, send, getRequestHeaders, getRequestURL, getResponseHeader, setResponseHeaders, appendResponseHeader, removeResponseHeader, createError, getRequestProtocol, getRequestHost, setHeader, getHeader, getQuery as getQuery$1, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, readBody, getResponseStatusText } from 'file://D:/project/tw-dehumidifier-guide/node_modules/h3/dist/index.mjs';
+import { setResponseStatus, setResponseHeader, send, getRequestHeaders, getRequestURL, getRequestHeader as getRequestHeader$1, getResponseHeader, setResponseHeaders, eventHandler as eventHandler$1, appendResponseHeader, removeResponseHeader, createError, getRequestProtocol, getRequestHost, setHeader, defineEventHandler as defineEventHandler$1, getHeader, getQuery as getQuery$2, sendRedirect as sendRedirect$1, toNodeListener as toNodeListener$1, getRouterParam, readBody, getResponseStatusText, getResponseStatus as getResponseStatus$1 } from 'file://D:/project/tw-dehumidifier-guide/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, createApp, createRouter as createRouter$2, toNodeListener, lazyEventHandler, setResponseHeader as setResponseHeader$1, send as send$1, getResponseStatus, setResponseStatus as setResponseStatus$1, setResponseHeaders as setResponseHeaders$1, createError as createError$1 } from 'file://d:/project/tw-dehumidifier-guide/node_modules/h3/dist/index.mjs';
 import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file://D:/project/tw-dehumidifier-guide/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { stringify, uneval } from 'file://D:/project/tw-dehumidifier-guide/node_modules/devalue/index.js';
-import destr from 'file://D:/project/tw-dehumidifier-guide/node_modules/destr/dist/index.mjs';
-import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, hasProtocol, withHttps, decodePath, withLeadingSlash, withoutTrailingSlash, withBase, parsePath, stringifyQuery, parseQuery, encodePath, stringifyParsedURL, joinRelativeURL } from 'file://D:/project/tw-dehumidifier-guide/node_modules/ufo/dist/index.mjs';
+import destr$1 from 'file://D:/project/tw-dehumidifier-guide/node_modules/destr/dist/index.mjs';
+import { withQuery as withQuery$1, joinURL as joinURL$1, withTrailingSlash, hasProtocol, withHttps, decodePath, withLeadingSlash, withoutTrailingSlash, parseURL as parseURL$1, withBase, getQuery as getQuery$1, withoutBase as withoutBase$1, parsePath, stringifyQuery, parseQuery, encodePath, stringifyParsedURL, joinRelativeURL } from 'file://D:/project/tw-dehumidifier-guide/node_modules/ufo/dist/index.mjs';
 import { renderToString } from 'file://D:/project/tw-dehumidifier-guide/node_modules/vue/server-renderer/index.mjs';
 import { hash as hash$1 } from 'file://D:/project/tw-dehumidifier-guide/node_modules/nuxt/node_modules/ohash/dist/index.mjs';
 import { propsToString, renderSSRHead } from 'file://D:/project/tw-dehumidifier-guide/node_modules/@unhead/ssr/dist/index.mjs';
 import { createServerHead as createServerHead$1, CapoPlugin } from 'file://D:/project/tw-dehumidifier-guide/node_modules/unhead/dist/index.mjs';
-import { klona } from 'file://D:/project/tw-dehumidifier-guide/node_modules/klona/dist/index.mjs';
-import defu, { defuFn, defu as defu$1, createDefu } from 'file://D:/project/tw-dehumidifier-guide/node_modules/defu/dist/defu.mjs';
-import { snakeCase } from 'file://D:/project/tw-dehumidifier-guide/node_modules/scule/dist/index.mjs';
-import { createHooks } from 'file://D:/project/tw-dehumidifier-guide/node_modules/hookable/dist/index.mjs';
-import { createFetch, Headers as Headers$1 } from 'file://D:/project/tw-dehumidifier-guide/node_modules/ofetch/dist/node.mjs';
-import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://D:/project/tw-dehumidifier-guide/node_modules/node-mock-http/dist/index.mjs';
-import { createStorage, prefixStorage } from 'file://D:/project/tw-dehumidifier-guide/node_modules/unstorage/dist/index.mjs';
+import { klona } from 'file://d:/project/tw-dehumidifier-guide/node_modules/klona/dist/index.mjs';
+import { defuFn, defu as defu$1, createDefu } from 'file://D:/project/tw-dehumidifier-guide/node_modules/defu/dist/defu.mjs';
+import destr from 'file://d:/project/tw-dehumidifier-guide/node_modules/destr/dist/index.mjs';
+import { snakeCase } from 'file://d:/project/tw-dehumidifier-guide/node_modules/scule/dist/index.mjs';
+import { createHooks } from 'file://d:/project/tw-dehumidifier-guide/node_modules/hookable/dist/index.mjs';
+import { createFetch, Headers as Headers$1 } from 'file://d:/project/tw-dehumidifier-guide/node_modules/ofetch/dist/node.mjs';
+import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://d:/project/tw-dehumidifier-guide/node_modules/node-mock-http/dist/index.mjs';
+import { parseURL, withoutBase, joinURL, getQuery, withQuery } from 'file://d:/project/tw-dehumidifier-guide/node_modules/ufo/dist/index.mjs';
+import { prefixStorage } from 'file://d:/project/tw-dehumidifier-guide/node_modules/unstorage/dist/index.mjs';
+import { createStorage } from 'file://D:/project/tw-dehumidifier-guide/node_modules/unstorage/dist/index.mjs';
 import unstorage_47drivers_47fs from 'file://D:/project/tw-dehumidifier-guide/node_modules/unstorage/drivers/fs.mjs';
-import { digest } from 'file://D:/project/tw-dehumidifier-guide/node_modules/ohash/dist/index.mjs';
-import { toRouteMatcher, createRouter } from 'file://D:/project/tw-dehumidifier-guide/node_modules/radix3/dist/index.mjs';
+import { digest } from 'file://d:/project/tw-dehumidifier-guide/node_modules/ohash/dist/index.mjs';
+import defu from 'file://d:/project/tw-dehumidifier-guide/node_modules/defu/dist/defu.mjs';
+import { toRouteMatcher, createRouter } from 'file://d:/project/tw-dehumidifier-guide/node_modules/radix3/dist/index.mjs';
 import { readFile } from 'node:fs/promises';
 import consola, { consola as consola$1, createConsola } from 'file://D:/project/tw-dehumidifier-guide/node_modules/consola/dist/index.mjs';
 import { ErrorParser } from 'file://D:/project/tw-dehumidifier-guide/node_modules/youch-core/build/index.js';
@@ -35,6 +40,7 @@ import devalue from 'file://D:/project/tw-dehumidifier-guide/node_modules/@nuxt/
 import { promises } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname as dirname$1, resolve as resolve$2 } from 'file://D:/project/tw-dehumidifier-guide/node_modules/pathe/dist/index.mjs';
+import { toRouteMatcher as toRouteMatcher$1, createRouter as createRouter$1 } from 'file://D:/project/tw-dehumidifier-guide/node_modules/radix3/dist/index.mjs';
 import { defineHeadPlugin } from 'file://D:/project/tw-dehumidifier-guide/node_modules/@unhead/shared/dist/index.mjs';
 
 const serverAssets = [{"baseName":"server","dir":"D:/project/tw-dehumidifier-guide/server/assets"}];
@@ -936,7 +942,7 @@ const errorHandler$0 = (async function errorhandler(error, event) {
   const reqHeaders = getRequestHeaders(event);
   const isRenderingError = event.path.startsWith("/__nuxt_error") || !!reqHeaders["x-nuxt-error"];
   const res = isRenderingError ? null : await useNitroApp().localFetch(
-    withQuery(joinURL(useRuntimeConfig(event).app.baseURL, "/__nuxt_error"), errorObject),
+    withQuery$1(joinURL$1(useRuntimeConfig(event).app.baseURL, "/__nuxt_error"), errorObject),
     {
       headers: { ...reqHeaders, "x-nuxt-error": "true" },
       redirect: "manual"
@@ -1010,7 +1016,7 @@ async function defaultHandler(error, event, opts) {
       ansiError
     );
   }
-  const useJSON = opts?.json || !getRequestHeader(event, "accept")?.includes("text/html");
+  const useJSON = opts?.json || !getRequestHeader$1(event, "accept")?.includes("text/html");
   const headers = {
     "content-type": useJSON ? "application/json" : "text/html",
     // Prevent browser from guessing the MIME types of resources.
@@ -1291,22 +1297,7 @@ const plugins = [
 _F5gvdUYlToo144E4Q4gaMA0XUkvlBlcVh0UPr2EmAE
 ];
 
-const assets = {
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"25af4-LknBTDjLecpH9KmqOgINsWrVWec\"",
-    "mtime": "2025-12-19T15:13:13.205Z",
-    "size": 154356,
-    "path": "index.mjs"
-  },
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"98d73-5rFtGcOB2mVwqArMSUk2sHWrAHc\"",
-    "mtime": "2025-12-19T15:13:13.206Z",
-    "size": 626035,
-    "path": "index.mjs.map"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -1331,16 +1322,16 @@ function getAsset (id) {
 
 const METHODS = /* @__PURE__ */ new Set(["HEAD", "GET"]);
 const EncodingMap = { gzip: ".gz", br: ".br" };
-const _UGUrLP = eventHandler((event) => {
+const _UGUrLP = eventHandler$1((event) => {
   if (event.method && !METHODS.has(event.method)) {
     return;
   }
   let id = decodePath(
-    withLeadingSlash(withoutTrailingSlash(parseURL(event.path).pathname))
+    withLeadingSlash(withoutTrailingSlash(parseURL$1(event.path).pathname))
   );
   let asset;
   const encodingHeader = String(
-    getRequestHeader(event, "accept-encoding") || ""
+    getRequestHeader$1(event, "accept-encoding") || ""
   );
   const encodings = [
     ...encodingHeader.split(",").map((e) => EncodingMap[e.trim()]).filter(Boolean).sort(),
@@ -1350,7 +1341,7 @@ const _UGUrLP = eventHandler((event) => {
     appendResponseHeader(event, "Vary", "Accept-Encoding");
   }
   for (const encoding of encodings) {
-    for (const _id of [id + encoding, joinURL(id, "index.html" + encoding)]) {
+    for (const _id of [id + encoding, joinURL$1(id, "index.html" + encoding)]) {
       const _asset = getAsset(_id);
       if (_asset) {
         asset = _asset;
@@ -1366,12 +1357,12 @@ const _UGUrLP = eventHandler((event) => {
     }
     return;
   }
-  const ifNotMatch = getRequestHeader(event, "if-none-match") === asset.etag;
+  const ifNotMatch = getRequestHeader$1(event, "if-none-match") === asset.etag;
   if (ifNotMatch) {
     setResponseStatus(event, 304, "Not Modified");
     return "";
   }
-  const ifModifiedSinceH = getRequestHeader(event, "if-modified-since");
+  const ifModifiedSinceH = getRequestHeader$1(event, "if-modified-since");
   const mtimeDate = new Date(asset.mtime);
   if (ifModifiedSinceH && asset.mtime && new Date(ifModifiedSinceH) >= mtimeDate) {
     setResponseStatus(event, 304, "Not Modified");
@@ -1446,7 +1437,7 @@ function getNitroOrigin(e) {
   });
 }
 
-const _r5TJ8o = eventHandler(async (e) => {
+const _r5TJ8o = eventHandler$1(async (e) => {
   if (e.context._initedSiteConfig)
     return;
   const runtimeConfig = useRuntimeConfig(e);
@@ -1481,7 +1472,7 @@ const _r5TJ8o = eventHandler(async (e) => {
     });
   }
   if (config.multiTenancy) {
-    const host = parseURL(nitroOrigin).host;
+    const host = parseURL$1(nitroOrigin).host;
     const tenant = config.multiTenancy?.find((t) => t.hosts.includes(host));
     if (tenant) {
       siteConfig.push({
@@ -1497,7 +1488,7 @@ const _r5TJ8o = eventHandler(async (e) => {
   e.context._initedSiteConfig = true;
 });
 
-const _7dYMrn = eventHandler(async (e) => {
+const _7dYMrn = eventHandler$1(async (e) => {
   const siteConfig = getSiteConfig(e);
   const nitroOrigin = getNitroOrigin(e);
   const runtimeConfig = useRuntimeConfig(e);
@@ -1560,7 +1551,7 @@ function createPathFilter(options = {}) {
   return (loc) => {
     let path = loc;
     try {
-      path = parseURL(loc).pathname;
+      path = parseURL$1(loc).pathname;
     } catch {
       return false;
     }
@@ -1576,11 +1567,11 @@ function createFilter(options = {}) {
   const includeRegex = include.filter((r) => r instanceof RegExp);
   const excludeStrings = exclude.filter((r) => typeof r === "string");
   const includeStrings = include.filter((r) => typeof r === "string");
-  const excludeMatcher = excludeStrings.length > 0 ? toRouteMatcher(createRouter({
+  const excludeMatcher = excludeStrings.length > 0 ? toRouteMatcher$1(createRouter$1({
     routes: Object.fromEntries(excludeStrings.map((r) => [r, true])),
     strictTrailingSlash: false
   })) : null;
-  const includeMatcher = includeStrings.length > 0 ? toRouteMatcher(createRouter({
+  const includeMatcher = includeStrings.length > 0 ? toRouteMatcher$1(createRouter$1({
     routes: Object.fromEntries(includeStrings.map((r) => [r, true])),
     strictTrailingSlash: false
   })) : null;
@@ -2015,7 +2006,7 @@ async function fetchDataSource(input, event) {
   const abortRequestTimeout = setTimeout(() => timeoutController.abort(), timeout);
   try {
     let isMaybeErrorResponse = false;
-    const isXmlRequest = parseURL(url).pathname.endsWith(".xml");
+    const isXmlRequest = parseURL$1(url).pathname.endsWith(".xml");
     const mergedHeaders = defu$1(
       options?.headers,
       {
@@ -2053,7 +2044,7 @@ async function fetchDataSource(input, event) {
     let urls = [];
     if (typeof res === "object") {
       urls = res.urls || res;
-    } else if (typeof res === "string" && parseURL(url).pathname.endsWith(".xml")) {
+    } else if (typeof res === "string" && parseURL$1(url).pathname.endsWith(".xml")) {
       const result = await parseSitemapXml(res);
       urls = result.urls;
     }
@@ -2129,7 +2120,7 @@ function useSiteConfig(e, _options) {
 function resolveSitePath(pathOrUrl, options) {
   let path = pathOrUrl;
   if (hasProtocol(pathOrUrl, { strict: false, acceptRelative: true })) {
-    const parsed = parseURL(pathOrUrl);
+    const parsed = parseURL$1(pathOrUrl);
     path = parsed.pathname;
   }
   const base = withLeadingSlash(options.base || "/");
@@ -2262,7 +2253,7 @@ function isPathFile(path) {
   return ext && fileExtensions.includes(ext.replace(".", ""));
 }
 function fixSlashes(trailingSlash, pathOrUrl) {
-  const $url = parseURL(pathOrUrl);
+  const $url = parseURL$1(pathOrUrl);
   if (isPathFile($url.pathname))
     return pathOrUrl;
   const fixedPath = trailingSlash ? withTrailingSlash($url.pathname) : withoutTrailingSlash($url.pathname);
@@ -2283,7 +2274,7 @@ function createSitePathResolver(e, options = {}) {
   };
 }
 
-const _D4tnDu = defineEventHandler(async (e) => {
+const _D4tnDu = defineEventHandler$1(async (e) => {
   const _runtimeConfig = useSitemapRuntimeConfig();
   const siteConfig = getSiteConfig(e);
   const { sitemaps: _sitemaps } = _runtimeConfig;
@@ -2308,7 +2299,7 @@ const _D4tnDu = defineEventHandler(async (e) => {
   };
 });
 
-const _XXoz6S = defineEventHandler(async (e) => {
+const _XXoz6S = defineEventHandler$1(async (e) => {
   const fixPath = createSitePathResolver(e, { absolute: false, withBase: true });
   const { sitemapName: fallbackSitemapName, cacheMaxAgeSeconds, version, xslColumns, xslTips } = useSitemapRuntimeConfig();
   setHeader(e, "Content-Type", "application/xslt+xml");
@@ -2320,18 +2311,18 @@ const _XXoz6S = defineEventHandler(async (e) => {
   const creditName = `<a href="https://github.com/nuxt-modules/sitemap" style="color: black; display: flex; align-items: center; font-weight: 500;" target="_blank" rel="noopener">${svgIcon} Nuxt Sitemap v${version}</a>`;
   const { name: siteName, url: siteUrl } = useSiteConfig(e);
   const referrer = getHeader(e, "Referer") || "/";
-  const referrerPath = parseURL(referrer).pathname;
+  const referrerPath = parseURL$1(referrer).pathname;
   const isNotIndexButHasIndex = referrerPath !== "/sitemap.xml" && referrerPath !== "/sitemap_index.xml" && referrerPath.endsWith(".xml");
-  const sitemapName = parseURL(referrer).pathname.split("/").pop()?.split("-sitemap")[0] || fallbackSitemapName;
+  const sitemapName = parseURL$1(referrer).pathname.split("/").pop()?.split("-sitemap")[0] || fallbackSitemapName;
   const title = `${siteName}${sitemapName !== "sitemap.xml" ? ` - ${sitemapName === "sitemap_index.xml" ? "index" : sitemapName}` : ""}`.replace(/&/g, "&amp;");
-  const canonicalQuery = getQuery(referrer).canonical;
+  const canonicalQuery = getQuery$1(referrer).canonical;
   const isShowingCanonical = typeof canonicalQuery !== "undefined" && canonicalQuery !== "false";
   const conditionalTips = [
     'You are looking at a <a href="https://developer.mozilla.org/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT/An_Overview" style="color: #398465" target="_blank">XML stylesheet</a>. Read the <a href="https://nuxtseo.com/sitemap/guides/customising-ui" style="color: #398465" target="_blank">docs</a> to learn how to customize it. View the page source to see the raw XML.',
-    `URLs missing? Check Nuxt Devtools Sitemap tab (or the <a href="${xmlEscape(withQuery("/__sitemap__/debug.json", { sitemap: sitemapName }))}" style="color: #398465" target="_blank">debug endpoint</a>).`
+    `URLs missing? Check Nuxt Devtools Sitemap tab (or the <a href="${xmlEscape(withQuery$1("/__sitemap__/debug.json", { sitemap: sitemapName }))}" style="color: #398465" target="_blank">debug endpoint</a>).`
   ];
   const fetchErrors = [];
-  const xslQuery = getQuery$1(e);
+  const xslQuery = getQuery$2(e);
   if (xslQuery.error_messages) {
     const errorMessages = xslQuery.error_messages;
     const errorUrls = xslQuery.error_urls;
@@ -2348,7 +2339,7 @@ const _XXoz6S = defineEventHandler(async (e) => {
     }
   }
   if (!isShowingCanonical) {
-    const canonicalPreviewUrl = withQuery(referrer, { canonical: "" });
+    const canonicalPreviewUrl = withQuery$1(referrer, { canonical: "" });
     conditionalTips.push(`Your canonical site URL is <strong>${xmlEscape(siteUrl)}</strong>.`);
     conditionalTips.push(`You can preview your canonical sitemap by visiting <a href="${xmlEscape(canonicalPreviewUrl)}" style="color: #398465; white-space: nowrap;">${xmlEscape(fixPath(canonicalPreviewUrl))}?canonical</a>`);
   } else {
@@ -2564,19 +2555,19 @@ function withoutQuery(path) {
 }
 function createNitroRouteRuleMatcher() {
   const { nitro, app } = useRuntimeConfig();
-  const _routeRulesMatcher = toRouteMatcher(
-    createRouter({
+  const _routeRulesMatcher = toRouteMatcher$1(
+    createRouter$1({
       routes: Object.fromEntries(
         Object.entries(nitro?.routeRules || {}).map(([path, rules]) => [path === "/" ? path : withoutTrailingSlash(path), rules])
       )
     })
   );
   return (pathOrUrl) => {
-    const path = pathOrUrl[0] === "/" ? pathOrUrl : parseURL(pathOrUrl, app.baseURL).pathname;
+    const path = pathOrUrl[0] === "/" ? pathOrUrl : parseURL$1(pathOrUrl, app.baseURL).pathname;
     const pathWithoutQuery = withoutQuery(path);
     return defu$1({}, ..._routeRulesMatcher.matchAll(
       // radix3 does not support trailing slashes
-      withoutBase(pathWithoutQuery === "/" ? pathWithoutQuery : withoutTrailingSlash(pathWithoutQuery), app.baseURL)
+      withoutBase$1(pathWithoutQuery === "/" ? pathWithoutQuery : withoutTrailingSlash(pathWithoutQuery), app.baseURL)
     ).reverse());
   };
 }
@@ -2608,7 +2599,7 @@ function preNormalizeEntry(_e, resolvers) {
   e.loc = removeTrailingSlash(e.loc);
   e._abs = hasProtocol(e.loc, { acceptRelative: false, strict: false });
   try {
-    e._path = e._abs ? parseURL(e.loc) : parsePath(e.loc);
+    e._path = e._abs ? parseURL$1(e.loc) : parsePath(e.loc);
   } catch {
     e._path = null;
   }
@@ -2855,7 +2846,7 @@ function buildUrlXml(url, NL, I1, I2, I3, I4) {
 function urlsToXml(urls, resolvers, { version, xsl, credits, minify }, errorInfo) {
   let xslHref = xsl ? resolvers.relativeBaseUrlResolver(xsl) : false;
   if (xslHref && errorInfo?.messages.length) {
-    xslHref = withQuery(xslHref, {
+    xslHref = withQuery$1(xslHref, {
       errors: "true",
       error_messages: errorInfo.messages,
       error_urls: errorInfo.urls
@@ -2960,7 +2951,7 @@ function resolveSitemapEntries(sitemap, urls, runtimeConfig, resolvers) {
           ].map((locale) => {
             return {
               hreflang: locale._hreflang,
-              href: joinURL(withHttps(locale.domain), e._pathWithoutPrefix)
+              href: joinURL$1(withHttps(locale.domain), e._pathWithoutPrefix)
             };
           });
         } else {
@@ -2977,7 +2968,7 @@ function resolveSitemapEntries(sitemap, urls, runtimeConfig, resolvers) {
               if (typeof customPath === "string")
                 loc = customPath[0] === "/" ? customPath : `/${customPath}`;
             } else if (!hasDifferentDomains && !(isPrefixExceptOrAndDefault && l.code === defaultLocale)) {
-              loc = joinURL(`/${l.code}`, pathWithoutPrefix);
+              loc = joinURL$1(`/${l.code}`, pathWithoutPrefix);
             }
             const _sitemap = isI18nMapped ? l._sitemap : void 0;
             const alternatives = [];
@@ -2992,9 +2983,9 @@ function resolveSitemapEntries(sitemap, urls, runtimeConfig, resolvers) {
                 if (typeof customPath === "string")
                   href = customPath[0] === "/" ? customPath : `/${customPath}`;
               } else if (isPrefixStrategy) {
-                href = joinURL("/", code, pathWithoutPrefix);
+                href = joinURL$1("/", code, pathWithoutPrefix);
               } else if (isPrefixExceptOrAndDefault && !isDefault) {
-                href = joinURL("/", code, pathWithoutPrefix);
+                href = joinURL$1("/", code, pathWithoutPrefix);
               }
               if (!filterPath(href))
                 continue;
@@ -3107,7 +3098,7 @@ async function buildSitemapUrls(sitemap, resolvers, runtimeConfig, nitro) {
 }
 
 function useNitroUrlResolvers(e) {
-  const canonicalQuery = getQuery$1(e).canonical;
+  const canonicalQuery = getQuery$2(e).canonical;
   const isShowingCanonical = typeof canonicalQuery !== "undefined" && canonicalQuery !== "false";
   const siteConfig = useSiteConfig(e);
   return {
@@ -3229,11 +3220,11 @@ async function sitemapXmlEventHandler(e) {
   const runtimeConfig = useSitemapRuntimeConfig();
   const { sitemaps } = runtimeConfig;
   if ("index" in sitemaps)
-    return sendRedirect(e, withBase("/sitemap_index.xml", useRuntimeConfig().app.baseURL), 302 );
+    return sendRedirect$1(e, withBase("/sitemap_index.xml", useRuntimeConfig().app.baseURL), 302 );
   return createSitemap(e, Object.values(sitemaps)[0], runtimeConfig);
 }
 
-const _zSPByP = defineEventHandler(sitemapXmlEventHandler);
+const _zSPByP = defineEventHandler$1(sitemapXmlEventHandler);
 
 const _lazy_ytKh3k = () => Promise.resolve().then(function () { return renderer$1; });
 
@@ -3316,7 +3307,7 @@ function createNitroApp() {
       });
     }
   });
-  const router = createRouter$1({
+  const router = createRouter$2({
     preemptive: true
   });
   const nodeHandler = toNodeListener(h3App);
@@ -3401,8 +3392,8 @@ function defineRenderHandler(render) {
     await nitroApp.hooks.callHook("render:before", ctx);
     if (!ctx.response) {
       if (event.path === `${runtimeConfig.app.baseURL}favicon.ico`) {
-        setResponseHeader(event, "Content-Type", "image/x-icon");
-        return send(
+        setResponseHeader$1(event, "Content-Type", "image/x-icon");
+        return send$1(
           event,
           "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
         );
@@ -3410,8 +3401,8 @@ function defineRenderHandler(render) {
       ctx.response = await ctx.render(event);
       if (!ctx.response) {
         const _currentStatus = getResponseStatus(event);
-        setResponseStatus(event, _currentStatus === 200 ? 500 : _currentStatus);
-        return send(
+        setResponseStatus$1(event, _currentStatus === 200 ? 500 : _currentStatus);
+        return send$1(
           event,
           "No response returned from render handler: " + event.path
         );
@@ -3419,10 +3410,10 @@ function defineRenderHandler(render) {
     }
     await nitroApp.hooks.callHook("render:response", ctx.response, ctx);
     if (ctx.response.headers) {
-      setResponseHeaders(event, ctx.response.headers);
+      setResponseHeaders$1(event, ctx.response.headers);
     }
     if (ctx.response.statusCode || ctx.response.statusMessage) {
-      setResponseStatus(
+      setResponseStatus$1(
         event,
         ctx.response.statusCode,
         ctx.response.statusMessage
@@ -3447,13 +3438,13 @@ async function runTask(name, {
     return __runningTasks__[name];
   }
   if (!(name in tasks)) {
-    throw createError({
+    throw createError$1({
       message: `Task \`${name}\` is not available!`,
       statusCode: 404
     });
   }
   if (!tasks[name].resolve) {
-    throw createError({
+    throw createError$1({
       message: `Task \`${name}\` is not implemented!`,
       statusCode: 501
     });
@@ -3480,7 +3471,7 @@ parentPort?.on("message", (msg) => {
   }
 });
 const nitroApp = useNitroApp();
-const server = new Server(toNodeListener(nitroApp.h3App));
+const server = new Server(toNodeListener$1(nitroApp.h3App));
 let listener;
 listen().catch(() => listen(
   true
@@ -3491,7 +3482,7 @@ listen().catch(() => listen(
 });
 nitroApp.router.get(
   "/_nitro/tasks",
-  defineEventHandler(async (event) => {
+  defineEventHandler$1(async (event) => {
     const _tasks = await Promise.all(
       Object.entries(tasks).map(async ([name, task]) => {
         const _task = await task.resolve?.();
@@ -3506,10 +3497,10 @@ nitroApp.router.get(
 );
 nitroApp.router.use(
   "/_nitro/tasks/:name",
-  defineEventHandler(async (event) => {
+  defineEventHandler$1(async (event) => {
     const name = getRouterParam(event, "name");
     const payload = {
-      ...getQuery$1(event),
+      ...getQuery$2(event),
       ...await readBody(event).then((r) => r?.payload).catch(() => ({}))
     };
     return await runTask(name, { payload });
@@ -3659,7 +3650,7 @@ const unheadPlugins = true ? [CapoPlugin({ track: true })] : [];
 
 const renderSSRHeadOptions = {"omitLineBreaks":false};
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"2025 最完整的家電規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供除濕機、空氣清淨機、冷氣等家電的規格、價格比較，幫你找到最適合的家電。"},{"property":"og:type","content":"website"},{"property":"og:locale","content":"zh_TW"},{"property":"og:site_name","content":"比比看"},{"name":"twitter:card","content":"summary_large_image"}],"link":[{"rel":"icon","type":"image/svg+xml","href":"/favicon.svg"}],"style":[],"script":[{"src":"https://www.googletagmanager.com/gtag/js?id=G-P32TQ7V2SZ","async":true},{"innerHTML":"\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('js', new Date());\n            gtag('config', 'G-P32TQ7V2SZ');\n          "}],"noscript":[],"htmlAttrs":{"lang":"zh-TW"},"title":"比比看 | 家電規格比較 2025 - 除濕機、空氣清淨機、冷氣"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"},{"name":"description","content":"2025 最完整的家電規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供除濕機、空氣清淨機、冷氣等家電的規格、價格比較，幫你找到最適合的家電。"},{"name":"theme-color","content":"#2563eb"},{"name":"mobile-web-app-capable","content":"yes"},{"name":"apple-mobile-web-app-capable","content":"yes"},{"name":"apple-mobile-web-app-status-bar-style","content":"default"},{"name":"apple-mobile-web-app-title","content":"比比看"},{"property":"og:type","content":"website"},{"property":"og:locale","content":"zh_TW"},{"property":"og:site_name","content":"比比看"},{"name":"twitter:card","content":"summary_large_image"}],"link":[{"rel":"icon","type":"image/svg+xml","href":"/favicon.svg"},{"rel":"manifest","href":"/manifest.json"},{"rel":"apple-touch-icon","href":"/icon-192.png"}],"style":[],"script":[{"src":"https://www.googletagmanager.com/gtag/js?id=G-P32TQ7V2SZ","async":true},{"innerHTML":"\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('js', new Date());\n            gtag('config', 'G-P32TQ7V2SZ');\n          "}],"noscript":[],"htmlAttrs":{"lang":"zh-TW"},"title":"比比看 | 家電規格比較 2025 - 除濕機、空氣清淨機、冷氣"};
 
 const appRootTag = "div";
 
@@ -3744,13 +3735,13 @@ async function getIslandContext(event) {
   const componentParts = url.substring("/__nuxt_island".length + 1).replace(ISLAND_SUFFIX_RE, "").split("_");
   const hashId = componentParts.length > 1 ? componentParts.pop() : void 0;
   const componentName = componentParts.join("_");
-  const context = event.method === "GET" ? getQuery$1(event) : await readBody(event);
+  const context = event.method === "GET" ? getQuery$2(event) : await readBody(event);
   const ctx = {
     url: "/",
     ...context,
     id: hashId,
     name: componentName,
-    props: destr(context.props) || {},
+    props: destr$1(context.props) || {},
     slots: {},
     components: {}
   };
@@ -3765,7 +3756,7 @@ const PAYLOAD_URL_RE = /\/_payload.json(\?.*)?$/ ;
 const ROOT_NODE_REGEX = new RegExp(`^<${appRootTag}[^>]*>([\\s\\S]*)<\\/${appRootTag}>$`);
 const renderer = defineRenderHandler(async (event) => {
   const nitroApp = useNitroApp();
-  const ssrError = event.path.startsWith("/__nuxt_error") ? getQuery$1(event) : null;
+  const ssrError = event.path.startsWith("/__nuxt_error") ? getQuery$2(event) : null;
   if (ssrError && ssrError.statusCode) {
     ssrError.statusCode = Number.parseInt(ssrError.statusCode);
   }
@@ -3834,7 +3825,7 @@ const renderer = defineRenderHandler(async (event) => {
     const link = [];
     for (const style in styles) {
       const resource = styles[style];
-      if ("inline" in getQuery(resource.file)) {
+      if ("inline" in getQuery$1(resource.file)) {
         continue;
       }
       if (!isRenderingIsland || resource.file.includes("scoped") && !resource.file.includes("pages/")) {
@@ -3908,7 +3899,7 @@ const renderer = defineRenderHandler(async (event) => {
     await nitroApp.hooks.callHook("render:island", islandResponse, { event, islandContext });
     const response2 = {
       body: JSON.stringify(islandResponse, null, 2),
-      statusCode: getResponseStatus(event),
+      statusCode: getResponseStatus$1(event),
       statusMessage: getResponseStatusText(event),
       headers: {
         "content-type": "application/json;charset=utf-8",
@@ -3919,7 +3910,7 @@ const renderer = defineRenderHandler(async (event) => {
   }
   const response = {
     body: renderHTMLDocument(htmlContext),
-    statusCode: getResponseStatus(event),
+    statusCode: getResponseStatus$1(event),
     statusMessage: getResponseStatusText(event),
     headers: {
       "content-type": "text/html;charset=utf-8",
@@ -3970,7 +3961,7 @@ async function renderInlineStyles(usedModules) {
 function renderPayloadResponse(ssrContext) {
   return {
     body: stringify(splitPayload(ssrContext).payload, ssrContext._payloadReducers) ,
-    statusCode: getResponseStatus(ssrContext.event),
+    statusCode: getResponseStatus$1(ssrContext.event),
     statusMessage: getResponseStatusText(ssrContext.event),
     headers: {
       "content-type": "application/json;charset=utf-8" ,
