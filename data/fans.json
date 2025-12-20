@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2025-12-20T12:00:00.000Z",
-  "totalProducts": 25,
+  "lastUpdated": "2025-12-20T11:00:00.000Z",
+  "totalProducts": 45,
   "products": [
     {
       "id": 6480933,
@@ -480,6 +480,406 @@
         "motor_type": "dc",
         "size": 14,
         "noise_level": 28
+      }
+    },
+    {
+      "id": 14435179,
+      "name": "Panasonic 國際牌 14吋DC直流電風扇旗艦型 F-H14GND",
+      "brand": "Panasonic",
+      "model": "F-H14GND",
+      "slug": "panasonic-14435179",
+      "price": 3125,
+      "original_price": 4290,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14435179",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14435179",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/435/179/14435179_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "日本品牌", "遙控器", "ECO智能"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 30
+      }
+    },
+    {
+      "id": 14435180,
+      "name": "Panasonic 國際牌 16吋DC直流電風扇旗艦型 F-H16GNDK",
+      "brand": "Panasonic",
+      "model": "F-H16GNDK",
+      "slug": "panasonic-14435180",
+      "price": 3553,
+      "original_price": 4990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14435180",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14435180",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/435/180/14435180_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "日本品牌", "16吋大風量", "遙控器"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 16,
+        "noise_level": 32
+      }
+    },
+    {
+      "id": 13820262,
+      "name": "Panasonic 國際牌 14吋七片扇葉ECO智能溫控清淨負離子微電腦DC立扇 F-H14GND-K",
+      "brand": "Panasonic",
+      "model": "F-H14GND-K",
+      "slug": "panasonic-13820262",
+      "price": 4100,
+      "original_price": 5490,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13820262",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13820262",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/820/262/13820262_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "負離子", "ECO智能溫控", "七片扇葉"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 28
+      }
+    },
+    {
+      "id": 8813675,
+      "name": "AIRMATE 艾美特 全新升級14吋智慧節能遙控DC扇",
+      "brand": "AIRMATE",
+      "model": "FS35M182RP",
+      "slug": "airmate-8813675",
+      "price": 1361,
+      "original_price": 2490,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8813675",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8813675",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/813/675/8813675_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "智慧節能", "遙控器", "台灣品牌"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 35
+      }
+    },
+    {
+      "id": 13930530,
+      "name": "AIRMATE 艾美特 14吋DC直流馬達智慧節能遙控立地電扇 FS35116RI",
+      "brand": "AIRMATE",
+      "model": "FS35116RI",
+      "slug": "airmate-13930530",
+      "price": 2097,
+      "original_price": 3290,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13930530",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13930530",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/930/530/13930530_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "智慧節能", "遙控器", "LED顯示"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 33
+      }
+    },
+    {
+      "id": 12665608,
+      "name": "AIRMATE 艾美特 立體旋轉DC節能遙控循環扇 FB1863DRL",
+      "brand": "AIRMATE",
+      "model": "FB1863DRL",
+      "slug": "airmate-12665608",
+      "price": 3280,
+      "original_price": 4990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12665608",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12665608",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/665/608/12665608_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "立體旋轉", "循環扇", "遙控器"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "dc",
+        "size": 10,
+        "noise_level": 35
+      }
+    },
+    {
+      "id": 11127147,
+      "name": "AIRMATE 艾美特 6吋遙控定時空氣循環扇 FB1566R",
+      "brand": "AIRMATE",
+      "model": "FB1566R",
+      "slug": "airmate-11127147",
+      "price": 1780,
+      "original_price": 2490,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11127147",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11127147",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/127/147/11127147_R.webp",
+      "in_stock": true,
+      "features": ["遙控", "定時", "空氣循環", "小巧"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "dc",
+        "size": 6,
+        "noise_level": 38
+      }
+    },
+    {
+      "id": 11127150,
+      "name": "AIRMATE 艾美特 DC直流馬達遙控無扇葉塔扇 BF01R",
+      "brand": "AIRMATE",
+      "model": "BF01R",
+      "slug": "airmate-11127150",
+      "price": 5777,
+      "original_price": 7990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11127150",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11127150",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/127/150/11127150_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "無扇葉", "遙控器", "HEPA濾網"],
+      "specs": {
+        "fan_type": "tower",
+        "motor_type": "dc",
+        "size": 0,
+        "noise_level": 40
+      }
+    },
+    {
+      "id": 14148512,
+      "name": "Kolin 歌林 16吋美型循環立扇 沙漠棕 KFC-MN16A2",
+      "brand": "Kolin",
+      "model": "KFC-MN16A2",
+      "slug": "kolin-14148512",
+      "price": 999,
+      "original_price": 1690,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14148512",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14148512",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/148/512/14148512_R.webp",
+      "in_stock": true,
+      "features": ["美型設計", "循環扇", "16吋", "平價"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "ac",
+        "size": 16,
+        "noise_level": 45
+      }
+    },
+    {
+      "id": 13924526,
+      "name": "Kolin 歌林 14吋DC扇 KF-A1410DCR-W",
+      "brand": "Kolin",
+      "model": "KF-A1410DCR-W",
+      "slug": "kolin-13924526",
+      "price": 1276,
+      "original_price": 2190,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13924526",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13924526",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/924/526/13924526_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "遙控器", "省電", "定時"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 38
+      }
+    },
+    {
+      "id": 14086840,
+      "name": "Kolin 歌林 負離子清淨無葉DC扇 KF-MN898C",
+      "brand": "Kolin",
+      "model": "KF-MN898C",
+      "slug": "kolin-14086840",
+      "price": 3017,
+      "original_price": 4990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14086840",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14086840",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/086/840/14086840_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "無葉設計", "負離子", "空氣清淨"],
+      "specs": {
+        "fan_type": "tower",
+        "motor_type": "dc",
+        "size": 0,
+        "noise_level": 42
+      }
+    },
+    {
+      "id": 12914632,
+      "name": "Kolin 歌林 AI極靜音智慧聲控循環扇 KFC-XK3097",
+      "brand": "Kolin",
+      "model": "KFC-XK3097",
+      "slug": "kolin-12914632",
+      "price": 1821,
+      "original_price": 2990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12914632",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12914632",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/914/632/12914632_R.webp",
+      "in_stock": true,
+      "features": ["AI語音控制", "極靜音", "循環扇", "智慧"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "dc",
+        "size": 9,
+        "noise_level": 30
+      }
+    },
+    {
+      "id": 13246396,
+      "name": "Kolin 歌林 7吋擺頭渦輪循環扇 KFC-MN72A",
+      "brand": "Kolin",
+      "model": "KFC-MN72A",
+      "slug": "kolin-13246396",
+      "price": 776,
+      "original_price": 1290,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13246396",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13246396",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/246/396/13246396_R.webp",
+      "in_stock": true,
+      "features": ["擺頭", "渦輪", "循環扇", "平價"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "ac",
+        "size": 7,
+        "noise_level": 48
+      }
+    },
+    {
+      "id": 14698463,
+      "name": "Kolin 歌林 9吋空氣循環扇 KFC-SD2547",
+      "brand": "Kolin",
+      "model": "KFC-SD2547",
+      "slug": "kolin-14698463",
+      "price": 699,
+      "original_price": 1190,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14698463",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14698463",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/698/463/14698463_R.webp",
+      "in_stock": true,
+      "features": ["空氣循環", "9吋", "平價", "小巧"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "ac",
+        "size": 9,
+        "noise_level": 50
+      }
+    },
+    {
+      "id": 12714272,
+      "name": "TATUNG 大同 14吋AC直立風扇 TF-L14A5YA",
+      "brand": "TATUNG",
+      "model": "TF-L14A5YA",
+      "slug": "tatung-12714272",
+      "price": 890,
+      "original_price": 1290,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12714272",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12714272",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/714/272/12714272_R.webp",
+      "in_stock": true,
+      "features": ["AC馬達", "台灣品牌", "平價", "耐用"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "ac",
+        "size": 14,
+        "noise_level": 48
+      }
+    },
+    {
+      "id": 12589924,
+      "name": "TATUNG 大同 14吋DC立扇 TF-L14DTB",
+      "brand": "TATUNG",
+      "model": "TF-L14DTB",
+      "slug": "tatung-12589924",
+      "price": 1390,
+      "original_price": 2290,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12589924",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12589924",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/589/924/12589924_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "台灣品牌", "省電", "遙控"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 38
+      }
+    },
+    {
+      "id": 12589926,
+      "name": "TATUNG 大同 16吋DC立扇 TF-L16DTB",
+      "brand": "TATUNG",
+      "model": "TF-L16DTB",
+      "slug": "tatung-12589926",
+      "price": 1490,
+      "original_price": 2490,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12589926",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12589926",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/589/926/12589926_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "16吋大風量", "台灣品牌", "遙控"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 16,
+        "noise_level": 40
+      }
+    },
+    {
+      "id": 13802856,
+      "name": "TATUNG 大同 16吋DC變頻無線遙控立扇 TF-L16DTC",
+      "brand": "TATUNG",
+      "model": "TF-L16DTC",
+      "slug": "tatung-13802856",
+      "price": 1656,
+      "original_price": 2690,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13802856",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13802856",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/802/856/13802856_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "無線遙控", "16吋", "台灣品牌"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 16,
+        "noise_level": 38
+      }
+    },
+    {
+      "id": 13811178,
+      "name": "TATUNG 大同 6吋AC循環扇 TF-J6TA",
+      "brand": "TATUNG",
+      "model": "TF-J6TA",
+      "slug": "tatung-13811178",
+      "price": 990,
+      "original_price": 1490,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13811178",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13811178",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/811/178/13811178_R.webp",
+      "in_stock": true,
+      "features": ["AC馬達", "循環扇", "小巧", "台灣品牌"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "ac",
+        "size": 6,
+        "noise_level": 48
+      }
+    },
+    {
+      "id": 12770322,
+      "name": "TATUNG 大同 16吋DC變頻立扇 TF-L16DTA",
+      "brand": "TATUNG",
+      "model": "TF-L16DTA",
+      "slug": "tatung-12770322",
+      "price": 1887,
+      "original_price": 2990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12770322",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12770322",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/770/322/12770322_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "16吋", "省電", "台灣品牌"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 16,
+        "noise_level": 36
       }
     }
   ]
