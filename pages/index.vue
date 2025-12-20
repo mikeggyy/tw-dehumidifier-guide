@@ -26,6 +26,8 @@ import ProductCardSkeleton from '~/components/ProductCardSkeleton.vue'
 import RoomCalculator from '~/components/RoomCalculator.vue'
 import CompareModal from '~/components/CompareModal.vue'
 import ProductFinder from '~/components/ProductFinder.vue'
+import OnboardingTour from '~/components/OnboardingTour.vue'
+import SearchAutocomplete from '~/components/SearchAutocomplete.vue'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 
 // SSR 資料預載 - 在伺服器端就先載入資料
@@ -381,8 +383,8 @@ const categories = computed(() => [
     color: 'from-cyan-500 to-blue-400',
     bgColor: 'bg-cyan-50',
     textColor: 'text-cyan-600',
-    count: 0,
-    isActive: false,
+    count: getCategoryCount('air-conditioner'),
+    isActive: true,
   },
   {
     slug: 'heater',
@@ -392,8 +394,8 @@ const categories = computed(() => [
     color: 'from-orange-500 to-red-400',
     bgColor: 'bg-orange-50',
     textColor: 'text-orange-600',
-    count: 0,
-    isActive: false,
+    count: getCategoryCount('heater'),
+    isActive: true,
   },
   {
     slug: 'fan',
@@ -403,8 +405,8 @@ const categories = computed(() => [
     color: 'from-indigo-500 to-purple-400',
     bgColor: 'bg-indigo-50',
     textColor: 'text-indigo-600',
-    count: 0,
-    isActive: false,
+    count: getCategoryCount('fan'),
+    isActive: true,
   },
 ])
 </script>
@@ -440,14 +442,13 @@ const categories = computed(() => [
           <NuxtLink
             v-for="category in categories"
             :key="category.slug"
-            :to="category.isActive ? `/${category.slug}` : '#'"
+            :to="category.isActive ? `/${category.slug}` : undefined"
             :class="[
               'relative group rounded-2xl p-4 transition-all duration-300',
               category.isActive
                 ? 'bg-white/10 hover:bg-white/20 backdrop-blur-sm cursor-pointer hover:scale-105 hover:shadow-xl'
                 : 'bg-white/5 cursor-not-allowed opacity-60'
             ]"
-            @click.prevent="!category.isActive && null"
           >
             <div class="flex flex-col items-center text-center">
               <div
@@ -478,7 +479,7 @@ const categories = computed(() => [
       </div>
     </section>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
       <!-- Page Title -->
       <div class="mb-6 flex items-center justify-between">
         <div>
@@ -499,24 +500,14 @@ const categories = computed(() => [
         </NuxtLink>
       </div>
 
-      <!-- 搜尋框 -->
+      <!-- 搜尋框 - 使用自動完成 -->
       <div class="mb-6">
-        <div class="relative max-w-md">
-          <Search :size="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="搜尋品牌、型號..."
-            class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-          />
-          <button
-            v-if="searchQuery"
-            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            @click="searchQuery = ''"
-          >
-            <X :size="18" />
-          </button>
-        </div>
+        <SearchAutocomplete
+          v-model="searchQuery"
+          placeholder="搜尋品牌、型號..."
+          class="max-w-md"
+          data-tour="search"
+        />
       </div>
 
       <!-- Compare Tip Banner -->
@@ -987,6 +978,9 @@ const categories = computed(() => [
       @close="showCompareModal = false"
       @remove="removeFromCompare"
     />
+
+    <!-- Onboarding Tour for first-time users -->
+    <OnboardingTour />
   </div>
 </template>
 

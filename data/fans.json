@@ -1,0 +1,486 @@
+{
+  "lastUpdated": "2025-12-20T12:00:00.000Z",
+  "totalProducts": 25,
+  "products": [
+    {
+      "id": 6480933,
+      "name": "HERAN 禾聯 14吋智能變頻DC風扇 HDF-14A3",
+      "brand": "HERAN",
+      "model": "HDF-14A3",
+      "slug": "heran-6480933",
+      "price": 1190,
+      "original_price": 2490,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6480933",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6480933",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0006/480/933/6480933_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "省電", "遙控器", "定時"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 35
+      }
+    },
+    {
+      "id": 12554391,
+      "name": "TECO 東元 日系風格16吋DC遙控擺頭立扇 XA1669BRD",
+      "brand": "TECO",
+      "model": "XA1669BRD",
+      "slug": "teco-12554391",
+      "price": 1390,
+      "original_price": 4980,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12554391",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12554391",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/554/391/12554391_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "遙控器", "擺頭", "日系設計"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 16,
+        "noise_level": 38
+      }
+    },
+    {
+      "id": 12554392,
+      "name": "TECO 東元 日系風格14吋DC遙控擺頭立扇 XA1469BRD",
+      "brand": "TECO",
+      "model": "XA1469BRD",
+      "slug": "teco-12554392",
+      "price": 1090,
+      "original_price": 3980,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12554392",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12554392",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/554/392/12554392_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "遙控器", "擺頭", "日系設計"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 35
+      }
+    },
+    {
+      "id": 11068896,
+      "name": "HERAN 禾聯 16吋智能變頻DC風扇 HDF-16AH560",
+      "brand": "HERAN",
+      "model": "HDF-16AH560",
+      "slug": "heran-11068896",
+      "price": 1390,
+      "original_price": 2990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11068896",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11068896",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/068/896/11068896_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "智能", "遙控器", "定時"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 16,
+        "noise_level": 40
+      }
+    },
+    {
+      "id": 8500802,
+      "name": "HERAN 禾聯 14吋智慧觸控變頻7葉片DC風扇 HDF-14A8NH",
+      "brand": "HERAN",
+      "model": "HDF-14A8NH",
+      "slug": "heran-8500802",
+      "price": 1390,
+      "original_price": 2990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8500802",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8500802",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/500/802/8500802_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "智慧觸控", "7葉片", "遙控器"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 33
+      }
+    },
+    {
+      "id": 14170858,
+      "name": "IRIS 直立式風扇旋鈕款 STF-AC15",
+      "brand": "IRIS",
+      "model": "STF-AC15",
+      "slug": "iris-14170858",
+      "price": 1199,
+      "original_price": 1690,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14170858",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14170858",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/170/858/14170858_R.webp",
+      "in_stock": true,
+      "features": ["直立式", "旋鈕控制", "簡約設計"],
+      "specs": {
+        "fan_type": "tower",
+        "motor_type": "ac",
+        "size": 15,
+        "noise_level": 42
+      }
+    },
+    {
+      "id": 14162630,
+      "name": "IRIS 空氣循環扇 PCF-HE18 黑色",
+      "brand": "IRIS",
+      "model": "PCF-HE18",
+      "slug": "iris-14162630",
+      "price": 799,
+      "original_price": 1290,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14162630",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14162630",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/162/630/14162630_R.webp",
+      "in_stock": true,
+      "features": ["空氣循環", "小巧便攜", "強力送風"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "ac",
+        "size": 7,
+        "noise_level": 45
+      }
+    },
+    {
+      "id": 9992269,
+      "name": "TAIGA 大河 全方位3D擺頭送風座立兩式空氣循環風扇",
+      "brand": "TAIGA",
+      "model": "3D循環扇",
+      "slug": "taiga-9992269",
+      "price": 999,
+      "original_price": 1990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9992269",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9992269",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/992/269/9992269_R.webp",
+      "in_stock": true,
+      "features": ["3D擺頭", "座立兩用", "空氣循環"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "ac",
+        "size": 9,
+        "noise_level": 48
+      }
+    },
+    {
+      "id": 12600899,
+      "name": "SAMPO 聲寶 9吋空氣循環扇 SK-TB09S",
+      "brand": "SAMPO",
+      "model": "SK-TB09S",
+      "slug": "sampo-12600899",
+      "price": 919,
+      "original_price": 1490,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12600899",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12600899",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/600/899/12600899_R.webp",
+      "in_stock": true,
+      "features": ["空氣循環", "9吋", "台灣品牌"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "ac",
+        "size": 9,
+        "noise_level": 46
+      }
+    },
+    {
+      "id": 12649602,
+      "name": "CHIMEI 奇美 8吋DC空氣循環扇 DF-08E0CT",
+      "brand": "CHIMEI",
+      "model": "DF-08E0CT",
+      "slug": "chimei-12649602",
+      "price": 1553,
+      "original_price": 2290,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12649602",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12649602",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/649/602/12649602_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "空氣循環", "省電"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "dc",
+        "size": 8,
+        "noise_level": 38
+      }
+    },
+    {
+      "id": 6627102,
+      "name": "晶工牌 9吋循環涼風扇 JK-169",
+      "brand": "晶工牌",
+      "model": "JK-169",
+      "slug": "jinggong-6627102",
+      "price": 517,
+      "original_price": 990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6627102",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6627102",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0006/627/102/6627102_R.webp",
+      "in_stock": true,
+      "features": ["循環風", "平價", "9吋"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "ac",
+        "size": 9,
+        "noise_level": 50
+      }
+    },
+    {
+      "id": 10397455,
+      "name": "HERAN 禾聯 冷暖兩用循環扇 HAF-09GD01H",
+      "brand": "HERAN",
+      "model": "HAF-09GD01H",
+      "slug": "heran-10397455",
+      "price": 2990,
+      "original_price": 4990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10397455",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10397455",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/397/455/10397455_R.webp",
+      "in_stock": true,
+      "features": ["冷暖兩用", "循環扇", "四季適用"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "dc",
+        "size": 9,
+        "noise_level": 40
+      }
+    },
+    {
+      "id": 12779952,
+      "name": "CHIMEI 奇美 8吋強力氣流多向循環自動擺頭循環扇",
+      "brand": "CHIMEI",
+      "model": "DF-08A0CD",
+      "slug": "chimei-12779952",
+      "price": 919,
+      "original_price": 1490,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12779952",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12779952",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/779/952/12779952_R.webp",
+      "in_stock": true,
+      "features": ["強力氣流", "多向循環", "自動擺頭"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "ac",
+        "size": 8,
+        "noise_level": 48
+      }
+    },
+    {
+      "id": 9727854,
+      "name": "ZAIKU 18吋遙控定時DC循環扇無葉電風扇",
+      "brand": "ZAIKU",
+      "model": "DC-18",
+      "slug": "zaiku-9727854",
+      "price": 1613,
+      "original_price": 2990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9727854",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9727854",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/727/854/9727854_R.webp",
+      "in_stock": true,
+      "features": ["無葉設計", "DC直流變頻", "遙控", "定時"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "dc",
+        "size": 18,
+        "noise_level": 42
+      }
+    },
+    {
+      "id": 10383580,
+      "name": "HEALTHPIT 美型立燈DC智能循環扇 HEF-6001",
+      "brand": "HEALTHPIT",
+      "model": "HEF-6001",
+      "slug": "healthpit-10383580",
+      "price": 3042,
+      "original_price": 4990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10383580",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10383580",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/383/580/10383580_R.webp",
+      "in_stock": true,
+      "features": ["美型設計", "立燈造型", "DC智能", "循環扇"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "dc",
+        "size": 10,
+        "noise_level": 35
+      }
+    },
+    {
+      "id": 11277499,
+      "name": "SAMPO 聲寶 8吋循環扇 SK-TC08S",
+      "brand": "SAMPO",
+      "model": "SK-TC08S",
+      "slug": "sampo-11277499",
+      "price": 688,
+      "original_price": 1190,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11277499",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11277499",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/277/499/11277499_R.webp",
+      "in_stock": true,
+      "features": ["循環扇", "8吋", "台灣品牌"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "ac",
+        "size": 8,
+        "noise_level": 48
+      }
+    },
+    {
+      "id": 14330074,
+      "name": "小米 Xiaomi智慧直流變頻循環扇",
+      "brand": "小米",
+      "model": "智慧循環扇",
+      "slug": "xiaomi-14330074",
+      "price": 1699,
+      "original_price": 1999,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14330074",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14330074",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/330/074/14330074_R.webp",
+      "in_stock": true,
+      "features": ["智慧連網", "DC直流變頻", "APP控制", "語音控制"],
+      "specs": {
+        "fan_type": "circulator",
+        "motor_type": "dc",
+        "size": 10,
+        "noise_level": 30
+      }
+    },
+    {
+      "id": 5417046,
+      "name": "Dyson AM09 涼暖兩用氣流倍增器風扇",
+      "brand": "Dyson",
+      "model": "AM09",
+      "slug": "dyson-5417046",
+      "price": 9900,
+      "original_price": 16900,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=5417046",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=5417046",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0005/417/046/5417046_R.webp",
+      "in_stock": true,
+      "features": ["無葉設計", "涼暖兩用", "氣流倍增", "遙控"],
+      "specs": {
+        "fan_type": "tower",
+        "motor_type": "dc",
+        "size": 0,
+        "noise_level": 55
+      }
+    },
+    {
+      "id": 14208119,
+      "name": "ASPOR 手持折疊颶冰扇 FN-188",
+      "brand": "ASPOR",
+      "model": "FN-188",
+      "slug": "aspor-14208119",
+      "price": 980,
+      "original_price": 1490,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14208119",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14208119",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/208/119/14208119_R.webp",
+      "in_stock": true,
+      "features": ["手持", "折疊", "USB充電", "便攜"],
+      "specs": {
+        "fan_type": "desk",
+        "motor_type": "dc",
+        "size": 4,
+        "noise_level": 35
+      }
+    },
+    {
+      "id": 14266007,
+      "name": "FUNY 冰鎮渦輪多功能手持風扇",
+      "brand": "FUNY",
+      "model": "冰鎮渦輪扇",
+      "slug": "funy-14266007",
+      "price": 911,
+      "original_price": 1290,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14266007",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14266007",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/266/007/14266007_R.webp",
+      "in_stock": true,
+      "features": ["手持", "冰鎮", "渦輪", "多功能"],
+      "specs": {
+        "fan_type": "desk",
+        "motor_type": "dc",
+        "size": 4,
+        "noise_level": 38
+      }
+    },
+    {
+      "id": 14165839,
+      "name": "TORRAS圖拉斯 COOLiFY Air頸掛冷暖空調掛脖風扇",
+      "brand": "TORRAS",
+      "model": "COOLiFY Air",
+      "slug": "torras-14165839",
+      "price": 3990,
+      "original_price": 5800,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14165839",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14165839",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/165/839/14165839_R.webp",
+      "in_stock": true,
+      "features": ["頸掛式", "冷暖兩用", "免手持", "戶外適用"],
+      "specs": {
+        "fan_type": "desk",
+        "motor_type": "dc",
+        "size": 0,
+        "noise_level": 28
+      }
+    },
+    {
+      "id": 10842636,
+      "name": "艾美特 DC直流馬達遙控大廈扇 FT77R",
+      "brand": "艾美特",
+      "model": "FT77R",
+      "slug": "airmate-10842636",
+      "price": 2280,
+      "original_price": 3990,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10842636",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10842636",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/842/636/10842636_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "遙控", "大廈扇", "省電"],
+      "specs": {
+        "fan_type": "tower",
+        "motor_type": "dc",
+        "size": 0,
+        "noise_level": 45
+      }
+    },
+    {
+      "id": 12971365,
+      "name": "Dyson TP09 二合一甲醛偵測空氣清淨機涼風扇",
+      "brand": "Dyson",
+      "model": "TP09",
+      "slug": "dyson-12971365",
+      "price": 24900,
+      "original_price": 28900,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12971365",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12971365",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/971/365/12971365_R.webp",
+      "in_stock": true,
+      "features": ["無葉設計", "空氣清淨", "甲醛偵測", "涼風扇"],
+      "specs": {
+        "fan_type": "tower",
+        "motor_type": "dc",
+        "size": 0,
+        "noise_level": 50
+      }
+    },
+    {
+      "id": 9352837,
+      "name": "小米 米家直流變頻電風扇 ZLXHS01ZM",
+      "brand": "小米",
+      "model": "ZLXHS01ZM",
+      "slug": "xiaomi-9352837",
+      "price": 1495,
+      "original_price": 1995,
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9352837",
+      "affiliate_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9352837",
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/352/837/9352837_R.webp",
+      "in_stock": true,
+      "features": ["DC直流變頻", "APP控制", "智慧連網", "靜音"],
+      "specs": {
+        "fan_type": "stand",
+        "motor_type": "dc",
+        "size": 14,
+        "noise_level": 28
+      }
+    }
+  ]
+}

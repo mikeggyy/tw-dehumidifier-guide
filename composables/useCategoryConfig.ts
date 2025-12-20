@@ -663,10 +663,10 @@ export const categoryConfigs: Record<string, CategoryConfig> = {
 // 品類列表（用於首頁顯示）
 export const categoryList = [
   { slug: 'dehumidifier', name: '除濕機', icon: 'Droplets', available: true },
-  { slug: 'air-purifier', name: '空氣清淨機', icon: 'Wind', available: false },
-  { slug: 'air-conditioner', name: '冷氣', icon: 'Snowflake', available: false },
-  { slug: 'heater', name: '電暖器', icon: 'Flame', available: false },
-  { slug: 'fan', name: '電風扇', icon: 'Fan', available: false },
+  { slug: 'air-purifier', name: '空氣清淨機', icon: 'Wind', available: true },
+  { slug: 'air-conditioner', name: '冷氣', icon: 'Snowflake', available: true },
+  { slug: 'heater', name: '電暖器', icon: 'Flame', available: true },
+  { slug: 'fan', name: '電風扇', icon: 'Fan', available: true },
 ]
 
 // Composable

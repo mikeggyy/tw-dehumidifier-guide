@@ -11,6 +11,102 @@ const globalProducts = ref<Dehumidifier[]>([])
 const isGlobalLoading = ref(false)
 let hasLoaded = false
 
+// 從本地 JSON 檔案載入指定品類資料
+async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier[]> {
+  const products: Dehumidifier[] = []
+
+  try {
+    if (category === 'dehumidifier') {
+      const data = await import('~/data/products.json')
+      if (data.products && data.products.length > 0) {
+        products.push(...data.products.map((p: any) => ({
+          ...p,
+          category_slug: p.category_slug || 'dehumidifier',
+        })))
+      }
+    } else if (category === 'air-purifier') {
+      const data = await import('~/data/air_purifiers.json')
+      if (data.products && data.products.length > 0) {
+        products.push(...data.products.map((p: any) => ({
+          ...p,
+          category_slug: 'air-purifier',
+          slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
+          affiliate_url: p.affiliate_url || p.momo_url,
+        })))
+      }
+    } else if (category === 'air-conditioner') {
+      const data = await import('~/data/air_conditioners.json')
+      if (data.products && data.products.length > 0) {
+        products.push(...data.products.map((p: any) => ({
+          ...p,
+          category_slug: 'air-conditioner',
+          slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
+          affiliate_url: p.affiliate_url || p.momo_url,
+        })))
+      }
+    } else if (category === 'heater') {
+      const data = await import('~/data/heaters.json')
+      if (data.products && data.products.length > 0) {
+        products.push(...data.products.map((p: any) => ({
+          ...p,
+          category_slug: 'heater',
+          slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
+          affiliate_url: p.affiliate_url || p.momo_url,
+        })))
+      }
+    } else if (category === 'fan') {
+      const data = await import('~/data/fans.json')
+      if (data.products && data.products.length > 0) {
+        products.push(...data.products.map((p: any) => ({
+          ...p,
+          category_slug: 'fan',
+          slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
+          affiliate_url: p.affiliate_url || p.momo_url,
+        })))
+      }
+    }
+  } catch (e) {
+    console.warn(`Failed to load ${category} data:`, e)
+  }
+
+  return products
+}
+
+// 從本地 JSON 檔案載入所有品類資料
+async function loadLocalProducts(): Promise<Dehumidifier[]> {
+  const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
+  const allProducts: Dehumidifier[] = []
+
+  for (const category of categories) {
+    const products = await loadLocalCategoryProducts(category)
+    allProducts.push(...products)
+  }
+
+  return allProducts
+}
+
+// 補充缺少的品類資料（從本地 JSON 載入）
+async function supplementMissingCategories(existingProducts: Dehumidifier[]): Promise<Dehumidifier[]> {
+  const allProducts = [...existingProducts]
+  const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
+
+  // 檢查每個品類是否有資料
+  for (const category of categories) {
+    const hasCategory = existingProducts.some(p =>
+      (p as any).category_slug === category ||
+      (category === 'dehumidifier' && !(p as any).category_slug)
+    )
+
+    if (!hasCategory) {
+      console.log(`Supplementing missing category: ${category}`)
+      const localProducts = await loadLocalCategoryProducts(category)
+      allProducts.push(...localProducts)
+    }
+  }
+
+  return allProducts
+}
+
 async function fetchProducts(): Promise<Dehumidifier[]> {
   if (hasLoaded && globalProducts.value.length > 0) {
     return globalProducts.value
@@ -31,21 +127,21 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    const data = await response.json()
-    globalProducts.value = data as Dehumidifier[]
+    const data = await response.json() as Dehumidifier[]
+    // 補充 Supabase 中缺少的品類資料
+    const allProducts = await supplementMissingCategories(data)
+    globalProducts.value = allProducts
     hasLoaded = true
     return globalProducts.value
   } catch (error) {
     console.error('Failed to fetch products from Supabase:', error)
-    // 備用方案：從本地 JSON 載入
-    try {
-      const localData = await import('~/data/products.json')
-      globalProducts.value = localData.products as Dehumidifier[]
+    // 備用方案：從本地 JSON 載入（支援多品類）
+    const localProducts = await loadLocalProducts()
+    if (localProducts.length > 0) {
+      globalProducts.value = localProducts as Dehumidifier[]
       hasLoaded = true
-      return globalProducts.value
-    } catch {
-      return []
     }
+    return globalProducts.value
   }
 }
 
@@ -69,18 +165,16 @@ export async function useProductsSSR() {
   )
 
   if (data.value && data.value.length > 0) {
-    globalProducts.value = data.value
+    // 補充 Supabase 中缺少的品類資料
+    const allProducts = await supplementMissingCategories(data.value)
+    globalProducts.value = allProducts
     hasLoaded = true
   } else {
-    // 備用方案：從本地 JSON 載入
-    try {
-      const localData = await import('~/data/products.json')
-      if (localData.products && localData.products.length > 0) {
-        globalProducts.value = localData.products as Dehumidifier[]
-        hasLoaded = true
-      }
-    } catch (e) {
-      console.error('Failed to load local products.json:', e)
+    // 備用方案：從本地 JSON 載入（支援多品類）
+    const localProducts = await loadLocalProducts()
+    if (localProducts.length > 0) {
+      globalProducts.value = localProducts as Dehumidifier[]
+      hasLoaded = true
     }
   }
 

@@ -29,11 +29,17 @@ import RoomCalculator from '~/components/RoomCalculator.vue'
 import ProductFinder from '~/components/ProductFinder.vue'
 import AirPurifierCalculator from '~/components/AirPurifierCalculator.vue'
 import AirPurifierFinder from '~/components/AirPurifierFinder.vue'
+import AirConditionerCalculator from '~/components/AirConditionerCalculator.vue'
+import AirConditionerFinder from '~/components/AirConditionerFinder.vue'
+import HeaterFinder from '~/components/HeaterFinder.vue'
+import FanFinder from '~/components/FanFinder.vue'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useCategoryConfig, categoryConfigs } from '~/composables/useCategoryConfig'
-import { useRoute, useHead, createError } from '#imports'
+import { useUrlFilters } from '~/composables/useUrlFilters'
+import { useRoute, useHead, createError, useRouter } from '#imports'
 
 const route = useRoute()
+const router = useRouter()
 const categorySlug = computed(() => route.params.category as string)
 
 // 取得品類設定
@@ -96,6 +102,8 @@ const scrollToTop = () => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   loadFavorites()
+  // 從 URL 初始化篩選條件
+  initFromUrl()
 })
 
 onUnmounted(() => {
@@ -222,6 +230,57 @@ watch(isReady, (ready) => {
 // Sort state
 const sortBy = ref<SortOption>(categoryConfig.value?.defaultSort as SortOption || 'popularity')
 
+// URL 篩選同步
+const { parseUrlFilters, updateUrl, hasActiveFilters } = useUrlFilters({ min: 0, max: 100000 })
+
+// 從 URL 初始化篩選條件
+const initFromUrl = () => {
+  const urlFilters = parseUrlFilters()
+  if (urlFilters.brands && urlFilters.brands.length > 0) {
+    filters.brands = urlFilters.brands
+  }
+  if (urlFilters.capacityRange) {
+    filters.capacityRange = urlFilters.capacityRange
+  }
+  if (urlFilters.priceMin !== undefined) {
+    filters.priceMin = urlFilters.priceMin
+  }
+  if (urlFilters.priceMax !== undefined) {
+    filters.priceMax = urlFilters.priceMax
+  }
+  if (urlFilters.sort) {
+    sortBy.value = urlFilters.sort
+  }
+  if (urlFilters.q) {
+    searchQuery.value = urlFilters.q
+  }
+  if (urlFilters.page) {
+    currentPage.value = urlFilters.page
+  }
+}
+
+// 監聽篩選條件變化，更新 URL
+watch(
+  [() => filters.brands, () => filters.capacityRange, () => filters.priceMin, () => filters.priceMax, sortBy, searchQuery, currentPage],
+  () => {
+    updateUrl({
+      brands: filters.brands,
+      capacityRange: filters.capacityRange,
+      priceMin: filters.priceMin,
+      priceMax: filters.priceMax,
+      sort: sortBy.value,
+      q: searchQuery.value,
+      page: currentPage.value,
+    }, true)
+  },
+  { deep: true }
+)
+
+// 監聽 URL 變化（瀏覽器前進/後退）
+watch(() => route.query, () => {
+  initFromUrl()
+}, { deep: true })
+
 // Mobile filter panel
 const showMobileFilters = ref(false)
 
@@ -345,9 +404,9 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 const allCategories = computed(() => [
   { slug: 'dehumidifier', name: '除濕機', icon: Droplets, isActive: true },
   { slug: 'air-purifier', name: '空氣清淨機', icon: Wind, isActive: true },
-  { slug: 'air-conditioner', name: '冷氣', icon: Snowflake, isActive: false },
-  { slug: 'heater', name: '電暖器', icon: Flame, isActive: false },
-  { slug: 'fan', name: '電風扇', icon: Fan, isActive: false },
+  { slug: 'air-conditioner', name: '冷氣', icon: Snowflake, isActive: true },
+  { slug: 'heater', name: '電暖器', icon: Flame, isActive: true },
+  { slug: 'fan', name: '電風扇', icon: Fan, isActive: true },
 ])
 
 // 品類選擇器下拉狀態
@@ -428,7 +487,7 @@ const showCategoryDropdown = ref(false)
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
       <!-- Page Title -->
       <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -507,6 +566,41 @@ const showCategoryDropdown = ref(false)
         <button
           v-if="categorySlug === 'air-purifier'"
           class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-green-600 to-teal-500 text-white font-medium rounded-xl hover:from-green-700 hover:to-teal-600 shadow-sm transition-all"
+          @click="showFinder = true"
+        >
+          <Sparkles :size="18" />
+          幫我選
+        </button>
+        <!-- 冷氣工具 -->
+        <button
+          v-if="categorySlug === 'air-conditioner'"
+          class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-500 text-white font-medium rounded-xl hover:from-cyan-700 hover:to-blue-600 shadow-sm transition-all"
+          @click="showCalculator = true"
+        >
+          <Calculator :size="18" />
+          噸數計算器
+        </button>
+        <button
+          v-if="categorySlug === 'air-conditioner'"
+          class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-medium rounded-xl hover:from-cyan-600 hover:to-indigo-600 shadow-sm transition-all"
+          @click="showFinder = true"
+        >
+          <Sparkles :size="18" />
+          幫我選
+        </button>
+        <!-- 電暖器工具 -->
+        <button
+          v-if="categorySlug === 'heater'"
+          class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-600 to-red-500 text-white font-medium rounded-xl hover:from-orange-700 hover:to-red-600 shadow-sm transition-all"
+          @click="showFinder = true"
+        >
+          <Sparkles :size="18" />
+          幫我選
+        </button>
+        <!-- 電風扇工具 -->
+        <button
+          v-if="categorySlug === 'fan'"
+          class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-500 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-600 shadow-sm transition-all"
           @click="showFinder = true"
         >
           <Sparkles :size="18" />
@@ -929,6 +1023,33 @@ const showCategoryDropdown = ref(false)
 
     <AirPurifierFinder
       v-if="showFinder && categorySlug === 'air-purifier'"
+      :products="categoryProducts"
+      @close="showFinder = false"
+    />
+
+    <!-- Air Conditioner Tools -->
+    <AirConditionerCalculator
+      v-if="showCalculator && categorySlug === 'air-conditioner'"
+      :products="categoryProducts"
+      @close="showCalculator = false"
+    />
+
+    <AirConditionerFinder
+      v-if="showFinder && categorySlug === 'air-conditioner'"
+      :products="categoryProducts"
+      @close="showFinder = false"
+    />
+
+    <!-- Heater Tools -->
+    <HeaterFinder
+      v-if="showFinder && categorySlug === 'heater'"
+      :products="categoryProducts"
+      @close="showFinder = false"
+    />
+
+    <!-- Fan Tools -->
+    <FanFinder
+      v-if="showFinder && categorySlug === 'fan'"
       :products="categoryProducts"
       @close="showFinder = false"
     />
