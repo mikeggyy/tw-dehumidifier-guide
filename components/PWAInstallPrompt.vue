@@ -7,6 +7,7 @@ const { isInstallable, isInstalled, promptInstall } = usePWA()
 
 const showBanner = ref(false)
 const dismissed = ref(false)
+const isMobile = ref(false)
 
 const handleInstall = async () => {
   const installed = await promptInstall()
@@ -23,6 +24,10 @@ const dismiss = () => {
 }
 
 onMounted(() => {
+  // Only show on mobile devices (screen width <= 768px)
+  isMobile.value = window.matchMedia('(max-width: 768px)').matches
+  if (!isMobile.value) return
+
   // Check if user dismissed recently
   const dismissedAt = localStorage.getItem('pwa-install-dismissed')
   if (dismissedAt) {

@@ -22,8 +22,8 @@ export const useDarkMode = () => {
     if (stored !== null) {
       isDark.value = stored === 'true'
     } else {
-      // Check system preference
-      isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
+      // Default to light mode for first-time visitors
+      isDark.value = false
     }
 
     // Apply to document

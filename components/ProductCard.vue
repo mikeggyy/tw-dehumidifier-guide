@@ -163,17 +163,18 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
         <!-- Discount Badge -->
         <span
           v-if="discountPercent"
-          class="absolute top-3 right-12 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full"
+          class="absolute top-3 right-14 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full"
         >
           -{{ discountPercent }}%
         </span>
-        <!-- Favorite Button -->
+        <!-- Favorite Button - 44x44px touch target for mobile -->
         <button
-          class="absolute top-3 right-3 p-1.5 rounded-full bg-white/90 shadow-sm hover:bg-white transition-all duration-200"
+          class="absolute top-2 right-2 p-2.5 rounded-full bg-white/90 shadow-sm hover:bg-white transition-all duration-200"
           :class="isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-400'"
           @click.prevent="emit('toggleFavorite')"
+          aria-label="收藏此商品"
         >
-          <Heart :size="18" :fill="isFavorite ? 'currentColor' : 'none'" />
+          <Heart :size="20" :fill="isFavorite ? 'currentColor' : 'none'" />
         </button>
         <!-- Compare Badge (when selected) -->
         <div
@@ -186,39 +187,39 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
       </div>
     </NuxtLink>
 
-    <!-- Content -->
-    <div class="p-4">
+    <!-- Content - 響應式間距 -->
+    <div class="p-2.5 sm:p-4">
       <!-- Brand & Name -->
       <NuxtLink :to="productUrl" class="block group">
-        <p v-if="displayBrand" class="text-sm text-gray-500 dark:text-gray-400 mb-1" v-html="highlightedBrand" />
-        <h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 min-h-[48px]" v-html="highlightedName" />
+        <p v-if="displayBrand" class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1 truncate" v-html="highlightedBrand" />
+        <h3 class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 min-h-[36px] sm:min-h-[48px]" v-html="highlightedName" />
       </NuxtLink>
 
       <!-- Price -->
-      <div class="mt-2 mb-3">
-        <div v-if="product.original_price && product.original_price > product.price" class="mb-1">
-          <span class="text-xs text-gray-500 dark:text-gray-400">市售價 </span>
-          <span class="text-sm text-gray-400 dark:text-gray-500 line-through">NT$ {{ formatPrice(product.original_price) }}</span>
+      <div class="mt-1.5 sm:mt-2 mb-2 sm:mb-3">
+        <div v-if="product.original_price && product.original_price > product.price" class="mb-0.5 sm:mb-1">
+          <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">市售價 </span>
+          <span class="text-xs sm:text-sm text-gray-400 dark:text-gray-500 line-through">NT$ {{ formatPrice(product.original_price) }}</span>
         </div>
-        <div class="flex items-baseline gap-2">
+        <div class="flex items-baseline gap-1 sm:gap-2">
           <div>
-            <span class="text-xs text-gray-500 dark:text-gray-400">促銷價 </span>
-            <span class="text-2xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</span>
+            <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">促銷價 </span>
+            <span class="text-lg sm:text-2xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</span>
           </div>
         </div>
         <!-- Price update time -->
-        <p v-if="priceUpdateTime" class="text-xs text-gray-400 dark:text-gray-500 mt-1">
+        <p v-if="priceUpdateTime" class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 mt-0.5 sm:mt-1">
           {{ priceUpdateTime }}
         </p>
       </div>
 
-      <!-- CTA Button -->
+      <!-- CTA Button - 響應式大小 -->
       <a
         :href="trackedAffiliateUrl"
         target="_blank"
         rel="noopener noreferrer nofollow"
         :class="[
-          'mt-3 block w-full text-center py-3 px-4 font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow',
+          'mt-2 sm:mt-3 block w-full text-center py-2 sm:py-3 px-2 sm:px-4 text-sm sm:text-base font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow',
           ctaInfo.urgent
             ? 'bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white animate-pulse-subtle'
             : 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white'
@@ -228,19 +229,19 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
         {{ ctaInfo.text }}
       </a>
 
-      <!-- Compare Button -->
+      <!-- Compare Button - 響應式大小 -->
       <button
         v-if="showCompare"
         :class="[
-          'mt-2 w-full flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium rounded-lg border-2 transition-all duration-200',
+          'mt-1.5 sm:mt-2 w-full flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 px-2 sm:px-4 text-xs sm:text-sm font-medium rounded-lg border-2 transition-all duration-200',
           isInCompare
-            ? 'border-blue-500 bg-blue-50 text-blue-600'
-            : 'border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:text-blue-600'
+            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+            : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-blue-300 hover:text-blue-600'
         ]"
         @click="emit('toggleCompare')"
       >
-        <GitCompare :size="16" />
-        {{ isInCompare ? '取消比較' : '加入比較' }}
+        <GitCompare :size="14" class="flex-shrink-0" />
+        <span class="truncate">{{ isInCompare ? '取消比較' : '加入比較' }}</span>
       </button>
     </div>
   </div>

@@ -80,7 +80,7 @@ onUnmounted(() => {
         <!-- Compare -->
         <button
           v-if="showCompare"
-          class="relative flex flex-col items-center gap-1 p-2 text-gray-600 hover:text-blue-600 transition-colors"
+          class="relative flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           @click="emit('openCompare')"
         >
           <GitCompare :size="22" />
@@ -95,7 +95,7 @@ onUnmounted(() => {
 
         <!-- Favorites -->
         <button
-          class="relative flex flex-col items-center gap-1 p-2 text-gray-600 hover:text-blue-600 transition-colors"
+          class="relative flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           @click="emit('openFavorites')"
         >
           <Heart :size="22" />

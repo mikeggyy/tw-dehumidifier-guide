@@ -138,6 +138,23 @@ watch(categoryProducts, (products) => {
 const ITEMS_PER_PAGE = 20
 const currentPage = ref(1)
 
+// 手機版載入更多
+const mobileItemsShown = ref(ITEMS_PER_PAGE)
+const isMobile = ref(false)
+
+const checkMobile = () => {
+  if (typeof window !== 'undefined') {
+    isMobile.value = window.innerWidth < 768
+  }
+}
+
+const loadMore = () => {
+  mobileItemsShown.value += ITEMS_PER_PAGE
+}
+
+const hasMoreItems = computed(() => mobileItemsShown.value < displayedProducts.value.length)
+const remainingItems = computed(() => displayedProducts.value.length - mobileItemsShown.value)
+
 // 搜尋功能
 const searchQuery = ref('')
 
@@ -157,6 +174,8 @@ const scrollToTop = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', checkMobile)
+  checkMobile()
   loadFavorites()
   // 從 URL 初始化篩選條件
   initFromUrl()
@@ -164,6 +183,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', checkMobile)
 })
 
 // 收藏功能
@@ -378,6 +398,11 @@ const searchSuggestions = computed(() => {
 const totalPages = computed(() => Math.ceil(displayedProducts.value.length / ITEMS_PER_PAGE))
 
 const paginatedProducts = computed(() => {
+  // 手機版使用載入更多模式
+  if (isMobile.value) {
+    return displayedProducts.value.slice(0, mobileItemsShown.value)
+  }
+  // 桌面版使用傳統分頁
   const start = (currentPage.value - 1) * ITEMS_PER_PAGE
   const end = start + ITEMS_PER_PAGE
   return displayedProducts.value.slice(start, end)
@@ -386,6 +411,7 @@ const paginatedProducts = computed(() => {
 
 watch([() => filters.brands, () => filters.priceMin, () => filters.priceMax, sortBy, searchQuery], () => {
   currentPage.value = 1
+  mobileItemsShown.value = ITEMS_PER_PAGE // 重設手機載入數量
 })
 
 const toggleBrand = (brand: string) => {
@@ -443,9 +469,9 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
         </p>
       </div>
 
-      <!-- 搜尋框 -->
+      <!-- 搜尋框 - 手機全寬 -->
       <div class="mb-6">
-        <div class="relative max-w-md">
+        <div class="relative w-full sm:max-w-md">
           <label for="product-search" class="sr-only">搜尋商品</label>
           <Search :size="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true" />
           <input
@@ -453,12 +479,12 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
             v-model="searchQuery"
             type="search"
             placeholder="搜尋品牌、型號..."
-            class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            class="w-full pl-12 pr-10 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
             autocomplete="off"
           />
           <button
             v-if="searchQuery"
-            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            class="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
             aria-label="清除搜尋"
             @click="searchQuery = ''"
           >
@@ -483,8 +509,8 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
         </div>
       </div>
 
-      <!-- Tool Buttons -->
-      <div class="flex flex-wrap gap-3 mb-6">
+      <!-- Tool Buttons - 手機橫向滾動 -->
+      <div class="flex gap-3 mb-6 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible sm:flex-wrap scrollbar-hide">
         <!-- 除濕機工具 -->
         <button
           v-if="categorySlug === 'dehumidifier'"
@@ -569,8 +595,8 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
         </button>
       </div>
 
-      <!-- Quick Filter Tags -->
-      <div v-if="categoryConfig?.quickTags" class="flex flex-wrap gap-2 mb-6">
+      <!-- Quick Filter Tags - 手機橫向滾動 -->
+      <div v-if="categoryConfig?.quickTags" class="flex gap-2 mb-6 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible sm:flex-wrap scrollbar-hide">
         <button
           v-for="tag in categoryConfig.quickTags"
           :key="tag.label"
@@ -598,24 +624,167 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 
         <!-- Sidebar Filters -->
         <aside
+          v-if="showMobileFilters || true"
           :class="[
             'fixed inset-0 z-50 lg:relative lg:inset-auto',
             'lg:block lg:w-64 lg:flex-shrink-0',
-            showMobileFilters ? 'block' : 'hidden'
+            showMobileFilters ? 'block' : 'hidden lg:block'
           ]"
         >
-          <div
-            class="absolute inset-0 bg-black/50 lg:hidden"
-            @click="showMobileFilters = false"
-          />
+          <!-- 遮罩層 with fade animation -->
+          <Transition name="fade">
+            <div
+              v-if="showMobileFilters"
+              class="absolute inset-0 bg-black/50 lg:hidden"
+              @click="showMobileFilters = false"
+            />
+          </Transition>
 
-          <div class="absolute right-0 top-0 h-full w-80 lg:w-full lg:relative lg:h-auto bg-white lg:bg-transparent lg:rounded-xl overflow-y-auto">
-            <div class="flex items-center justify-between p-4 border-b border-gray-200 lg:hidden">
-              <span class="font-semibold text-gray-900">篩選條件</span>
-              <button @click="showMobileFilters = false">
-                <X :size="24" class="text-gray-500 dark:text-gray-400" />
-              </button>
+          <!-- 篩選面板 with slide animation -->
+          <Transition name="slide-right">
+            <div
+              v-show="showMobileFilters"
+              class="absolute right-0 top-0 h-full w-[85vw] max-w-80 bg-white dark:bg-gray-800 overflow-y-auto lg:hidden shadow-xl"
+            >
+              <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 z-10">
+                <span class="font-semibold text-gray-900 dark:text-white">篩選條件</span>
+                <button
+                  class="p-2 -mr-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                  @click="showMobileFilters = false"
+                >
+                  <X :size="22" class="text-gray-500 dark:text-gray-400" />
+                </button>
+              </div>
+
+              <div class="p-4 space-y-6">
+                <!-- Brand Filter -->
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
+                  <h3 class="font-semibold text-gray-900 dark:text-white mb-3">品牌</h3>
+                  <div class="space-y-2">
+                    <label
+                      v-for="brand in majorBrands"
+                      :key="brand"
+                      class="flex items-center gap-3 cursor-pointer group py-1"
+                    >
+                      <input
+                        type="checkbox"
+                        :checked="filters.brands.includes(brand)"
+                        class="w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        @change="toggleBrand(brand)"
+                      />
+                      <span class="text-gray-700 dark:text-gray-200 flex-1">{{ brand }}</span>
+                      <span class="text-xs text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300">{{ getBrandCount(brand) }}</span>
+                    </label>
+
+                    <div v-if="otherBrands.length > 0">
+                      <button
+                        class="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 font-medium mt-2 mb-2 py-1"
+                        @click="showAllBrands = !showAllBrands"
+                      >
+                        <ChevronRight
+                          :size="16"
+                          :class="['transition-transform', showAllBrands ? 'rotate-90' : '']"
+                        />
+                        {{ showAllBrands ? '收起' : `其他品牌 (${otherBrands.length})` }}
+                      </button>
+
+                      <div v-show="showAllBrands" class="space-y-2 pl-2 border-l-2 border-gray-200 dark:border-gray-600">
+                        <label
+                          v-for="brand in otherBrands"
+                          :key="brand"
+                          class="flex items-center gap-3 cursor-pointer group py-1"
+                        >
+                          <input
+                            type="checkbox"
+                            :checked="filters.brands.includes(brand)"
+                            class="w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                            @change="toggleBrand(brand)"
+                          />
+                          <span class="text-gray-600 dark:text-gray-300 text-sm flex-1">{{ brand }}</span>
+                          <span class="text-xs text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300">{{ getBrandCount(brand) }}</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Price Range Filter - Mobile: Use quick buttons -->
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
+                  <h3 class="font-semibold text-gray-900 dark:text-white mb-3">價格範圍</h3>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button
+                      :class="[
+                        'py-2.5 px-3 rounded-lg text-sm font-medium transition-all',
+                        filters.priceMax <= 5000
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-blue-300'
+                      ]"
+                      @click="filters.priceMin = 0; filters.priceMax = 5000"
+                    >
+                      5千以下
+                    </button>
+                    <button
+                      :class="[
+                        'py-2.5 px-3 rounded-lg text-sm font-medium transition-all',
+                        filters.priceMin >= 5000 && filters.priceMax <= 10000
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-blue-300'
+                      ]"
+                      @click="filters.priceMin = 5000; filters.priceMax = 10000"
+                    >
+                      5千-1萬
+                    </button>
+                    <button
+                      :class="[
+                        'py-2.5 px-3 rounded-lg text-sm font-medium transition-all',
+                        filters.priceMin >= 10000 && filters.priceMax <= 20000
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-blue-300'
+                      ]"
+                      @click="filters.priceMin = 10000; filters.priceMax = 20000"
+                    >
+                      1-2萬
+                    </button>
+                    <button
+                      :class="[
+                        'py-2.5 px-3 rounded-lg text-sm font-medium transition-all',
+                        filters.priceMin >= 20000
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-blue-300'
+                      ]"
+                      @click="filters.priceMin = 20000; filters.priceMax = priceRange.max"
+                    >
+                      2萬以上
+                    </button>
+                  </div>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center">
+                    NT$ {{ formatPrice(filters.priceMin) }} - NT$ {{ formatPrice(filters.priceMax) }}
+                  </p>
+                </div>
+
+                <!-- Reset Button -->
+                <button
+                  class="w-full py-2.5 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  @click="resetFilters"
+                >
+                  重設篩選條件
+                </button>
+              </div>
+
+              <!-- Apply Button - Sticky bottom -->
+              <div class="sticky bottom-0 p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+                <button
+                  class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors"
+                  @click="showMobileFilters = false"
+                >
+                  套用篩選 ({{ displayedProducts.length }} 項結果)
+                </button>
+              </div>
             </div>
+          </Transition>
+
+          <!-- Desktop sidebar -->
+          <div class="hidden lg:block lg:w-full lg:relative lg:h-auto bg-transparent rounded-xl overflow-y-auto">
 
             <div class="p-4 lg:p-0 space-y-6">
               <!-- Brand Filter -->
@@ -747,15 +916,15 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
           <!-- Loading State -->
           <div
             v-if="!isReady"
-            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+            class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
           >
             <ProductCardSkeleton v-for="i in 6" :key="i" />
           </div>
 
-          <!-- Product Grid -->
+          <!-- Product Grid - 手機 2 列，桌面 3 列 -->
           <div
             v-else-if="displayedProducts.length > 0"
-            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+            class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
           >
             <ProductCard
               v-for="product in paginatedProducts"
@@ -771,8 +940,19 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
             />
           </div>
 
-          <!-- Pagination -->
+          <!-- 手機版: 載入更多按鈕 -->
+          <div v-if="isMobile && hasMoreItems" class="mt-6">
+            <button
+              class="w-full py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-blue-600 dark:text-blue-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              @click="loadMore"
+            >
+              載入更多商品 (剩餘 {{ remainingItems }} 項)
+            </button>
+          </div>
+
+          <!-- 桌面版: 傳統分頁 -->
           <Pagination
+            v-if="!isMobile"
             v-model:current-page="currentPage"
             :total-pages="totalPages"
           />
@@ -818,15 +998,18 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
     <!-- Footer -->
     <SiteFooter />
 
-    <!-- Scroll to top -->
+    <!-- Scroll to top - 動態調整位置避免與底部元素衝突 -->
     <Transition name="fade">
       <button
         v-if="showScrollTop"
-        class="fixed bottom-24 right-6 z-50 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110"
+        :class="[
+          'fixed right-4 sm:right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110',
+          compareList.length > 0 ? 'bottom-36 md:bottom-24' : 'bottom-24 md:bottom-6'
+        ]"
         @click="scrollToTop"
         aria-label="回到頂部"
       >
-        <ArrowUp :size="24" />
+        <ArrowUp :size="22" />
       </button>
     </Transition>
 
@@ -912,6 +1095,20 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
   opacity: 0;
 }
 
+/* 篩選面板滑入動畫 */
+.slide-right-enter-active {
+  transition: transform 0.3s ease-out;
+}
+
+.slide-right-leave-active {
+  transition: transform 0.25s ease-in;
+}
+
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(100%);
+}
+
 /* 手機版隱藏結果數量 */
 .result-count {
   display: none;
@@ -921,5 +1118,15 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
   .result-count {
     display: block;
   }
+}
+
+/* 隱藏橫向滾動條 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 </style>

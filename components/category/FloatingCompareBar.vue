@@ -24,23 +24,23 @@ const getDisplayBrand = (product: Product): string => {
   <Transition name="slide-up">
     <div
       v-if="compareList.length > 0"
-      class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40 p-4"
+      class="fixed left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg z-40 p-3 sm:p-4 bottom-[60px] md:bottom-0 safe-area-bottom"
     >
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <GitCompare :size="20" class="text-blue-600" />
-          <span class="font-medium text-gray-900">
-            已選 {{ compareList.length }} / 4 項商品
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+          <GitCompare :size="18" class="text-blue-600 flex-shrink-0" />
+          <span class="font-medium text-gray-900 dark:text-white text-sm sm:text-base whitespace-nowrap">
+            已選 {{ compareList.length }}/4
           </span>
           <div class="hidden sm:flex items-center gap-2">
             <div
               v-for="product in compareList"
               :key="product.id"
-              class="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-sm"
+              class="flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm"
             >
-              <span class="truncate max-w-[100px]">{{ getDisplayBrand(product) || product.model }}</span>
+              <span class="truncate max-w-[100px] text-gray-700 dark:text-gray-200">{{ getDisplayBrand(product) || product.model }}</span>
               <button
-                class="text-gray-400 hover:text-red-500"
+                class="text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400"
                 @click="emit('remove', product.id)"
               >
                 <X :size="14" />
@@ -48,24 +48,24 @@ const getDisplayBrand = (product: Product): string => {
             </div>
           </div>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <button
-            class="text-sm text-gray-500 hover:text-gray-700"
+            class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 whitespace-nowrap"
             @click="emit('clear')"
           >
-            清除全部
+            清除
           </button>
           <button
             :disabled="compareList.length < 2"
             :class="[
-              'px-4 py-2 rounded-lg font-medium transition-colors',
+              'px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base whitespace-nowrap',
               compareList.length >= 2
                 ? 'bg-blue-600 text-white hover:bg-blue-700'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
             ]"
             @click="emit('compare')"
           >
-            比較 ({{ compareList.length }})
+            比較
           </button>
         </div>
       </div>
@@ -74,6 +74,10 @@ const getDisplayBrand = (product: Product): string => {
 </template>
 
 <style scoped>
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
 .slide-up-enter-active,
 .slide-up-leave-active {
   transition: transform 0.3s ease, opacity 0.3s ease;
