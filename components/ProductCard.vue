@@ -1,9 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onUnmounted } from 'vue'
 import { Check, GitCompare, Heart, Eye } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
 import { useProducts } from '~/composables/useProducts'
 import ProductQuickPreview from '~/components/ProductQuickPreview.vue'
+import {
+  formatPrice,
+  getDiscountPercent,
+  getSavingsAmount,
+  getDisplayBrand,
+  getEnergyLabel,
+  getEnergyColor,
+  getValueScore,
+  getTrackedAffiliateUrl,
+  getOptimizedCtaText,
+  formatRelativeTime,
+} from '~/utils/product'
 
 const props = withDefaults(defineProps<{
   product: Dehumidifier
@@ -49,6 +61,13 @@ const handleMouseLeave = () => {
   showPreview.value = false
 }
 
+// Cleanup timer on unmount
+onUnmounted(() => {
+  if (previewTimer.value) {
+    clearTimeout(previewTimer.value)
+  }
+})
+
 const emit = defineEmits<{
   toggleCompare: []
   toggleFavorite: []
@@ -61,68 +80,31 @@ const slug = computed(() => getProductSlug(props.product))
 // 產品連結（支援品類路由）
 const productUrl = computed(() => `/${props.categorySlug}/${slug.value}`)
 
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
+// 使用集中的 utility 函數
+const energyLabel = computed(() => getEnergyLabel(props.product.energy_efficiency))
+const energyColor = computed(() => getEnergyColor(props.product.energy_efficiency))
+const discountPercent = computed(() => getDiscountPercent(props.product))
+const savingsAmount = computed(() => getSavingsAmount(props.product))
 
-const energyLabel = computed(() => {
-  const labels = ['', '一級能效', '二級能效', '三級能效', '四級能效', '五級能效']
-  const efficiency = props.product.energy_efficiency
-  if (efficiency === null || efficiency === undefined) return ''
-  return labels[efficiency] || ''
-})
+// CTA text based on discount (optimized for conversion)
+const ctaInfo = computed(() => getOptimizedCtaText(discountPercent.value, savingsAmount.value))
 
-const energyColor = computed(() => {
-  const colors: Record<number, string> = {
-    1: 'bg-green-500',
-    2: 'bg-lime-500',
-    3: 'bg-yellow-500',
-    4: 'bg-orange-500',
-    5: 'bg-red-500'
-  }
-  const efficiency = props.product.energy_efficiency
-  if (efficiency === null || efficiency === undefined) return 'bg-gray-500'
-  return colors[efficiency] || 'bg-gray-500'
-})
+// Tracked affiliate URL with UTM parameters
+const trackedAffiliateUrl = computed(() =>
+  getTrackedAffiliateUrl(props.product.affiliate_url, 'product_card', props.product.id)
+)
 
-const discountPercent = computed(() => {
-  const original = props.product.original_price
-  const current = props.product.price
-  if (!original || original <= current) return null
-  const discount = Math.round((1 - current / original) * 100)
-  return discount >= 5 ? discount : null
-})
-
-// Calculate savings amount
-const savingsAmount = computed(() => {
-  const original = props.product.original_price
-  if (!original || original <= props.product.price) return null
-  return original - props.product.price
-})
-
-// CTA text based on discount
-const ctaText = computed(() => {
-  if (savingsAmount.value && savingsAmount.value >= 500) {
-    return `現省 $${formatPrice(savingsAmount.value)}`
-  }
-  return '查看優惠價'
+// Price update time
+const priceUpdateTime = computed(() => {
+  const product = props.product as any
+  return formatRelativeTime(product.updated_at)
 })
 
 // Value score for badge
-const valueScore = computed(() => {
-  const capacity = props.product.daily_capacity ?? 0
-  if (capacity === 0) return Infinity
-  return props.product.price / capacity
-})
+const valueScore = computed(() => getValueScore(props.product.price, props.product.daily_capacity))
 
 // Display brand - hide "Other", try to extract from name
-const displayBrand = computed(() => {
-  const brand = props.product.brand
-  if (brand && brand !== 'Other') return brand
-  // Try to extract from 【】in product name
-  const match = props.product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
-})
+const displayBrand = computed(() => getDisplayBrand(props.product))
 
 // Search highlighting
 const highlightText = (text: string): string => {
@@ -218,26 +200,32 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
           <span class="text-xs text-gray-500">市售價 </span>
           <span class="text-sm text-gray-400 line-through">NT$ {{ formatPrice(product.original_price) }}</span>
         </div>
-        <div>
-          <span class="text-xs text-gray-500">促銷價 </span>
-          <span class="text-2xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</span>
+        <div class="flex items-baseline gap-2">
+          <div>
+            <span class="text-xs text-gray-500">促銷價 </span>
+            <span class="text-2xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</span>
+          </div>
         </div>
+        <!-- Price update time -->
+        <p v-if="priceUpdateTime" class="text-xs text-gray-400 mt-1">
+          {{ priceUpdateTime }}
+        </p>
       </div>
 
       <!-- CTA Button -->
       <a
-        :href="product.affiliate_url"
+        :href="trackedAffiliateUrl"
         target="_blank"
         rel="noopener noreferrer nofollow"
         :class="[
           'mt-3 block w-full text-center py-3 px-4 font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow',
-          savingsAmount && savingsAmount >= 500
-            ? 'bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white'
+          ctaInfo.urgent
+            ? 'bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white animate-pulse-subtle'
             : 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white'
         ]"
         @click.stop
       >
-        {{ ctaText }}
+        {{ ctaInfo.text }}
       </a>
 
       <!-- Compare Button -->
@@ -259,6 +247,22 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
 </template>
 
 <style scoped>
+/* Subtle pulse animation for urgent CTA */
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.02);
+  }
+}
+
 .preview-enter-active {
   animation: preview-in 0.2s ease-out;
 }

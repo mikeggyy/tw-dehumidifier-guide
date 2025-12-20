@@ -1,10 +1,16 @@
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 export function usePWA() {
   const isInstallable = ref(false)
   const isInstalled = ref(false)
   const isOnline = ref(true)
   let deferredPrompt: any = null
+
+  // Store event handlers for cleanup
+  let beforeInstallHandler: ((e: Event) => void) | null = null
+  let appInstalledHandler: (() => void) | null = null
+  let onlineHandler: (() => void) | null = null
+  let offlineHandler: (() => void) | null = null
 
   const registerServiceWorker = async () => {
     if ('serviceWorker' in navigator) {
@@ -57,29 +63,48 @@ export function usePWA() {
     checkInstalled()
 
     // Listen for install prompt
-    window.addEventListener('beforeinstallprompt', (e) => {
+    beforeInstallHandler = (e: Event) => {
       e.preventDefault()
       deferredPrompt = e
       isInstallable.value = true
-    })
+    }
+    window.addEventListener('beforeinstallprompt', beforeInstallHandler)
 
     // Listen for app installed
-    window.addEventListener('appinstalled', () => {
+    appInstalledHandler = () => {
       isInstalled.value = true
       isInstallable.value = false
       deferredPrompt = null
-    })
+    }
+    window.addEventListener('appinstalled', appInstalledHandler)
 
     // Track online/offline status
     isOnline.value = navigator.onLine
 
-    window.addEventListener('online', () => {
+    onlineHandler = () => {
       isOnline.value = true
-    })
+    }
+    window.addEventListener('online', onlineHandler)
 
-    window.addEventListener('offline', () => {
+    offlineHandler = () => {
       isOnline.value = false
-    })
+    }
+    window.addEventListener('offline', offlineHandler)
+  })
+
+  onUnmounted(() => {
+    if (beforeInstallHandler) {
+      window.removeEventListener('beforeinstallprompt', beforeInstallHandler)
+    }
+    if (appInstalledHandler) {
+      window.removeEventListener('appinstalled', appInstalledHandler)
+    }
+    if (onlineHandler) {
+      window.removeEventListener('online', onlineHandler)
+    }
+    if (offlineHandler) {
+      window.removeEventListener('offline', offlineHandler)
+    }
   })
 
   return {

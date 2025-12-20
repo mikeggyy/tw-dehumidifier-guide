@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { X, Calculator, Home, Wind } from 'lucide-vue-next'
+import { formatPrice, getDisplayBrand } from '~/utils/product'
 
 const props = defineProps<{
   products: any[]
@@ -54,17 +55,6 @@ const roomTypeOptions = [
   { value: 'living', label: '客廳', icon: '🛋️', desc: '一般起居' },
   { value: 'office', label: '辦公室', icon: '💼', desc: '需要更高換氣' }
 ]
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-const getDisplayBrand = (product: any): string => {
-  const brand = product.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
-}
 
 const nextStep = () => {
   if (step.value < 2) step.value++

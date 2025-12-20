@@ -2,6 +2,7 @@
 import { ref, computed, watch } from 'vue'
 import { Search, X, TrendingUp, Clock } from 'lucide-vue-next'
 import { useProducts } from '~/composables/useProducts'
+import { formatPrice } from '~/utils/product'
 
 const props = withDefaults(defineProps<{
   modelValue: string
@@ -158,10 +159,6 @@ const clearInput = () => {
   emit('update:modelValue', '')
   inputRef.value?.focus()
 }
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
 </script>
 
 <template>
@@ -171,6 +168,7 @@ const formatPrice = (price: number): string => {
       <Search
         :size="18"
         class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+        aria-hidden="true"
       />
       <input
         ref="inputRef"
@@ -178,6 +176,12 @@ const formatPrice = (price: number): string => {
         :value="modelValue"
         :placeholder="placeholder"
         class="w-full pl-10 pr-10 py-2.5 bg-gray-100 dark:bg-gray-800 border-0 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:bg-white dark:focus:bg-gray-700 transition-all"
+        role="combobox"
+        aria-autocomplete="list"
+        :aria-expanded="showDropdown"
+        aria-haspopup="listbox"
+        aria-controls="search-listbox"
+        :aria-activedescendant="selectedIndex >= 0 ? `search-option-${selectedIndex}` : undefined"
         @input="handleInput"
         @focus="handleFocus"
         @blur="handleBlur"
@@ -185,10 +189,12 @@ const formatPrice = (price: number): string => {
       />
       <button
         v-if="modelValue"
+        type="button"
         class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+        aria-label="清除搜尋"
         @mousedown.prevent="clearInput"
       >
-        <X :size="18" />
+        <X :size="18" aria-hidden="true" />
       </button>
     </div>
 
@@ -196,14 +202,20 @@ const formatPrice = (price: number): string => {
     <Transition name="dropdown">
       <div
         v-if="showDropdown"
+        id="search-listbox"
+        role="listbox"
+        aria-label="搜尋建議"
         class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50"
       >
         <!-- Product suggestions -->
         <div v-if="suggestions.length > 0" class="p-2">
-          <p class="text-xs text-gray-400 px-2 mb-2">商品建議</p>
+          <p id="suggestions-label" class="text-xs text-gray-400 px-2 mb-2">商品建議</p>
           <button
             v-for="(product, index) in suggestions"
+            :id="`search-option-${index}`"
             :key="product.id"
+            role="option"
+            :aria-selected="selectedIndex === index"
             class="w-full flex items-center gap-3 p-2 rounded-lg transition-colors"
             :class="[
               selectedIndex === index
@@ -216,6 +228,8 @@ const formatPrice = (price: number): string => {
               :src="product.image_url"
               :alt="product.name"
               class="w-10 h-10 object-cover rounded-lg bg-gray-100"
+              loading="lazy"
+              decoding="async"
             />
             <div class="flex-1 text-left min-w-0">
               <p class="text-sm font-medium text-gray-900 dark:text-white truncate">

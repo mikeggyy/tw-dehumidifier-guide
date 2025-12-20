@@ -1,5 +1,114 @@
 import type { Dehumidifier, Product } from '~/types'
 
+// ============================================================
+// 聯盟連結追蹤
+// ============================================================
+
+/**
+ * 產生帶有追蹤參數的聯盟連結
+ * @param url 原始聯盟連結
+ * @param source 點擊來源 (product_card, comparison, detail_page 等)
+ * @param productId 商品 ID (用於追蹤)
+ */
+export function getTrackedAffiliateUrl(
+  url: string,
+  source: string = 'product_card',
+  productId?: string
+): string {
+  if (!url) return ''
+
+  const params = new URLSearchParams({
+    utm_source: 'bibikan',
+    utm_medium: 'comparison',
+    utm_campaign: source,
+  })
+
+  if (productId) {
+    params.append('utm_content', productId)
+  }
+
+  const separator = url.includes('?') ? '&' : '?'
+  return `${url}${separator}${params.toString()}`
+}
+
+// ============================================================
+// 價格更新時間
+// ============================================================
+
+/**
+ * 格式化更新時間為相對時間 (幾小時前、幾天前)
+ */
+export function formatRelativeTime(dateString: string | undefined): string | null {
+  if (!dateString) return null
+
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+
+  if (diffHours < 1) return '剛剛更新'
+  if (diffHours < 24) return `${diffHours} 小時前更新`
+  if (diffDays === 1) return '昨天更新'
+  if (diffDays < 7) return `${diffDays} 天前更新`
+
+  // 超過一週顯示日期
+  return `${date.getMonth() + 1}/${date.getDate()} 更新`
+}
+
+/**
+ * 格式化更新時間為日期格式
+ */
+export function formatUpdateDate(dateString: string | undefined): string | null {
+  if (!dateString) return null
+
+  const date = new Date(dateString)
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  return `${year}/${month}/${day}`
+}
+
+// ============================================================
+// CTA 文字優化
+// ============================================================
+
+/**
+ * 根據折扣程度產生 CTA 文字
+ * @param discountPercent 折扣百分比
+ * @param savingsAmount 省下金額
+ */
+export function getOptimizedCtaText(
+  discountPercent: number | null,
+  savingsAmount: number | null
+): { text: string; urgent: boolean } {
+  // 高折扣 (>15%) - 緊急感
+  if (discountPercent && discountPercent >= 15) {
+    return { text: '限時搶購', urgent: true }
+  }
+
+  // 中折扣 (8-15%) 或省 $500 以上
+  if ((discountPercent && discountPercent >= 8) || (savingsAmount && savingsAmount >= 500)) {
+    if (savingsAmount && savingsAmount >= 1000) {
+      return { text: `現省 $${formatPrice(savingsAmount)}`, urgent: true }
+    }
+    return { text: '限時優惠', urgent: false }
+  }
+
+  // 小折扣 (5-8%)
+  if (discountPercent && discountPercent >= 5) {
+    return { text: '查看優惠', urgent: false }
+  }
+
+  // 無折扣
+  return { text: '前往購買', urgent: false }
+}
+
+// ============================================================
+// 品牌與顯示
+// ============================================================
+
 /**
  * 從商品中取得顯示用品牌名稱
  * 如果品牌是 "Other"，嘗試從商品名稱的【】中提取

@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { X, ChevronRight } from 'lucide-vue-next'
 import type { GenericFilterState } from '~/types'
+import { formatPrice } from '~/utils/product'
 
 const props = defineProps<{
   filters: GenericFilterState
@@ -26,10 +27,6 @@ const showAllBrands = ref(false)
 const getBrandCount = (brand: string): number => {
   // This will be handled by parent
   return 0
-}
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
 }
 </script>
 

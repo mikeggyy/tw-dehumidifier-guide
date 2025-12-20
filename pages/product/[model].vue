@@ -18,6 +18,14 @@ import {
 } from 'lucide-vue-next'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useRoute, useHead, createError } from '#imports'
+import {
+  formatPrice,
+  getDisplayBrand,
+  getDiscountPercent,
+  getEnergyLabel,
+  getEnergyColor,
+} from '~/utils/product'
+import SiteHeader from '~/components/SiteHeader.vue'
 
 // SSR 資料預載
 await useProductsSSR()
@@ -40,27 +48,9 @@ if (!product.value && isReady.value) {
   })
 }
 
-// Format price
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-// Energy label text
-const energyLabel = computed(() => {
-  const labels = ['', '一級能效', '二級能效', '三級能效', '四級能效', '五級能效']
-  return labels[product.value?.energy_efficiency || 1]
-})
-
-const energyColor = computed(() => {
-  const colors: Record<number, string> = {
-    1: 'bg-green-500',
-    2: 'bg-lime-500',
-    3: 'bg-yellow-500',
-    4: 'bg-orange-500',
-    5: 'bg-red-500'
-  }
-  return colors[product.value?.energy_efficiency || 1] || 'bg-gray-500'
-})
+// 使用集中的 utility 函數
+const energyLabel = computed(() => getEnergyLabel(product.value?.energy_efficiency))
+const energyColor = computed(() => getEnergyColor(product.value?.energy_efficiency))
 
 // Recommended room size based on capacity (rough estimate)
 const recommendedArea = computed(() => {
@@ -83,20 +73,13 @@ const relatedProducts = computed(() => {
 // Display brand - hide "Other", try to extract from name
 const displayBrand = computed(() => {
   if (!product.value) return ''
-  const brand = product.value.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.value.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
+  return getDisplayBrand(product.value)
 })
 
 // 折扣百分比
 const discountPercent = computed(() => {
   if (!product.value) return null
-  const original = product.value.original_price
-  const current = product.value.price
-  if (!original || original <= current) return null
-  const discount = Math.round((1 - current / original) * 100)
-  return discount >= 5 ? discount : null
+  return getDiscountPercent(product.value)
 })
 
 // 分享功能
@@ -248,26 +231,9 @@ const roomSuitability = computed(() => {
     <p class="text-gray-500">載入中...</p>
   </div>
 
-  <div v-else-if="product" class="min-h-screen bg-gray-50">
+  <div v-else-if="product" class="min-h-screen bg-gray-50 dark:bg-gray-900">
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <NuxtLink to="/" class="flex items-center gap-2">
-            <img src="/favicon.svg" alt="比比看" class="w-8 h-8" />
-            <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">比比看</span>
-            <span class="text-sm text-gray-500 hidden sm:inline">除濕機</span>
-          </NuxtLink>
-          <button
-            class="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-            @click="shareProduct"
-          >
-            <Share2 :size="18" />
-            <span class="hidden sm:inline text-sm">分享</span>
-          </button>
-        </div>
-      </div>
-    </header>
+    <SiteHeader />
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Breadcrumb -->

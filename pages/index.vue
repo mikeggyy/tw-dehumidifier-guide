@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, computed, watch, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
 import {
   Filter,
   SlidersHorizontal,
@@ -23,12 +23,16 @@ import {
 import type { FilterState, SortOption, Dehumidifier } from '~/types'
 import ProductCard from '~/components/ProductCard.vue'
 import ProductCardSkeleton from '~/components/ProductCardSkeleton.vue'
-import RoomCalculator from '~/components/RoomCalculator.vue'
-import CompareModal from '~/components/CompareModal.vue'
-import ProductFinder from '~/components/ProductFinder.vue'
 import OnboardingTour from '~/components/OnboardingTour.vue'
 import SearchAutocomplete from '~/components/SearchAutocomplete.vue'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
+import { formatPrice, getDisplayBrand } from '~/utils/product'
+import SiteHeader from '~/components/SiteHeader.vue'
+
+// 動態載入 Modal 組件（減少初始 bundle 大小）
+const RoomCalculator = defineAsyncComponent(() => import('~/components/RoomCalculator.vue'))
+const CompareModal = defineAsyncComponent(() => import('~/components/CompareModal.vue'))
+const ProductFinder = defineAsyncComponent(() => import('~/components/ProductFinder.vue'))
 
 // SSR 資料預載 - 在伺服器端就先載入資料
 await useProductsSSR()
@@ -308,19 +312,6 @@ const searchBrand = (brand: string) => {
   searchQuery.value = brand
 }
 
-// Format price for display
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-// Get display brand - hide "Other", try to extract from name
-const getDisplayBrand = (product: Dehumidifier): string => {
-  const brand = product.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
-}
-
 // Sort options
 const sortOptions = [
   { value: 'popularity', label: '熱門推薦' },
@@ -412,18 +403,9 @@ const categories = computed(() => [
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <NuxtLink to="/" class="flex items-center gap-2">
-            <img src="/favicon.svg" alt="比比看" class="w-8 h-8" />
-            <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">比比看</span>
-          </NuxtLink>
-        </div>
-      </div>
-    </header>
+    <SiteHeader />
 
     <!-- Hero Section with Category Navigation -->
     <section class="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white">
@@ -780,28 +762,32 @@ const categories = computed(() => [
           </div>
 
           <!-- 分頁控制 -->
-          <div
+          <nav
             v-if="totalPages > 1"
             class="flex items-center justify-center gap-2 mt-8"
+            role="navigation"
+            aria-label="分頁導覽"
           >
             <!-- 上一頁 -->
             <button
               class="p-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               :disabled="currentPage === 1"
+              aria-label="上一頁"
               @click="goToPage(currentPage - 1)"
             >
-              <ChevronLeft :size="20" class="text-gray-600" />
+              <ChevronLeft :size="20" class="text-gray-600" aria-hidden="true" />
             </button>
 
             <!-- 第一頁 + 省略號 -->
             <template v-if="pageNumbers[0] > 1">
               <button
                 class="w-10 h-10 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium"
+                aria-label="第 1 頁"
                 @click="goToPage(1)"
               >
                 1
               </button>
-              <span v-if="pageNumbers[0] > 2" class="text-gray-400">...</span>
+              <span v-if="pageNumbers[0] > 2" class="text-gray-400" aria-hidden="true">...</span>
             </template>
 
             <!-- 頁碼按鈕 -->
@@ -814,6 +800,8 @@ const categories = computed(() => [
                   ? 'bg-blue-600 border-blue-600 text-white'
                   : 'border-gray-200 bg-white hover:bg-gray-50 text-gray-700'
               ]"
+              :aria-label="`第 ${page} 頁`"
+              :aria-current="page === currentPage ? 'page' : undefined"
               @click="goToPage(page)"
             >
               {{ page }}
@@ -821,9 +809,10 @@ const categories = computed(() => [
 
             <!-- 省略號 + 最後一頁 -->
             <template v-if="pageNumbers[pageNumbers.length - 1] < totalPages">
-              <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="text-gray-400">...</span>
+              <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="text-gray-400" aria-hidden="true">...</span>
               <button
                 class="w-10 h-10 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium"
+                :aria-label="`第 ${totalPages} 頁`"
                 @click="goToPage(totalPages)"
               >
                 {{ totalPages }}
@@ -834,11 +823,12 @@ const categories = computed(() => [
             <button
               class="p-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               :disabled="currentPage === totalPages"
+              aria-label="下一頁"
               @click="goToPage(currentPage + 1)"
             >
-              <ChevronRight :size="20" class="text-gray-600" />
+              <ChevronRight :size="20" class="text-gray-600" aria-hidden="true" />
             </button>
-          </div>
+          </nav>
 
           <!-- 頁面資訊 -->
           <div v-if="totalPages > 1" class="text-center text-sm text-gray-500 mt-4">

@@ -1,4 +1,9 @@
-# loveStory 專案根目錄 .gitignore
+# tw-dehumidifier-guide .gitignore
+
+# Nuxt build outputs
+.nuxt/
+.output/
+dist
 
 # Dependencies
 node_modules/
@@ -44,9 +49,13 @@ temp/
 nul
 NUL
 srctemp.txt
+output/
+build.log
+
+# Claude Code
+.claude/
 
 # Build outputs
-dist/
 build/
 .cache/
 _env_backup/

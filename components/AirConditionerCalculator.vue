@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { X, Calculator, Snowflake, Sun, Building2, ThermometerSun, Info } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
+import { formatPrice } from '~/utils/product'
 
 const props = defineProps<{
   products: readonly Dehumidifier[]
@@ -89,10 +90,6 @@ const matchingProducts = computed(() => {
     })
     .slice(0, 4)
 })
-
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
 
 const getProductSlug = (product: any) => {
   if (product.slug) return product.slug

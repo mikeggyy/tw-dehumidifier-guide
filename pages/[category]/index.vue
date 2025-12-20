@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, computed, watch, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
 import {
   Filter,
   SlidersHorizontal,
@@ -22,18 +22,21 @@ import type { GenericFilterState, SortOption, Product } from '~/types'
 import ProductCard from '~/components/ProductCard.vue'
 import ProductCardSkeleton from '~/components/ProductCardSkeleton.vue'
 import CompareModal from '~/components/CompareModal.vue'
-import RoomCalculator from '~/components/RoomCalculator.vue'
-import ProductFinder from '~/components/ProductFinder.vue'
-import AirPurifierCalculator from '~/components/AirPurifierCalculator.vue'
-import AirPurifierFinder from '~/components/AirPurifierFinder.vue'
-import AirConditionerCalculator from '~/components/AirConditionerCalculator.vue'
-import AirConditionerFinder from '~/components/AirConditionerFinder.vue'
-import HeaterFinder from '~/components/HeaterFinder.vue'
-import FanFinder from '~/components/FanFinder.vue'
 import SiteHeader from '~/components/category/SiteHeader.vue'
 import SiteFooter from '~/components/category/SiteFooter.vue'
 import FloatingCompareBar from '~/components/category/FloatingCompareBar.vue'
 import Pagination from '~/components/category/Pagination.vue'
+import { formatPrice, getDisplayBrand } from '~/utils/product'
+
+// Lazy load Calculator and Finder components (only loaded when modal opens)
+const RoomCalculator = defineAsyncComponent(() => import('~/components/RoomCalculator.vue'))
+const ProductFinder = defineAsyncComponent(() => import('~/components/ProductFinder.vue'))
+const AirPurifierCalculator = defineAsyncComponent(() => import('~/components/AirPurifierCalculator.vue'))
+const AirPurifierFinder = defineAsyncComponent(() => import('~/components/AirPurifierFinder.vue'))
+const AirConditionerCalculator = defineAsyncComponent(() => import('~/components/AirConditionerCalculator.vue'))
+const AirConditionerFinder = defineAsyncComponent(() => import('~/components/AirConditionerFinder.vue'))
+const HeaterFinder = defineAsyncComponent(() => import('~/components/HeaterFinder.vue'))
+const FanFinder = defineAsyncComponent(() => import('~/components/FanFinder.vue'))
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
 import { useUrlFilters } from '~/composables/useUrlFilters'
@@ -408,17 +411,6 @@ const searchBrand = (brand: string) => {
   searchQuery.value = brand
 }
 
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-const getDisplayBrand = (product: any): string => {
-  const brand = product.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
-}
-
 // 品類圖示對應
 const categoryIcons: Record<string, any> = {
   dehumidifier: Droplets,
@@ -432,7 +424,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
     <!-- Header -->
     <SiteHeader
       :category-slug="categorySlug"

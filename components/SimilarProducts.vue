@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { ChevronRight, Sparkles } from 'lucide-vue-next'
 import { useProducts } from '~/composables/useProducts'
+import { formatPrice } from '~/utils/product'
 
 const props = defineProps<{
   currentProduct: any
@@ -36,10 +37,6 @@ const similarProducts = computed(() => {
     })
     .slice(0, props.limit || 4)
 })
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
 </script>
 
 <template>

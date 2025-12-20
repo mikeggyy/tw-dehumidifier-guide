@@ -6,6 +6,9 @@ import type { Dehumidifier, FilterState, SortOption } from '~/types'
 const DEFAULT_SUPABASE_URL = 'https://tqyefifafabyudtyjfam.supabase.co'
 const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD5'
 
+// 請求超時設定（毫秒）
+const REQUEST_TIMEOUT = 10000 // 10 秒
+
 // Helper function to get Supabase config
 function getSupabaseConfig() {
   try {
@@ -20,6 +23,39 @@ function getSupabaseConfig() {
       url: DEFAULT_SUPABASE_URL,
       anonKey: DEFAULT_SUPABASE_ANON_KEY,
     }
+  }
+}
+
+// Fetch with timeout using AbortController
+async function fetchWithTimeout<T>(
+  url: string,
+  options: RequestInit,
+  timeout: number = REQUEST_TIMEOUT
+): Promise<T> {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeout)
+
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    })
+
+    clearTimeout(timeoutId)
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    return await response.json() as T
+  } catch (error) {
+    clearTimeout(timeoutId)
+
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Request timeout after ${timeout}ms`)
+    }
+
+    throw error
   }
 }
 
@@ -132,7 +168,7 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
   const { url, anonKey } = getSupabaseConfig()
 
   try {
-    const response = await fetch(
+    const data = await fetchWithTimeout<Dehumidifier[]>(
       `${url}/rest/v1/products?in_stock=eq.true`,
       {
         headers: {
@@ -141,12 +177,6 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
         },
       }
     )
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-
-    const data = await response.json() as Dehumidifier[]
     // 補充 Supabase 中缺少的品類資料
     const allProducts = await supplementMissingCategories(data)
     globalProducts.value = allProducts

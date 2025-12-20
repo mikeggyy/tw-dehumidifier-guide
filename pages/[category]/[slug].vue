@@ -24,14 +24,17 @@ import {
   Sofa,
   CircleDollarSign,
   Lightbulb,
-  Moon,
-  Sun,
+  ThumbsUp,
+  ThumbsDown,
+  HelpCircle,
+  Ruler,
+  ChevronDown,
+  X as XIcon,
 } from 'lucide-vue-next'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
 import { useRoute, useHead, createError, useRouter, navigateTo } from '#imports'
 import { useToast } from '~/composables/useToast'
-import { useDarkMode } from '~/composables/useDarkMode'
 import { useSwipe } from '~/composables/useSwipe'
 import { useRecentlyViewed } from '~/composables/useRecentlyViewed'
 import { useProductDetailShortcuts } from '~/composables/useKeyboardShortcuts'
@@ -40,7 +43,17 @@ import SocialShare from '~/components/SocialShare.vue'
 import RecentlyViewed from '~/components/RecentlyViewed.vue'
 import ImageZoom from '~/components/ImageZoom.vue'
 import SimilarProducts from '~/components/SimilarProducts.vue'
+import SiteHeader from '~/components/SiteHeader.vue'
 import { useStructuredData } from '~/composables/useStructuredData'
+import {
+  formatPrice,
+  getDiscountPercent,
+  getSavingsAmount,
+  getDisplayBrand,
+  getTrackedAffiliateUrl,
+  getOptimizedCtaText,
+  formatRelativeTime,
+} from '~/utils/product'
 
 // SSR 資料預載
 await useProductsSSR()
@@ -48,7 +61,6 @@ await useProductsSSR()
 const route = useRoute()
 const router = useRouter()
 const { success } = useToast()
-const { isDark, toggle: toggleDarkMode } = useDarkMode()
 
 const categorySlug = computed(() => route.params.category as string)
 const productSlug = computed(() => route.params.slug as string)
@@ -122,36 +134,35 @@ if (!product.value) {
   })
 }
 
-// 格式化價格
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-// 折扣百分比
+// 使用 utils/product.ts 的函數
 const discountPercent = computed(() => {
   if (!product.value) return null
-  const original = product.value.original_price
-  const current = product.value.price
-  if (!original || original <= current) return null
-  const discount = Math.round((1 - current / original) * 100)
-  return discount >= 5 ? discount : null
+  return getDiscountPercent(product.value)
 })
 
-// 省多少錢
 const savingsAmount = computed(() => {
   if (!product.value) return null
-  const original = product.value.original_price
-  if (!original || original <= product.value.price) return null
-  return original - product.value.price
+  return getSavingsAmount(product.value)
 })
 
-// Display brand
 const displayBrand = computed(() => {
   if (!product.value) return ''
-  const brand = product.value.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.value.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
+  return getDisplayBrand(product.value)
+})
+
+// Tracked affiliate URL with UTM parameters
+const trackedAffiliateUrl = computed(() => {
+  if (!product.value) return ''
+  return getTrackedAffiliateUrl(product.value.affiliate_url, 'detail_page', product.value.id)
+})
+
+// CTA text optimized for conversion
+const ctaInfo = computed(() => getOptimizedCtaText(discountPercent.value, savingsAmount.value))
+
+// Price update time
+const priceUpdateTime = computed(() => {
+  const p = product.value as any
+  return formatRelativeTime(p?.updated_at)
 })
 
 // 分享功能
@@ -509,6 +520,265 @@ const airChangeRate = computed(() => {
     quality: changesPerHour >= 5 ? '優秀' : changesPerHour >= 3 ? '良好' : '普通'
   }
 })
+
+// ============ 優缺點分析 ============
+const prosAndCons = computed(() => {
+  if (!product.value) return { pros: [], cons: [] }
+
+  const p = product.value as any
+  const pros: string[] = []
+  const cons: string[] = []
+
+  if (categorySlug.value === 'dehumidifier') {
+    // 優點分析
+    if (p.energy_efficiency === 1) pros.push('一級能效，省電環保')
+    else if (p.energy_efficiency === 2) pros.push('二級能效，節能表現佳')
+
+    if (p.daily_capacity >= 16) pros.push('大除濕量，適合大坪數')
+    else if (p.daily_capacity >= 12) pros.push('中大除濕量，多數空間適用')
+
+    if (p.noise_level && p.noise_level <= 38) pros.push('超靜音設計，適合臥室')
+    else if (p.noise_level && p.noise_level <= 42) pros.push('低噪音運轉')
+
+    if (p.tank_capacity >= 5) pros.push('大容量水箱，減少倒水次數')
+    else if (p.tank_capacity >= 4) pros.push('水箱容量適中')
+
+    if (discountPercent.value && discountPercent.value >= 15) pros.push('目前折扣優惠大')
+
+    // 缺點/注意事項
+    if (p.energy_efficiency && p.energy_efficiency >= 4) cons.push('能源效率較低，長期電費較高')
+
+    if (p.noise_level && p.noise_level >= 50) cons.push('運轉聲音較大')
+    else if (p.noise_level && p.noise_level >= 45) cons.push('噪音值中等，睡眠時可能受影響')
+
+    if (p.daily_capacity && p.daily_capacity < 8) cons.push('除濕量較小，適合小空間')
+
+    if (p.tank_capacity && p.tank_capacity < 3) cons.push('水箱較小，需頻繁倒水')
+
+    if (!p.features || p.features.length === 0) cons.push('功能較基本')
+
+  } else if (categorySlug.value === 'air-purifier') {
+    // 空氣清淨機優缺點
+    if (cadrValue.value && cadrValue.value >= 500) pros.push('超高 CADR 值，淨化效率極佳')
+    else if (cadrValue.value && cadrValue.value >= 350) pros.push('高效淨化能力')
+
+    if (filterType.value?.toUpperCase().includes('H13')) pros.push('H13 真 HEPA 濾網，過濾 99.97% 微粒')
+    else if (filterType.value?.toUpperCase().includes('HEPA')) pros.push('HEPA 等級濾網')
+
+    if (coverageArea.value && coverageArea.value >= 15) pros.push('適用大坪數空間')
+
+    if (discountPercent.value && discountPercent.value >= 15) pros.push('目前折扣優惠大')
+
+    // 缺點
+    if (cadrValue.value && cadrValue.value < 200) cons.push('CADR 值較低，適合小空間')
+    if (coverageArea.value && coverageArea.value < 8) cons.push('適用坪數較小')
+
+  } else if (categorySlug.value === 'air-conditioner') {
+    // 冷氣優缺點
+    const cspf = p.specs?.cspf ?? p.cspf
+    const btu = p.specs?.cooling_capacity ?? p.cooling_capacity
+
+    if (cspf && cspf >= 6) pros.push('高能效比，省電效果佳')
+    if (btu && btu >= 10000) pros.push('大冷房能力，快速降溫')
+    if (p.energy_efficiency === 1) pros.push('一級能效，最省電')
+
+    if (cspf && cspf < 4.5) cons.push('能效比較低，長期電費較高')
+
+  } else if (categorySlug.value === 'fan') {
+    // 電風扇優缺點
+    const dcMotor = p.specs?.motor_type === 'DC' || p.name?.includes('DC')
+    if (dcMotor) pros.push('DC 直流馬達，省電靜音')
+    if (p.specs?.wind_modes >= 10) pros.push('多段風速調節')
+    if (p.specs?.remote_control) pros.push('附遙控器，操作方便')
+
+    if (!dcMotor) cons.push('AC 馬達，耗電量較高')
+  }
+
+  // 通用
+  if (pros.length === 0) pros.push('價格實惠', '品牌信賴')
+  if (cons.length === 0) cons.push('建議比較多款後決定')
+
+  return { pros: pros.slice(0, 5), cons: cons.slice(0, 3) }
+})
+
+// ============ 常見問答 FAQ ============
+const expandedFaq = ref<number | null>(null)
+
+const productFAQ = computed(() => {
+  if (!product.value) return []
+
+  const p = product.value as any
+  const faqs: { question: string; answer: string }[] = []
+
+  if (categorySlug.value === 'dehumidifier') {
+    faqs.push({
+      question: '這款除濕機適合幾坪的空間？',
+      answer: p.daily_capacity >= 16
+        ? `日除濕量 ${p.daily_capacity}L，建議適用於 12-20 坪的空間，如客廳或整層住家。`
+        : p.daily_capacity >= 10
+        ? `日除濕量 ${p.daily_capacity}L，建議適用於 6-12 坪的空間，如臥室或小客廳。`
+        : `日除濕量 ${p.daily_capacity}L，建議適用於 6 坪以下的小空間，如衣帽間或浴室。`
+    })
+
+    faqs.push({
+      question: '水箱多久需要倒一次？',
+      answer: p.tank_capacity
+        ? `水箱容量 ${p.tank_capacity}L，以日除濕量 ${p.daily_capacity || 10}L 計算，約 ${Math.round((p.tank_capacity / (p.daily_capacity || 10)) * 24)} 小時需要倒一次。建議連接排水管可 24 小時連續除濕。`
+        : '建議連接排水管以實現 24 小時連續除濕，免去倒水麻煩。'
+    })
+
+    faqs.push({
+      question: '運轉時會很吵嗎？可以放臥室嗎？',
+      answer: p.noise_level
+        ? p.noise_level <= 38
+          ? `噪音值 ${p.noise_level}dB，非常安靜，適合放在臥室使用。`
+          : p.noise_level <= 45
+          ? `噪音值 ${p.noise_level}dB，運轉聲音適中，建議睡眠時使用靜音模式。`
+          : `噪音值 ${p.noise_level}dB，運轉聲較明顯，建議放在客廳等開放空間。`
+        : '建議選購有靜音模式的機型，夜間使用更舒適。'
+    })
+
+    faqs.push({
+      question: '這款除濕機省電嗎？',
+      answer: p.energy_efficiency === 1
+        ? '一級能效認證，是市面上最省電的等級，長期使用電費更經濟。'
+        : p.energy_efficiency === 2
+        ? '二級能效，節能表現不錯，日常使用電費合理。'
+        : p.energy_efficiency
+        ? `${p.energy_efficiency} 級能效，建議選購一、二級能效機型更省電。`
+        : '購買前請確認能效等級，一、二級能效最省電。'
+    })
+
+  } else if (categorySlug.value === 'air-purifier') {
+    faqs.push({
+      question: '這款清淨機適合幾坪的空間？',
+      answer: coverageArea.value
+        ? `適用坪數約 ${coverageArea.value} 坪。建議選購適用坪數大於實際空間的機型，淨化效果更好。`
+        : '請參考商品規格的適用坪數，建議選購大於實際空間的機型。'
+    })
+
+    faqs.push({
+      question: '濾網多久需要更換？費用大概多少？',
+      answer: '一般 HEPA 濾網建議每 6-12 個月更換一次，視使用環境而定。濾網費用約 NT$ 500-2,000 不等，建議購買前確認耗材價格。'
+    })
+
+    faqs.push({
+      question: 'CADR 值是什麼意思？',
+      answer: cadrValue.value
+        ? `CADR (潔淨空氣輸出率) 表示每小時能淨化的空氣量。本機 CADR 值為 ${cadrValue.value} m³/h，${cadrValue.value >= 400 ? '屬於高效淨化等級' : cadrValue.value >= 250 ? '屬於中等淨化能力' : '適合小空間使用'}。`
+        : 'CADR 值越高，淨化能力越強。建議選擇 CADR 值為房間體積 5 倍以上的機型。'
+    })
+
+    faqs.push({
+      question: '可以過濾 PM2.5 和甲醛嗎？',
+      answer: filterType.value?.toUpperCase().includes('HEPA')
+        ? 'HEPA 濾網可有效過濾 99.9% 以上的 PM2.5 微粒。如需去除甲醛，建議選購含活性碳濾網的機型。'
+        : '請確認是否配備 HEPA 等級濾網，才能有效過濾 PM2.5。'
+    })
+
+  } else if (categorySlug.value === 'air-conditioner') {
+    faqs.push({
+      question: '這款冷氣適合幾坪的空間？',
+      answer: '建議根據 BTU 值選擇：1 坪約需 450-550 BTU。請參考商品規格確認適用坪數。'
+    })
+
+    faqs.push({
+      question: '變頻冷氣真的比較省電嗎？',
+      answer: '是的，變頻冷氣可依溫度自動調節壓縮機轉速，長時間使用比定頻省電 30-50%。建議選購一級能效機型最省電。'
+    })
+
+    faqs.push({
+      question: '安裝費用大約多少？',
+      answer: '標準安裝通常包含在購買價格中。特殊安裝（如高樓層、銅管加長）可能額外收費 NT$ 1,000-5,000。建議購買前確認安裝條件。'
+    })
+
+  } else if (categorySlug.value === 'fan') {
+    faqs.push({
+      question: 'DC 和 AC 馬達有什麼差別？',
+      answer: 'DC 直流馬達比 AC 交流馬達省電約 40-70%，運轉更安靜，價格較高但長期使用更划算。'
+    })
+
+    faqs.push({
+      question: '電風扇一個月電費大約多少？',
+      answer: 'DC 電風扇每日使用 8 小時，月電費約 NT$ 20-40。AC 電風扇月電費約 NT$ 50-100。'
+    })
+  }
+
+  // 通用問題
+  faqs.push({
+    question: '這個價格包含運費嗎？',
+    answer: 'MOMO 購物通常滿額免運，大型家電多數免運費。實際運費請以結帳頁面為準。'
+  })
+
+  return faqs
+})
+
+// ============ 尺寸視覺化 ============
+const productDimensions = computed(() => {
+  if (!product.value) return null
+
+  const p = product.value as any
+
+  // 嘗試從不同欄位取得尺寸資訊
+  const dimensions = p.specs?.dimensions || p.dimensions
+  const weight = p.specs?.weight || p.weight
+
+  // 根據品類給予預估尺寸（如果沒有實際資料）
+  let width = 0, height = 0, depth = 0, productWeight = 0
+  let sizeCategory = ''
+
+  if (categorySlug.value === 'dehumidifier') {
+    const capacity = p.daily_capacity || 10
+    if (capacity >= 16) {
+      width = 38; height = 57; depth = 24; productWeight = 14
+      sizeCategory = '大型'
+    } else if (capacity >= 10) {
+      width = 35; height = 50; depth = 22; productWeight = 11
+      sizeCategory = '中型'
+    } else {
+      width = 30; height = 45; depth = 20; productWeight = 8
+      sizeCategory = '小型'
+    }
+  } else if (categorySlug.value === 'air-purifier') {
+    const coverage = coverageArea.value || 10
+    if (coverage >= 15) {
+      width = 40; height = 65; depth = 25; productWeight = 10
+      sizeCategory = '大型'
+    } else if (coverage >= 8) {
+      width = 30; height = 50; depth = 20; productWeight = 7
+      sizeCategory = '中型'
+    } else {
+      width = 25; height = 40; depth = 18; productWeight = 5
+      sizeCategory = '小型'
+    }
+  } else if (categorySlug.value === 'fan') {
+    width = 35; height = 90; depth = 35; productWeight = 4
+    sizeCategory = '標準'
+  } else {
+    return null
+  }
+
+  // 計算相對大小（以 A4 紙為參考：21 x 29.7 cm）
+  const a4Width = 21
+  const a4Height = 29.7
+
+  return {
+    width,
+    height,
+    depth,
+    weight: productWeight,
+    sizeCategory,
+    // 相對於 A4 紙的倍數
+    widthRatio: (width / a4Width).toFixed(1),
+    heightRatio: (height / a4Height).toFixed(1),
+    // 比較物件
+    comparisons: [
+      { name: 'A4 紙寬', value: a4Width, unit: 'cm' },
+      { name: '礦泉水瓶', value: 22, unit: 'cm' },
+      { name: '一般椅子高', value: 45, unit: 'cm' },
+    ]
+  }
+})
 </script>
 
 <template>
@@ -520,40 +790,11 @@ const airChangeRate = computed(() => {
   </div>
 
   <div v-else ref="pageRef" class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <!-- Header -->
+    <SiteHeader />
+
     <!-- Scroll Progress -->
     <ScrollProgress />
-
-    <!-- Header -->
-    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-1 z-40">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <NuxtLink to="/" class="flex items-center gap-2">
-            <img src="/favicon.svg" alt="比比看" class="w-8 h-8" />
-            <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">比比看</span>
-            <span class="text-sm text-gray-500 hidden sm:inline">{{ categoryConfig?.name }}</span>
-          </NuxtLink>
-          <div class="flex items-center gap-2">
-            <!-- Dark Mode Toggle -->
-            <button
-              class="p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              @click="toggleDarkMode"
-              :title="isDark ? '切換淺色模式' : '切換深色模式'"
-            >
-              <Sun v-if="isDark" :size="18" />
-              <Moon v-else :size="18" />
-            </button>
-            <!-- Share Button -->
-            <button
-              class="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              @click="shareProduct"
-            >
-              <Share2 :size="18" />
-              <span class="hidden sm:inline text-sm">分享</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
 
     <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
       <!-- Breadcrumb -->
@@ -600,9 +841,19 @@ const airChangeRate = computed(() => {
           <!-- Info -->
           <div class="md:w-3/5 p-6">
             <p v-if="displayBrand" class="text-gray-500 mb-1">{{ displayBrand }}</p>
-            <h1 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-              {{ product.name }}
-            </h1>
+            <div class="flex items-start justify-between gap-4 mb-4">
+              <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+                {{ product.name }}
+              </h1>
+              <button
+                class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-gray-500 dark:text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors text-sm"
+                @click="shareProduct"
+                title="分享此商品"
+              >
+                <Share2 :size="16" />
+                <span class="hidden sm:inline">分享</span>
+              </button>
+            </div>
 
             <!-- Price -->
             <div class="mb-6">
@@ -616,6 +867,11 @@ const airChangeRate = computed(() => {
               </div>
               <p v-if="savingsAmount && savingsAmount >= 500" class="text-red-500 text-sm font-medium mt-1">
                 🔥 現省 NT$ {{ formatPrice(savingsAmount) }}
+              </p>
+              <!-- Price update time -->
+              <p v-if="priceUpdateTime" class="text-xs text-gray-400 mt-2 flex items-center gap-1">
+                <span class="inline-block w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                {{ priceUpdateTime }}
               </p>
             </div>
 
@@ -658,18 +914,18 @@ const airChangeRate = computed(() => {
 
             <!-- CTA Button -->
             <a
-              :href="product.affiliate_url"
+              :href="trackedAffiliateUrl"
               target="_blank"
               rel="noopener noreferrer nofollow"
               :class="[
                 'inline-flex items-center justify-center gap-2 w-full md:w-auto px-8 py-4 font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02]',
-                savingsAmount && savingsAmount >= 500
-                  ? 'bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white'
+                ctaInfo.urgent
+                  ? 'bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white animate-pulse-cta'
                   : `bg-gradient-to-r ${categoryTheme.gradient} text-white`
               ]"
             >
               <ExternalLink :size="20" />
-              {{ savingsAmount && savingsAmount >= 500 ? `現省 $${formatPrice(savingsAmount)} - 立即搶購` : '查看優惠價' }}
+              {{ ctaInfo.urgent && savingsAmount && savingsAmount >= 1000 ? `${ctaInfo.text} - 立即搶購` : ctaInfo.text }}
             </a>
 
             <!-- Social Share -->
@@ -1046,6 +1302,181 @@ const airChangeRate = computed(() => {
           </div>
         </div>
       </div>
+
+      <!-- ============ 優缺點分析區塊 ============ -->
+      <div v-if="prosAndCons.pros.length > 0 || prosAndCons.cons.length > 0" class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+          <Star class="text-yellow-500" :size="24" />
+          優缺點分析
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- 優點 -->
+          <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-5 border border-green-100">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                <ThumbsUp :size="16" class="text-white" />
+              </div>
+              <h3 class="font-semibold text-green-800">優點</h3>
+            </div>
+            <ul class="space-y-3">
+              <li
+                v-for="(pro, index) in prosAndCons.pros"
+                :key="index"
+                class="flex items-start gap-2 animate-fade-in-up"
+                :style="{ animationDelay: `${index * 0.1}s` }"
+              >
+                <Check :size="18" class="text-green-500 flex-shrink-0 mt-0.5" />
+                <span class="text-gray-700">{{ pro }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 缺點/注意事項 -->
+          <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
+                <Info :size="16" class="text-white" />
+              </div>
+              <h3 class="font-semibold text-amber-800">注意事項</h3>
+            </div>
+            <ul class="space-y-3">
+              <li
+                v-for="(con, index) in prosAndCons.cons"
+                :key="index"
+                class="flex items-start gap-2 animate-fade-in-up"
+                :style="{ animationDelay: `${index * 0.1 + 0.2}s` }"
+              >
+                <Info :size="18" class="text-amber-500 flex-shrink-0 mt-0.5" />
+                <span class="text-gray-700">{{ con }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 結論提示 -->
+        <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
+          <p class="text-sm text-blue-800 flex items-center gap-2">
+            <Lightbulb :size="16" class="text-blue-600" />
+            <span>以上分析僅供參考，建議依個人需求和使用環境做最終決定。</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- ============ 尺寸視覺化區塊 ============ -->
+      <div v-if="productDimensions" class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+          <Ruler class="text-purple-500" :size="24" />
+          尺寸參考
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- 尺寸數據 -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <span class="text-gray-600">機身尺寸</span>
+              <span class="font-semibold text-gray-900">
+                約 {{ productDimensions.width }} × {{ productDimensions.depth }} × {{ productDimensions.height }} cm
+              </span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <span class="text-gray-600">重量</span>
+              <span class="font-semibold text-gray-900">約 {{ productDimensions.weight }} kg</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <span class="text-gray-600">體積分類</span>
+              <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                {{ productDimensions.sizeCategory }}
+              </span>
+            </div>
+          </div>
+
+          <!-- 視覺比較 -->
+          <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-5 border border-purple-100">
+            <p class="text-sm text-gray-500 mb-4">相對大小比較</p>
+
+            <!-- 高度比較條 -->
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-500 w-20">本產品</span>
+                <div class="flex-1 h-6 bg-purple-200 rounded-full overflow-hidden">
+                  <div
+                    class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full transition-all duration-1000"
+                    :style="{ width: `${Math.min((productDimensions.height / 100) * 100, 100)}%` }"
+                  />
+                </div>
+                <span class="text-sm font-medium text-gray-700 w-16 text-right">{{ productDimensions.height }}cm</span>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-500 w-20">椅子高</span>
+                <div class="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-gray-400 rounded-full" style="width: 45%" />
+                </div>
+                <span class="text-sm text-gray-500 w-16 text-right">45cm</span>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-500 w-20">A4 紙長</span>
+                <div class="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-gray-400 rounded-full" style="width: 30%" />
+                </div>
+                <span class="text-sm text-gray-500 w-16 text-right">29.7cm</span>
+              </div>
+            </div>
+
+            <!-- 占地面積提示 -->
+            <div class="mt-4 p-3 bg-white/60 rounded-lg">
+              <p class="text-xs text-gray-600">
+                📐 占地面積約 <span class="font-semibold">{{ productDimensions.width }} × {{ productDimensions.depth }}</span> cm，
+                相當於 <span class="font-semibold">{{ productDimensions.widthRatio }}</span> 張 A4 紙寬
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ 常見問答 FAQ ============ -->
+      <div v-if="productFAQ.length > 0" class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+          <HelpCircle class="text-blue-500" :size="24" />
+          常見問答
+        </h2>
+
+        <div class="space-y-3">
+          <div
+            v-for="(faq, index) in productFAQ"
+            :key="index"
+            class="border border-gray-200 rounded-xl overflow-hidden transition-all duration-300"
+            :class="expandedFaq === index ? 'shadow-md' : 'hover:border-blue-200'"
+          >
+            <button
+              class="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+              @click="expandedFaq = expandedFaq === index ? null : index"
+            >
+              <span class="font-medium text-gray-900 pr-4">{{ faq.question }}</span>
+              <ChevronDown
+                :size="20"
+                class="text-gray-400 flex-shrink-0 transition-transform duration-300"
+                :class="expandedFaq === index ? 'rotate-180' : ''"
+              />
+            </button>
+
+            <Transition name="faq">
+              <div v-if="expandedFaq === index" class="px-4 pb-4">
+                <div class="pt-2 border-t border-gray-100">
+                  <p class="text-gray-600 leading-relaxed">{{ faq.answer }}</p>
+                </div>
+              </div>
+            </Transition>
+          </div>
+        </div>
+
+        <!-- SEO 提示 -->
+        <div class="mt-6 text-center">
+          <p class="text-xs text-gray-400">還有其他問題？歡迎比較更多商品找到最適合您的選擇</p>
+        </div>
+      </div>
     </main>
 
     <!-- Sticky CTA (Mobile) -->
@@ -1056,17 +1487,17 @@ const airChangeRate = computed(() => {
           <p class="text-xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</p>
         </div>
         <a
-          :href="product.affiliate_url"
+          :href="trackedAffiliateUrl"
           target="_blank"
           rel="noopener noreferrer nofollow"
           :class="[
             'flex-1 text-center py-3 px-6 font-semibold rounded-xl shadow-md',
-            savingsAmount && savingsAmount >= 500
+            ctaInfo.urgent
               ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white'
               : `bg-gradient-to-r ${categoryTheme.gradient} text-white`
           ]"
         >
-          {{ savingsAmount && savingsAmount >= 500 ? `省$${formatPrice(savingsAmount)}` : '查看優惠' }}
+          {{ ctaInfo.text }}
         </a>
       </div>
     </div>
@@ -1141,6 +1572,20 @@ const airChangeRate = computed(() => {
 </template>
 
 <style scoped>
+/* CTA pulse animation for urgent deals */
+@keyframes pulse-cta {
+  0%, 100% {
+    box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 10px 25px -3px rgba(239, 68, 68, 0.5);
+  }
+}
+
+.animate-pulse-cta {
+  animation: pulse-cta 2s ease-in-out infinite;
+}
+
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -1216,4 +1661,39 @@ const airChangeRate = computed(() => {
 .animation-delay-300 { animation-delay: 0.3s; }
 .animation-delay-350 { animation-delay: 0.35s; }
 .animation-delay-400 { animation-delay: 0.4s; }
+
+/* FAQ Accordion Transition */
+.faq-enter-active {
+  animation: faq-expand 0.3s ease-out;
+}
+
+.faq-leave-active {
+  animation: faq-collapse 0.2s ease-in forwards;
+}
+
+@keyframes faq-expand {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+    transform: translateY(0);
+  }
+}
+
+@keyframes faq-collapse {
+  from {
+    opacity: 1;
+    max-height: 200px;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+}
 </style>

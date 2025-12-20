@@ -1,8 +1,11 @@
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 const isDark = ref(false)
 
 export const useDarkMode = () => {
+  let mediaQuery: MediaQueryList | null = null
+  let mediaQueryHandler: ((e: MediaQueryListEvent) => void) | null = null
+
   const toggle = () => {
     isDark.value = !isDark.value
   }
@@ -27,11 +30,13 @@ export const useDarkMode = () => {
     updateDOM()
 
     // Listen for system preference changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    mediaQueryHandler = (e: MediaQueryListEvent) => {
       if (localStorage.getItem('dark-mode') === null) {
         isDark.value = e.matches
       }
-    })
+    }
+    mediaQuery.addEventListener('change', mediaQueryHandler)
   }
 
   const updateDOM = () => {
@@ -54,6 +59,12 @@ export const useDarkMode = () => {
 
   onMounted(() => {
     init()
+  })
+
+  onUnmounted(() => {
+    if (mediaQuery && mediaQueryHandler) {
+      mediaQuery.removeEventListener('change', mediaQueryHandler)
+    }
   })
 
   return {

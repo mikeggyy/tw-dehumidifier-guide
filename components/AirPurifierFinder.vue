@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { X, ChevronRight, ChevronLeft, Sparkles, Wind } from 'lucide-vue-next'
+import { formatPrice, getDisplayBrand } from '~/utils/product'
 
 const props = defineProps<{
   products: any[]
@@ -191,17 +192,6 @@ const recommendedProducts = computed(() => {
 
   return filtered.slice(0, 3)
 })
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-const getDisplayBrand = (product: any): string => {
-  const brand = product.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
-}
 
 const selectAnswer = (value: string) => {
   currentQuestion.value.answer.value = value as any

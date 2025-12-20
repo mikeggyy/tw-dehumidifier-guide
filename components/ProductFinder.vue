@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { X, ChevronRight, ChevronLeft, Sparkles, Droplets } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
+import { formatPrice, getDisplayBrand } from '~/utils/product'
 
 const props = defineProps<{
   products: readonly Dehumidifier[]
@@ -179,17 +180,6 @@ const recommendedProducts = computed(() => {
   return filtered.slice(0, 3)
 })
 
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-const getDisplayBrand = (product: Dehumidifier): string => {
-  const brand = product.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
-}
-
 const selectAnswer = (value: string) => {
   currentQuestion.value.answer.value = value as any
   if (step.value < totalSteps) {
@@ -360,6 +350,8 @@ const medals = ['🥇', '🥈', '🥉']
               :src="product.image_url"
               :alt="product.name"
               class="w-16 h-16 object-cover rounded-xl flex-shrink-0 shadow-sm"
+              loading="lazy"
+              decoding="async"
             />
 
             <div class="flex-1 min-w-0">

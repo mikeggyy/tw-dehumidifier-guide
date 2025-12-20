@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { History, X, ChevronRight } from 'lucide-vue-next'
 import { useRecentlyViewed } from '~/composables/useRecentlyViewed'
+import { formatPrice } from '~/utils/product'
 
 const props = withDefaults(defineProps<{
   excludeId?: string
@@ -17,10 +18,6 @@ const displayItems = computed(() => {
     .filter(p => p.id !== props.excludeId)
     .slice(0, props.limit)
 })
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
 </script>
 
 <template>
@@ -49,6 +46,8 @@ const formatPrice = (price: number): string => {
           :src="product.image_url"
           :alt="product.name"
           class="w-14 h-14 object-cover rounded-lg bg-gray-100"
+          loading="lazy"
+          decoding="async"
         />
         <div class="flex-1 min-w-0">
           <p class="text-xs text-gray-500 dark:text-gray-400">{{ product.brand }}</p>

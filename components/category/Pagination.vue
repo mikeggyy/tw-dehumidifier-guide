@@ -39,23 +39,29 @@ const goToPage = (page: number) => {
 
 <template>
   <div v-if="totalPages > 1">
-    <div class="flex items-center justify-center gap-2 mt-8">
+    <nav
+      class="flex items-center justify-center gap-2 mt-8"
+      role="navigation"
+      aria-label="分頁導覽"
+    >
       <button
         class="p-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="currentPage === 1"
+        aria-label="上一頁"
         @click="goToPage(currentPage - 1)"
       >
-        <ChevronLeft :size="20" class="text-gray-600" />
+        <ChevronLeft :size="20" class="text-gray-600" aria-hidden="true" />
       </button>
 
       <template v-if="pageNumbers[0] > 1">
         <button
           class="w-10 h-10 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium"
+          aria-label="第 1 頁"
           @click="goToPage(1)"
         >
           1
         </button>
-        <span v-if="pageNumbers[0] > 2" class="text-gray-400">...</span>
+        <span v-if="pageNumbers[0] > 2" class="text-gray-400" aria-hidden="true">...</span>
       </template>
 
       <button
@@ -67,15 +73,18 @@ const goToPage = (page: number) => {
             ? 'bg-blue-600 border-blue-600 text-white'
             : 'border-gray-200 bg-white hover:bg-gray-50 text-gray-700'
         ]"
+        :aria-label="`第 ${page} 頁`"
+        :aria-current="page === currentPage ? 'page' : undefined"
         @click="goToPage(page)"
       >
         {{ page }}
       </button>
 
       <template v-if="pageNumbers[pageNumbers.length - 1] < totalPages">
-        <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="text-gray-400">...</span>
+        <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="text-gray-400" aria-hidden="true">...</span>
         <button
           class="w-10 h-10 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium"
+          :aria-label="`第 ${totalPages} 頁`"
           @click="goToPage(totalPages)"
         >
           {{ totalPages }}
@@ -85,13 +94,14 @@ const goToPage = (page: number) => {
       <button
         class="p-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="currentPage === totalPages"
+        aria-label="下一頁"
         @click="goToPage(currentPage + 1)"
       >
-        <ChevronRight :size="20" class="text-gray-600" />
+        <ChevronRight :size="20" class="text-gray-600" aria-hidden="true" />
       </button>
-    </div>
+    </nav>
 
-    <div class="text-center text-sm text-gray-500 mt-4">
+    <div class="text-center text-sm text-gray-500 mt-4" aria-live="polite">
       第 {{ currentPage }} 頁，共 {{ totalPages }} 頁
     </div>
   </div>

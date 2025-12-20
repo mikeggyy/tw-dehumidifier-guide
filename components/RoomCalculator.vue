@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { X, Calculator, Home, Droplets } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
+import { formatPrice, getDisplayBrand } from '~/utils/product'
 
 const props = defineProps<{
   products: readonly Dehumidifier[]
@@ -54,18 +55,6 @@ const roomTypeOptions = [
   { value: 'living', label: '客廳', icon: '🛋️', desc: '一般濕度' },
   { value: 'basement', label: '地下室/浴室', icon: '🚿', desc: '高濕度環境' }
 ]
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-// Get display brand - hide "Other", try to extract from name
-const getDisplayBrand = (product: Dehumidifier): string => {
-  const brand = product.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
-}
 
 const nextStep = () => {
   if (step.value < 2) step.value++
@@ -198,6 +187,8 @@ const applyRecommendation = () => {
                   :src="product.image_url"
                   :alt="product.name"
                   class="w-16 h-16 object-cover rounded-lg"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div class="flex-1 min-w-0">
                   <p v-if="getDisplayBrand(product)" class="text-xs text-gray-500">{{ getDisplayBrand(product) }}</p>

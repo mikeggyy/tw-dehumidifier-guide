@@ -77,22 +77,26 @@ export const useSkipLink = () => {
 // Reduced motion preference
 export const useReducedMotion = () => {
   const prefersReducedMotion = ref(false)
+  let mediaQuery: MediaQueryList | null = null
+  let handler: ((e: MediaQueryListEvent) => void) | null = null
 
   onMounted(() => {
     if (typeof window === 'undefined') return
 
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     prefersReducedMotion.value = mediaQuery.matches
 
-    const handler = (e: MediaQueryListEvent) => {
+    handler = (e: MediaQueryListEvent) => {
       prefersReducedMotion.value = e.matches
     }
 
     mediaQuery.addEventListener('change', handler)
+  })
 
-    onUnmounted(() => {
+  onUnmounted(() => {
+    if (mediaQuery && handler) {
       mediaQuery.removeEventListener('change', handler)
-    })
+    }
   })
 
   return { prefersReducedMotion }
@@ -101,22 +105,26 @@ export const useReducedMotion = () => {
 // High contrast preference
 export const useHighContrast = () => {
   const prefersHighContrast = ref(false)
+  let mediaQuery: MediaQueryList | null = null
+  let handler: ((e: MediaQueryListEvent) => void) | null = null
 
   onMounted(() => {
     if (typeof window === 'undefined') return
 
-    const mediaQuery = window.matchMedia('(prefers-contrast: more)')
+    mediaQuery = window.matchMedia('(prefers-contrast: more)')
     prefersHighContrast.value = mediaQuery.matches
 
-    const handler = (e: MediaQueryListEvent) => {
+    handler = (e: MediaQueryListEvent) => {
       prefersHighContrast.value = e.matches
     }
 
     mediaQuery.addEventListener('change', handler)
+  })
 
-    onUnmounted(() => {
+  onUnmounted(() => {
+    if (mediaQuery && handler) {
       mediaQuery.removeEventListener('change', handler)
-    })
+    }
   })
 
   return { prefersHighContrast }

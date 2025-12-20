@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { Check, X, Minus, Crown, ExternalLink } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
+import { formatPrice } from '~/utils/product'
 
 const props = defineProps<{
   products: Dehumidifier[]
@@ -11,10 +12,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   remove: [id: string]
 }>()
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
 
 // Specs to compare based on category
 const specs = computed(() => {

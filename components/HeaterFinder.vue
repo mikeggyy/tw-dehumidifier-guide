@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { X, ChevronRight, ChevronLeft, Sparkles, Flame, Zap } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
+import { formatPrice, getDisplayBrand } from '~/utils/product'
 
 const props = defineProps<{
   products: readonly Dehumidifier[]
@@ -206,17 +207,6 @@ const recommendedProducts = computed(() => {
 
   return filtered.slice(0, 3)
 })
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-const getDisplayBrand = (product: Dehumidifier): string => {
-  const brand = product.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
-}
 
 const getHeaterTypeLabel = (product: Dehumidifier): string => {
   const type = (product as any).specs?.type || ''

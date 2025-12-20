@@ -2,6 +2,14 @@
 import { computed } from 'vue'
 import { X, ExternalLink, Check, Minus, Trophy, Zap, Volume2 } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
+import {
+  formatPrice,
+  getDiscountPercent as getDiscount,
+  getValueScore as getValueScoreUtil,
+  getTrackedAffiliateUrl,
+  getOptimizedCtaText,
+  getSavingsAmount,
+} from '~/utils/product'
 
 const props = defineProps<{
   products: Dehumidifier[]
@@ -12,15 +20,7 @@ const emit = defineEmits<{
   remove: [id: string]
 }>()
 
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('zh-TW').format(price)
-}
-
-const getDiscountPercent = (product: Dehumidifier): number | null => {
-  const original = product.original_price
-  if (!original || original <= product.price) return null
-  return Math.round((1 - product.price / original) * 100)
-}
+const getDiscountPercent = (product: Dehumidifier): number | null => getDiscount(product)
 
 const getValueScoreNum = (product: Dehumidifier): number | null => {
   const capacity = product.daily_capacity ?? 0
@@ -164,6 +164,8 @@ const getDisplayBrand = (product: Dehumidifier): string => {
                     :src="product.image_url"
                     :alt="product.name"
                     class="w-20 h-20 object-cover rounded-lg mx-auto mb-2"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <p v-if="getDisplayBrand(product)" class="text-xs text-gray-500 mb-1">{{ getDisplayBrand(product) }}</p>
                   <p class="font-medium text-gray-900 text-xs line-clamp-2 leading-tight" :title="product.name">
@@ -214,12 +216,17 @@ const getDisplayBrand = (product: Dehumidifier): string => {
                 class="p-4 text-center"
               >
                 <a
-                  :href="product.affiliate_url"
+                  :href="getTrackedAffiliateUrl(product.affiliate_url, 'comparison', product.id)"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                  :class="[
+                    'inline-flex items-center gap-2 px-4 py-2 text-white text-sm font-medium rounded-lg transition-colors',
+                    getOptimizedCtaText(getDiscount(product), getSavingsAmount(product)).urgent
+                      ? 'bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600'
+                      : 'bg-blue-600 hover:bg-blue-700'
+                  ]"
                 >
-                  前往購買
+                  {{ getOptimizedCtaText(getDiscount(product), getSavingsAmount(product)).text }}
                   <ExternalLink :size="14" />
                 </a>
               </td>

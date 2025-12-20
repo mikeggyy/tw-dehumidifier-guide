@@ -9,7 +9,12 @@ import {
   Snowflake,
   Flame,
   Fan,
+  Sun,
+  Moon,
 } from 'lucide-vue-next'
+import { useDarkMode } from '~/composables/useDarkMode'
+
+const { isDark, toggle: toggleDarkMode } = useDarkMode()
 
 const props = defineProps<{
   categorySlug: string
@@ -41,9 +46,9 @@ const showCategoryDropdown = ref(false)
 </script>
 
 <template>
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+  <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
+      <div class="flex items-center justify-between h-14">
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center gap-2">
           <img src="/favicon.svg" alt="比比看" class="w-8 h-8" />
@@ -54,16 +59,16 @@ const showCategoryDropdown = ref(false)
         <div class="hidden sm:flex items-center gap-1">
           <NuxtLink
             to="/"
-            class="flex items-center gap-1 px-3 py-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            class="flex items-center gap-1 px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
           >
             <Home :size="16" />
             <span class="text-sm">全部品類</span>
           </NuxtLink>
-          <ChevronRight :size="16" class="text-gray-300" />
+          <ChevronRight :size="16" class="text-gray-300 dark:text-gray-600" />
           <!-- Current Category Dropdown -->
           <div class="relative">
             <button
-              class="flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg font-medium text-sm"
+              class="flex items-center gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg font-medium text-sm"
               @click="showCategoryDropdown = !showCategoryDropdown"
             >
               <component :is="CategoryIcon" :size="16" />
@@ -74,7 +79,7 @@ const showCategoryDropdown = ref(false)
             <Transition name="dropdown">
               <div
                 v-if="showCategoryDropdown"
-                class="absolute top-full left-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50"
+                class="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
                 @mouseleave="showCategoryDropdown = false"
               >
                 <NuxtLink
@@ -84,30 +89,43 @@ const showCategoryDropdown = ref(false)
                   :class="[
                     'flex items-center gap-3 px-4 py-2 text-sm transition-colors',
                     cat.slug === categorySlug
-                      ? 'bg-blue-50 text-blue-600 font-medium'
+                      ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-medium'
                       : cat.isActive
-                        ? 'text-gray-700 hover:bg-gray-50'
-                        : 'text-gray-400 cursor-not-allowed'
+                        ? 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        : 'text-gray-400 dark:text-gray-500 cursor-not-allowed'
                   ]"
                   @click="showCategoryDropdown = false"
                 >
                   <component :is="cat.icon" :size="18" />
                   {{ cat.name }}
-                  <span v-if="!cat.isActive" class="ml-auto text-xs text-gray-400">敬請期待</span>
+                  <span v-if="!cat.isActive" class="ml-auto text-xs text-gray-400 dark:text-gray-500">敬請期待</span>
                 </NuxtLink>
               </div>
             </Transition>
           </div>
         </div>
 
-        <!-- Mobile: Back to Home -->
-        <NuxtLink
-          to="/"
-          class="sm:hidden flex items-center gap-1 px-3 py-2 text-gray-600 hover:text-blue-600"
-        >
-          <Home :size="18" />
-          <span class="text-sm">品類</span>
-        </NuxtLink>
+        <div class="flex items-center gap-2">
+          <!-- Dark Mode Toggle -->
+          <button
+            class="p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            @click="toggleDarkMode"
+            :title="isDark ? '切換淺色模式' : '切換深色模式'"
+            aria-label="切換日夜間模式"
+          >
+            <Sun v-if="isDark" :size="18" />
+            <Moon v-else :size="18" />
+          </button>
+
+          <!-- Mobile: Back to Home -->
+          <NuxtLink
+            to="/"
+            class="sm:hidden flex items-center gap-1 px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600"
+          >
+            <Home :size="18" />
+            <span class="text-sm">品類</span>
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </header>
