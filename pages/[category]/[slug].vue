@@ -278,14 +278,35 @@ const productFeatures = computed(() => {
   return features
 })
 
-// SEO
+// SEO - 完整 Meta Tags
+const siteUrl = 'https://bibikan.tw'
+const pageUrl = `${siteUrl}/${categorySlug.value}/${productSlug.value}`
+const pageTitle = `${product.value?.name || ''} | 比比看`
+const pageDescription = `${product.value?.name} - NT$ ${formatPrice(product.value?.price || 0)}，查看詳細規格與最新優惠價格。`
+
 useHead({
-  title: `${product.value?.name || ''} | 比比看`,
+  title: pageTitle,
   meta: [
-    {
-      name: 'description',
-      content: `${product.value?.name} - NT$ ${formatPrice(product.value?.price || 0)}，查看詳細規格與最新優惠價格。`,
-    },
+    // Basic meta
+    { name: 'description', content: pageDescription },
+    // Open Graph
+    { property: 'og:type', content: 'product' },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:url', content: pageUrl },
+    { property: 'og:image', content: product.value?.image_url || '' },
+    { property: 'og:image:alt', content: product.value?.name || '' },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: product.value?.image_url || '' },
+    // Product specific
+    { property: 'product:price:amount', content: String(product.value?.price || 0) },
+    { property: 'product:price:currency', content: 'TWD' },
+  ],
+  link: [
+    { rel: 'canonical', href: pageUrl },
   ],
 })
 

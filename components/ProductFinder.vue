@@ -4,7 +4,7 @@ import { X, ChevronRight, ChevronLeft, Sparkles, Droplets } from 'lucide-vue-nex
 import type { Dehumidifier } from '~/types'
 
 const props = defineProps<{
-  products: Dehumidifier[]
+  products: readonly Dehumidifier[]
 }>()
 
 const emit = defineEmits<{
@@ -19,6 +19,13 @@ const lifestyle = ref<string | null>(null)
 const concern = ref<string | null>(null)
 const personality = ref<string | null>(null)
 const budget = ref<string | null>(null)
+
+// 預算選項（單獨定義以獲得正確類型）
+const budgetOptions = [
+  { value: 'budget', label: '小資首選', desc: '5千以內搞定', emoji: '🌱', max: 5000 },
+  { value: 'mid', label: '願意投資', desc: '5千到1萬', emoji: '⭐', min: 5000, max: 10000 },
+  { value: 'premium', label: '品質至上', desc: '1萬以上也OK', emoji: '👑', min: 10000 },
+] as const
 
 const questions = [
   {
@@ -60,11 +67,7 @@ const questions = [
     step: 4,
     title: '預算大概多少？ 💰',
     subtitle: '誠實回答找到最適合的',
-    options: [
-      { value: 'budget', label: '小資首選', desc: '5千以內搞定', emoji: '🌱', max: 5000 },
-      { value: 'mid', label: '願意投資', desc: '5千到1萬', emoji: '⭐', min: 5000, max: 10000 },
-      { value: 'premium', label: '品質至上', desc: '1萬以上也OK', emoji: '👑', min: 10000 },
-    ],
+    options: budgetOptions,
     answer: budget
   }
 ]
@@ -115,13 +118,13 @@ const recommendedProducts = computed(() => {
   }
 
   // 根據預算篩選
-  const budgetOption = questions[3].options.find(o => o.value === budget.value)
+  const budgetOption = budgetOptions.find(o => o.value === budget.value)
   if (budgetOption) {
-    if (budgetOption.max) {
-      filtered = filtered.filter(p => p.price <= budgetOption.max!)
+    if ('max' in budgetOption && budgetOption.max) {
+      filtered = filtered.filter(p => p.price <= budgetOption.max)
     }
-    if (budgetOption.min) {
-      filtered = filtered.filter(p => p.price >= budgetOption.min!)
+    if ('min' in budgetOption && budgetOption.min) {
+      filtered = filtered.filter(p => p.price >= budgetOption.min)
     }
   }
 

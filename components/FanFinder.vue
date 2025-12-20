@@ -4,7 +4,7 @@ import { X, ChevronRight, ChevronLeft, Sparkles, Fan, Zap } from 'lucide-vue-nex
 import type { Dehumidifier } from '~/types'
 
 const props = defineProps<{
-  products: Dehumidifier[]
+  products: readonly Dehumidifier[]
 }>()
 
 const emit = defineEmits<{

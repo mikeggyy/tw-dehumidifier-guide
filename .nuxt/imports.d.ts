@@ -41,6 +41,7 @@ export { useStructuredData } from '../composables/useStructuredData';
 export { useSwipe, SwipeOptions } from '../composables/useSwipe';
 export { useToast, Toast } from '../composables/useToast';
 export { useUrlFilters } from '../composables/useUrlFilters';
+export { getDisplayBrand, formatPrice, getDiscountPercent, getSavingsAmount, getEnergyLabel, getEnergyColor, getValueScore, generateProductDescription, generateCategoryDescription } from '../utils/product';
 export { getNitroOrigin } from '../node_modules/nuxt-site-config/dist/runtime/app/composables/getNitroOrigin';
 export { updateSiteConfig } from '../node_modules/nuxt-site-config/dist/runtime/app/composables/updateSiteConfig';
 export { useNitroOrigin } from '../node_modules/nuxt-site-config/dist/runtime/app/composables/useNitroOrigin';

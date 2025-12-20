@@ -4,7 +4,6 @@ import {
   Filter,
   SlidersHorizontal,
   X,
-  ChevronLeft,
   ChevronRight,
   Calculator,
   Sparkles,
@@ -18,8 +17,6 @@ import {
   Snowflake,
   Flame,
   Fan,
-  Home,
-  ChevronDown,
 } from 'lucide-vue-next'
 import type { GenericFilterState, SortOption, Product } from '~/types'
 import ProductCard from '~/components/ProductCard.vue'
@@ -33,13 +30,17 @@ import AirConditionerCalculator from '~/components/AirConditionerCalculator.vue'
 import AirConditionerFinder from '~/components/AirConditionerFinder.vue'
 import HeaterFinder from '~/components/HeaterFinder.vue'
 import FanFinder from '~/components/FanFinder.vue'
+import SiteHeader from '~/components/category/SiteHeader.vue'
+import SiteFooter from '~/components/category/SiteFooter.vue'
+import FloatingCompareBar from '~/components/category/FloatingCompareBar.vue'
+import Pagination from '~/components/category/Pagination.vue'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
-import { useCategoryConfig, categoryConfigs } from '~/composables/useCategoryConfig'
+import { useCategoryConfig } from '~/composables/useCategoryConfig'
 import { useUrlFilters } from '~/composables/useUrlFilters'
-import { useRoute, useHead, createError, useRouter } from '#imports'
+import { useStructuredData } from '~/composables/useStructuredData'
+import { useRoute, useHead, createError } from '#imports'
 
 const route = useRoute()
-const router = useRouter()
 const categorySlug = computed(() => route.params.category as string)
 
 // 取得品類設定
@@ -62,21 +63,73 @@ const { allProducts, isLoading, getAllBrands, getPriceRange, filterProducts, sor
 
 // 只顯示當前品類的商品
 const categoryProducts = computed(() => {
-  return allProducts.value.filter(p =>
-    (p as any).category_slug === categorySlug.value || categorySlug.value === 'dehumidifier'
-  )
+  return allProducts.value.filter(p => {
+    const productCategory = (p as any).category_slug || 'dehumidifier'
+    return productCategory === categorySlug.value
+  })
 })
 
-// SEO
+// SEO - 完整 Meta Tags
+const siteUrl = 'https://bibikan.tw'
+const pageUrl = computed(() => `${siteUrl}/${categorySlug.value}`)
+const pageTitle = computed(() => `${categoryConfig.value?.name || ''}規格比較 2025 | 比比看`)
+const pageDescription = computed(() => categoryConfig.value?.seoDescription || `${categoryConfig.value?.name}規格比較，收錄多款商品，比較品牌、價格、規格。`)
+// 使用第一個商品的圖片作為 OG Image
+const ogImage = computed(() => {
+  if (categoryProducts.value.length > 0) {
+    return categoryProducts.value[0].image_url
+  }
+  return `${siteUrl}/og-image.png`
+})
+
 useHead({
-  title: `${categoryConfig.value?.name || ''} | 比比看`,
+  title: pageTitle.value,
   meta: [
-    {
-      name: 'description',
-      content: categoryConfig.value?.seoDescription || '',
-    },
+    // Basic meta
+    { name: 'description', content: pageDescription.value },
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: pageTitle.value },
+    { property: 'og:description', content: pageDescription.value },
+    { property: 'og:url', content: pageUrl.value },
+    { property: 'og:image', content: ogImage.value },
+    { property: 'og:image:alt', content: `${categoryConfig.value?.name}規格比較` },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle.value },
+    { name: 'twitter:description', content: pageDescription.value },
+    { name: 'twitter:image', content: ogImage.value },
+  ],
+  link: [
+    { rel: 'canonical', href: pageUrl.value },
   ],
 })
+
+// Structured Data - ItemList for category page
+const { setItemListStructuredData, setBreadcrumbStructuredData } = useStructuredData()
+
+// 設置 Breadcrumb 結構化資料
+setBreadcrumbStructuredData([
+  { name: '首頁', url: siteUrl },
+  { name: categoryConfig.value?.name || '', url: pageUrl.value },
+])
+
+// 設置 ItemList 結構化資料（使用前 10 個商品）
+const itemListData = computed(() => {
+  return categoryProducts.value.slice(0, 10).map(product => ({
+    name: product.name,
+    url: `${siteUrl}/${categorySlug.value}/${getProductSlug(product)}`,
+    image: product.image_url,
+    price: product.price,
+  }))
+})
+
+// 當商品載入後設置 ItemList
+watch(categoryProducts, (products) => {
+  if (products.length > 0) {
+    setItemListStructuredData(itemListData.value)
+  }
+}, { immediate: true })
 
 // 分頁設定
 const ITEMS_PER_PAGE = 20
@@ -289,9 +342,10 @@ const displayedProducts = computed(() => {
   let filtered = filterProducts(filters as any)
 
   // 只顯示當前品類
-  filtered = filtered.filter(p =>
-    (p as any).category_slug === categorySlug.value || categorySlug.value === 'dehumidifier'
-  )
+  filtered = filtered.filter(p => {
+    const productCategory = (p as any).category_slug || 'dehumidifier'
+    return productCategory === categorySlug.value
+  })
 
   // 搜尋過濾
   if (searchQuery.value.trim()) {
@@ -326,30 +380,6 @@ const paginatedProducts = computed(() => {
   return displayedProducts.value.slice(start, end)
 })
 
-const pageNumbers = computed(() => {
-  const total = totalPages.value
-  const current = currentPage.value
-  const pages: number[] = []
-
-  if (total <= 5) {
-    for (let i = 1; i <= total; i++) pages.push(i)
-  } else if (current <= 3) {
-    pages.push(1, 2, 3, 4, 5)
-  } else if (current >= total - 2) {
-    for (let i = total - 4; i <= total; i++) pages.push(i)
-  } else {
-    for (let i = current - 2; i <= current + 2; i++) pages.push(i)
-  }
-
-  return pages
-})
-
-const goToPage = (page: number) => {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-}
 
 watch([() => filters.brands, () => filters.priceMin, () => filters.priceMax, sortBy, searchQuery], () => {
   currentPage.value = 1
@@ -399,93 +429,15 @@ const categoryIcons: Record<string, any> = {
 }
 
 const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplets)
-
-// 品類導覽列表
-const allCategories = computed(() => [
-  { slug: 'dehumidifier', name: '除濕機', icon: Droplets, isActive: true },
-  { slug: 'air-purifier', name: '空氣清淨機', icon: Wind, isActive: true },
-  { slug: 'air-conditioner', name: '冷氣', icon: Snowflake, isActive: true },
-  { slug: 'heater', name: '電暖器', icon: Flame, isActive: true },
-  { slug: 'fan', name: '電風扇', icon: Fan, isActive: true },
-])
-
-// 品類選擇器下拉狀態
-const showCategoryDropdown = ref(false)
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <!-- Logo -->
-          <NuxtLink to="/" class="flex items-center gap-2">
-            <img src="/favicon.svg" alt="比比看" class="w-8 h-8" />
-            <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">比比看</span>
-          </NuxtLink>
-
-          <!-- Category Selector (Desktop) -->
-          <div class="hidden sm:flex items-center gap-1">
-            <NuxtLink
-              to="/"
-              class="flex items-center gap-1 px-3 py-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-            >
-              <Home :size="16" />
-              <span class="text-sm">全部品類</span>
-            </NuxtLink>
-            <ChevronRight :size="16" class="text-gray-300" />
-            <!-- Current Category Dropdown -->
-            <div class="relative">
-              <button
-                class="flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg font-medium text-sm"
-                @click="showCategoryDropdown = !showCategoryDropdown"
-              >
-                <component :is="CategoryIcon" :size="16" />
-                {{ categoryConfig?.name }}
-                <ChevronDown :size="16" :class="['transition-transform', showCategoryDropdown ? 'rotate-180' : '']" />
-              </button>
-              <!-- Dropdown Menu -->
-              <Transition name="dropdown">
-                <div
-                  v-if="showCategoryDropdown"
-                  class="absolute top-full left-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50"
-                  @mouseleave="showCategoryDropdown = false"
-                >
-                  <NuxtLink
-                    v-for="cat in allCategories"
-                    :key="cat.slug"
-                    :to="cat.isActive ? `/${cat.slug}` : '#'"
-                    :class="[
-                      'flex items-center gap-3 px-4 py-2 text-sm transition-colors',
-                      cat.slug === categorySlug
-                        ? 'bg-blue-50 text-blue-600 font-medium'
-                        : cat.isActive
-                          ? 'text-gray-700 hover:bg-gray-50'
-                          : 'text-gray-400 cursor-not-allowed'
-                    ]"
-                    @click="showCategoryDropdown = false"
-                  >
-                    <component :is="cat.icon" :size="18" />
-                    {{ cat.name }}
-                    <span v-if="!cat.isActive" class="ml-auto text-xs text-gray-400">敬請期待</span>
-                  </NuxtLink>
-                </div>
-              </Transition>
-            </div>
-          </div>
-
-          <!-- Mobile: Back to Home -->
-          <NuxtLink
-            to="/"
-            class="sm:hidden flex items-center gap-1 px-3 py-2 text-gray-600 hover:text-blue-600"
-          >
-            <Home :size="18" />
-            <span class="text-sm">品類</span>
-          </NuxtLink>
-        </div>
-      </div>
-    </header>
+    <SiteHeader
+      :category-slug="categorySlug"
+      :category-name="categoryConfig?.name || ''"
+    />
 
     <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
       <!-- Page Title -->
@@ -502,19 +454,23 @@ const showCategoryDropdown = ref(false)
       <!-- 搜尋框 -->
       <div class="mb-6">
         <div class="relative max-w-md">
-          <Search :size="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+          <label for="product-search" class="sr-only">搜尋商品</label>
+          <Search :size="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true" />
           <input
+            id="product-search"
             v-model="searchQuery"
-            type="text"
+            type="search"
             placeholder="搜尋品牌、型號..."
             class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            autocomplete="off"
           />
           <button
             v-if="searchQuery"
             class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            aria-label="清除搜尋"
             @click="searchQuery = ''"
           >
-            <X :size="18" />
+            <X :size="18" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -822,64 +778,10 @@ const showCategoryDropdown = ref(false)
           </div>
 
           <!-- Pagination -->
-          <div
-            v-if="totalPages > 1"
-            class="flex items-center justify-center gap-2 mt-8"
-          >
-            <button
-              class="p-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              :disabled="currentPage === 1"
-              @click="goToPage(currentPage - 1)"
-            >
-              <ChevronLeft :size="20" class="text-gray-600" />
-            </button>
-
-            <template v-if="pageNumbers[0] > 1">
-              <button
-                class="w-10 h-10 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium"
-                @click="goToPage(1)"
-              >
-                1
-              </button>
-              <span v-if="pageNumbers[0] > 2" class="text-gray-400">...</span>
-            </template>
-
-            <button
-              v-for="page in pageNumbers"
-              :key="page"
-              :class="[
-                'w-10 h-10 rounded-lg border font-medium',
-                page === currentPage
-                  ? 'bg-blue-600 border-blue-600 text-white'
-                  : 'border-gray-200 bg-white hover:bg-gray-50 text-gray-700'
-              ]"
-              @click="goToPage(page)"
-            >
-              {{ page }}
-            </button>
-
-            <template v-if="pageNumbers[pageNumbers.length - 1] < totalPages">
-              <span v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="text-gray-400">...</span>
-              <button
-                class="w-10 h-10 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium"
-                @click="goToPage(totalPages)"
-              >
-                {{ totalPages }}
-              </button>
-            </template>
-
-            <button
-              class="p-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              :disabled="currentPage === totalPages"
-              @click="goToPage(currentPage + 1)"
-            >
-              <ChevronRight :size="20" class="text-gray-600" />
-            </button>
-          </div>
-
-          <div v-if="totalPages > 1" class="text-center text-sm text-gray-500 mt-4">
-            第 {{ currentPage }} 頁，共 {{ totalPages }} 頁
-          </div>
+          <Pagination
+            v-model:current-page="currentPage"
+            :total-pages="totalPages"
+          />
 
           <!-- No Results -->
           <div
@@ -920,14 +822,7 @@ const showCategoryDropdown = ref(false)
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="text-center text-gray-500 text-sm">
-          <p>© 2025 比比看. 本站包含聯盟行銷連結。</p>
-          <p class="mt-1">價格與規格僅供參考，請以官方公告為準。</p>
-        </div>
-      </div>
-    </footer>
+    <SiteFooter />
 
     <!-- Scroll to top -->
     <Transition name="fade">
@@ -942,56 +837,12 @@ const showCategoryDropdown = ref(false)
     </Transition>
 
     <!-- Floating Compare Bar -->
-    <Transition name="slide-up">
-      <div
-        v-if="compareList.length > 0"
-        class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40 p-4"
-      >
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <GitCompare :size="20" class="text-blue-600" />
-            <span class="font-medium text-gray-900">
-              已選 {{ compareList.length }} / 4 項商品
-            </span>
-            <div class="hidden sm:flex items-center gap-2">
-              <div
-                v-for="product in compareList"
-                :key="product.id"
-                class="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-sm"
-              >
-                <span class="truncate max-w-[100px]">{{ getDisplayBrand(product) || product.model }}</span>
-                <button
-                  class="text-gray-400 hover:text-red-500"
-                  @click="removeFromCompare(product.id)"
-                >
-                  <X :size="14" />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="flex items-center gap-3">
-            <button
-              class="text-sm text-gray-500 hover:text-gray-700"
-              @click="compareList = []"
-            >
-              清除全部
-            </button>
-            <button
-              :disabled="compareList.length < 2"
-              :class="[
-                'px-4 py-2 rounded-lg font-medium transition-colors',
-                compareList.length >= 2
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              ]"
-              @click="showCompareModal = true"
-            >
-              比較 ({{ compareList.length }})
-            </button>
-          </div>
-        </div>
-      </div>
-    </Transition>
+    <FloatingCompareBar
+      :compare-list="compareList"
+      @remove="removeFromCompare"
+      @clear="compareList = []"
+      @compare="showCompareModal = true"
+    />
 
     <!-- Compare Modal -->
     <CompareModal
@@ -1057,17 +908,6 @@ const showCategoryDropdown = ref(false)
 </template>
 
 <style scoped>
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.slide-up-enter-from,
-.slide-up-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
@@ -1076,16 +916,5 @@ const showCategoryDropdown = ref(false)
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-.dropdown-enter-active,
-.dropdown-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.dropdown-enter-from,
-.dropdown-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
 }
 </style>

@@ -19,6 +19,13 @@ const concern = ref<string | null>(null)
 const personality = ref<string | null>(null)
 const budget = ref<string | null>(null)
 
+// 預算選項（單獨定義以獲得正確類型）
+const budgetOptions = [
+  { value: 'budget', label: '小資首選', desc: '5千以內搞定', emoji: '🌱', max: 5000 },
+  { value: 'mid', label: '願意投資', desc: '5千到1萬5', emoji: '⭐', min: 5000, max: 15000 },
+  { value: 'premium', label: '品質至上', desc: '1萬5以上也OK', emoji: '👑', min: 15000 },
+] as const
+
 const questions = [
   {
     step: 1,
@@ -59,11 +66,7 @@ const questions = [
     step: 4,
     title: '最後，預算大概？ 💰',
     subtitle: '誠實回答才能找到最適合的',
-    options: [
-      { value: 'budget', label: '小資首選', desc: '5千以內搞定', emoji: '🌱', max: 5000 },
-      { value: 'mid', label: '願意投資', desc: '5千到1萬5', emoji: '⭐', min: 5000, max: 15000 },
-      { value: 'premium', label: '品質至上', desc: '1萬5以上也OK', emoji: '👑', min: 15000 },
-    ],
+    options: budgetOptions,
     answer: budget
   }
 ]
@@ -127,13 +130,13 @@ const recommendedProducts = computed(() => {
   }
 
   // 根據預算篩選
-  const budgetOption = questions[3].options.find(o => o.value === budget.value)
+  const budgetOption = budgetOptions.find(o => o.value === budget.value)
   if (budgetOption) {
-    if (budgetOption.max) {
-      filtered = filtered.filter(p => p.price <= budgetOption.max!)
+    if ('max' in budgetOption && budgetOption.max) {
+      filtered = filtered.filter(p => p.price <= budgetOption.max)
     }
-    if (budgetOption.min) {
-      filtered = filtered.filter(p => p.price >= budgetOption.min!)
+    if ('min' in budgetOption && budgetOption.min) {
+      filtered = filtered.filter(p => p.price >= budgetOption.min)
     }
   }
 

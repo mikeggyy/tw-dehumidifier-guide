@@ -110,19 +110,32 @@ const getDisplayBrand = (product: Dehumidifier): string => {
 </script>
 
 <template>
-  <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="compare-modal-title"
+  >
     <!-- Backdrop -->
-    <div class="absolute inset-0 bg-black/50" @click="emit('close')" />
+    <div
+      class="absolute inset-0 bg-black/50"
+      aria-hidden="true"
+      @click="emit('close')"
+    />
 
     <!-- Modal -->
     <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
       <!-- Header -->
       <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-500">
-        <h2 class="text-lg font-semibold text-white">
+        <h2 id="compare-modal-title" class="text-lg font-semibold text-white">
           商品比較 ({{ products.length }}/4)
         </h2>
-        <button @click="emit('close')" class="text-white/80 hover:text-white">
-          <X :size="24" />
+        <button
+          @click="emit('close')"
+          class="text-white/80 hover:text-white"
+          aria-label="關閉比較視窗"
+        >
+          <X :size="24" aria-hidden="true" />
         </button>
       </div>
 

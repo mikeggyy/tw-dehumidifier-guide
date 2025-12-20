@@ -4,7 +4,7 @@ import { X, Calculator, Home, Droplets } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
 
 const props = defineProps<{
-  products: Dehumidifier[]
+  products: readonly Dehumidifier[]
 }>()
 
 const emit = defineEmits<{

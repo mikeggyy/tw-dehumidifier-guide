@@ -22,6 +22,19 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap'
   ],
 
+  // Runtime configuration (環境變數)
+  runtimeConfig: {
+    // Private keys (server-side only)
+    // supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY,
+
+    // Public keys (exposed to client)
+    public: {
+      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://tqyefifafabyudtyjfam.supabase.co',
+      supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD5',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://bibikan.tw',
+    }
+  },
+
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },

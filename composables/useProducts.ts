@@ -1,10 +1,27 @@
 import { ref, readonly } from 'vue'
-import { useFetch } from '#imports'
+import { useFetch, useRuntimeConfig } from '#imports'
 import type { Dehumidifier, FilterState, SortOption } from '~/types'
 
-// Supabase 配置
-const SUPABASE_URL = 'https://tqyefifafabyudtyjfam.supabase.co'
-const SUPABASE_ANON_KEY = 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD5'
+// Supabase 配置 - 使用 runtimeConfig（在 composable 外部定義 fallback 值）
+const DEFAULT_SUPABASE_URL = 'https://tqyefifafabyudtyjfam.supabase.co'
+const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD5'
+
+// Helper function to get Supabase config
+function getSupabaseConfig() {
+  try {
+    const config = useRuntimeConfig()
+    return {
+      url: config.public.supabaseUrl || DEFAULT_SUPABASE_URL,
+      anonKey: config.public.supabaseAnonKey || DEFAULT_SUPABASE_ANON_KEY,
+    }
+  } catch {
+    // Fallback for contexts where useRuntimeConfig is not available
+    return {
+      url: DEFAULT_SUPABASE_URL,
+      anonKey: DEFAULT_SUPABASE_ANON_KEY,
+    }
+  }
+}
 
 // 全域響應式產品資料（跨組件共享）
 const globalProducts = ref<Dehumidifier[]>([])
@@ -112,13 +129,15 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
     return globalProducts.value
   }
 
+  const { url, anonKey } = getSupabaseConfig()
+
   try {
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/products?in_stock=eq.true`,
+      `${url}/rest/v1/products?in_stock=eq.true`,
       {
         headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'apikey': anonKey,
+          'Authorization': `Bearer ${anonKey}`,
         },
       }
     )
@@ -152,12 +171,14 @@ export async function useProductsSSR() {
     return { data: ref(globalProducts.value), error: ref(null) }
   }
 
+  const { url, anonKey } = getSupabaseConfig()
+
   const { data, error } = await useFetch<Dehumidifier[]>(
-    `${SUPABASE_URL}/rest/v1/products?in_stock=eq.true`,
+    `${url}/rest/v1/products?in_stock=eq.true`,
     {
       headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': anonKey,
+        'Authorization': `Bearer ${anonKey}`,
       },
       key: 'products',
       default: () => [] as Dehumidifier[],

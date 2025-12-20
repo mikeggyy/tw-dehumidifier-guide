@@ -30,7 +30,7 @@ export interface Product {
   source?: string;        // 'momo', 'pchome'
   source_id?: string;
   specs: Record<string, any>;  // 彈性存放各品類規格
-  features?: string[];
+  features?: readonly string[];
   created_at?: string;
   updated_at?: string;
 }
@@ -51,7 +51,7 @@ export interface Dehumidifier {
   noise_level: number | null;    // dB (Lower is better)
   power_consumption: number | null; // Watts (Lower is better)
   energy_efficiency: 1 | 2 | 3 | 4 | 5 | null; // Energy label (1 is best)
-  features: string[];     // e.g., ["HEPA Filter", "App Control", "Shoe Drying"]
+  features: readonly string[];     // e.g., ["HEPA Filter", "App Control", "Shoe Drying"]
   image_url: string;      // Placeholder or real URL
   affiliate_url: string;  // The money-making link (MOMO/Shopee)
   slug?: string;          // URL slug for routing

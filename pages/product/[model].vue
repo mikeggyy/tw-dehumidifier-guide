@@ -439,7 +439,7 @@ const roomSuitability = computed(() => {
                   <div class="h-2 bg-gradient-to-r from-green-300 via-yellow-300 to-red-300 rounded-full relative">
                     <div
                       class="absolute w-3 h-3 bg-white border-2 border-gray-800 rounded-full -top-0.5 transform -translate-x-1/2"
-                      :style="{ left: `${Math.min(Math.max((product.noise_level - 20) / 40 * 100, 0), 100)}%` }"
+                      :style="{ left: `${Math.min(Math.max(((product.noise_level ?? 40) - 20) / 40 * 100, 0), 100)}%` }"
                     ></div>
                   </div>
                   <div class="flex justify-between text-xs text-gray-400 mt-1">

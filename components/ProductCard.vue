@@ -156,14 +156,17 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
       </div>
     </Transition>
 
-    <!-- Image -->
+    <!-- Image with explicit dimensions for CLS prevention -->
     <NuxtLink :to="productUrl" class="block overflow-hidden">
       <div class="relative aspect-square bg-gray-50 overflow-hidden">
         <img
           :src="imageError ? fallbackImage : product.image_url"
-          :alt="`${product.brand} ${product.model}`"
+          :alt="`${product.brand} ${product.model} - ${product.name}`"
+          width="300"
+          height="300"
           class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/card:scale-110"
           loading="lazy"
+          decoding="async"
           @error="handleImageError"
         />
         <!-- Hover overlay -->

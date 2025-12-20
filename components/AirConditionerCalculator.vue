@@ -4,7 +4,7 @@ import { X, Calculator, Snowflake, Sun, Building2, ThermometerSun, Info } from '
 import type { Dehumidifier } from '~/types'
 
 const props = defineProps<{
-  products: Dehumidifier[]
+  products: readonly Dehumidifier[]
 }>()
 
 const emit = defineEmits<{

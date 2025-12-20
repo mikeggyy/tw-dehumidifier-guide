@@ -4,7 +4,7 @@ import { X, ChevronRight, ChevronLeft, Sparkles, Snowflake, Zap } from 'lucide-v
 import type { Dehumidifier } from '~/types'
 
 const props = defineProps<{
-  products: Dehumidifier[]
+  products: readonly Dehumidifier[]
 }>()
 
 const emit = defineEmits<{
@@ -31,17 +31,20 @@ const tonnageRecommendation = computed(() => {
   return recommendations[roomSize.value || ''] || null
 })
 
+// 空間選項（單獨定義以獲得正確類型）
+const roomSizeOptions = [
+  { value: 'tiny', label: '小坪數', desc: '3-5坪 (小臥室、書房)', emoji: '🛏️', ton: '1噸以下' },
+  { value: 'small', label: '中小坪數', desc: '5-8坪 (臥室)', emoji: '🏠', ton: '1-1.5噸' },
+  { value: 'medium', label: '中坪數', desc: '8-12坪 (客廳)', emoji: '🏡', ton: '1.5-2噸' },
+  { value: 'large', label: '大坪數', desc: '12坪以上 (大客廳)', emoji: '🏢', ton: '2噸以上' },
+] as const
+
 const questions = [
   {
     step: 1,
     title: '你的空間有多大？ 📐',
     subtitle: '幫你算出需要的冷氣噸數',
-    options: [
-      { value: 'tiny', label: '小坪數', desc: '3-5坪 (小臥室、書房)', emoji: '🛏️', ton: '1噸以下' },
-      { value: 'small', label: '中小坪數', desc: '5-8坪 (臥室)', emoji: '🏠', ton: '1-1.5噸' },
-      { value: 'medium', label: '中坪數', desc: '8-12坪 (客廳)', emoji: '🏡', ton: '1.5-2噸' },
-      { value: 'large', label: '大坪數', desc: '12坪以上 (大客廳)', emoji: '🏢', ton: '2噸以上' },
-    ],
+    options: roomSizeOptions,
     answer: roomSize
   },
   {
@@ -260,8 +263,8 @@ const restart = () => {
                 <div class="flex-1">
                   <div class="font-semibold text-gray-900">{{ option.label }}</div>
                   <div class="text-sm text-gray-500">{{ option.desc }}</div>
-                  <div v-if="option.ton" class="text-xs text-cyan-600 mt-1">
-                    建議：{{ option.ton }}
+                  <div v-if="'ton' in option" class="text-xs text-cyan-600 mt-1">
+                    建議：{{ (option as { ton: string }).ton }}
                   </div>
                 </div>
                 <div
