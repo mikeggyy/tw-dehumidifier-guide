@@ -15,6 +15,7 @@ import {
   Flame,
   Fan,
   ArrowRight,
+  AlertCircle,
 } from 'lucide-vue-next'
 import type { FilterState, SortOption, Dehumidifier } from '~/types'
 import ProductCard from '~/components/ProductCard.vue'
@@ -90,8 +91,15 @@ onMounted(() => {
   loadFavorites()
 })
 
+// 同品類比較提示訊息 (需要在 onUnmounted 前宣告)
+const compareCategoryWarning = ref('')
+const compareCategoryWarningTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  if (compareCategoryWarningTimer.value) {
+    clearTimeout(compareCategoryWarningTimer.value)
+  }
 })
 
 // 收藏功能
@@ -130,15 +138,36 @@ const isFavorite = (productId: string): boolean => {
 // Modal states
 const showCompareModal = ref(false)
 
+const showCompareCategoryWarning = (message: string) => {
+  compareCategoryWarning.value = message
+  if (compareCategoryWarningTimer.value) {
+    clearTimeout(compareCategoryWarningTimer.value)
+  }
+  compareCategoryWarningTimer.value = setTimeout(() => {
+    compareCategoryWarning.value = ''
+  }, 3000)
+}
+
 // Compare list (max 4)
 const compareList = ref<Dehumidifier[]>([])
 
 const toggleCompare = (product: Dehumidifier) => {
   const index = compareList.value.findIndex(p => p.id === product.id)
   if (index === -1) {
-    if (compareList.value.length < 4) {
-      compareList.value.push(product)
+    // 檢查是否已達上限
+    if (compareList.value.length >= 4) {
+      return
     }
+    // 檢查品類是否一致
+    if (compareList.value.length > 0) {
+      const currentCategory = getProductCategorySlug(compareList.value[0])
+      const newCategory = getProductCategorySlug(product)
+      if (currentCategory !== newCategory) {
+        showCompareCategoryWarning('只能比較同類別的商品，請先清空比較清單或選擇相同類別的商品')
+        return
+      }
+    }
+    compareList.value.push(product)
   } else {
     compareList.value.splice(index, 1)
   }
@@ -709,6 +738,17 @@ const categories = computed(() => [
       </button>
     </Transition>
 
+    <!-- Compare Category Warning Toast -->
+    <Transition name="toast">
+      <div
+        v-if="compareCategoryWarning"
+        class="fixed top-4 left-1/2 -translate-x-1/2 z-[60] max-w-md w-full mx-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl shadow-lg flex items-start gap-3"
+      >
+        <AlertCircle :size="20" class="text-amber-600 flex-shrink-0 mt-0.5" />
+        <p class="text-sm text-amber-800">{{ compareCategoryWarning }}</p>
+      </div>
+    </Transition>
+
     <!-- Floating Compare Bar -->
     <FloatingCompareBar
       :compare-list="compareList"
@@ -740,5 +780,35 @@ const categories = computed(() => [
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.toast-enter-active {
+  animation: toast-in 0.3s ease-out;
+}
+
+.toast-leave-active {
+  animation: toast-out 0.2s ease-in forwards;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
 }
 </style>
