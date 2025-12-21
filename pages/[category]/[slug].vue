@@ -30,6 +30,10 @@ import {
   Ruler,
   ChevronDown,
   X as XIcon,
+  Heart,
+  Scale,
+  Calculator,
+  Package,
 } from 'lucide-vue-next'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
@@ -37,6 +41,8 @@ import { useRoute, useHead, createError, useRouter, navigateTo } from '#imports'
 import { useToast } from '~/composables/useToast'
 import { useSwipe } from '~/composables/useSwipe'
 import { useRecentlyViewed } from '~/composables/useRecentlyViewed'
+import { useCompare } from '~/composables/useCompare'
+import { useFavorites } from '~/composables/useFavorites'
 import { useProductDetailShortcuts } from '~/composables/useKeyboardShortcuts'
 import ScrollProgress from '~/components/ScrollProgress.vue'
 import SocialShare from '~/components/SocialShare.vue'
@@ -61,6 +67,10 @@ await useProductsSSR()
 const route = useRoute()
 const router = useRouter()
 const { success } = useToast()
+
+// 比較與收藏功能
+const { toggleCompare, isInCompare, isAtLimit } = useCompare()
+const { init: initFavorites, toggleFavorite, isFavorite } = useFavorites()
 
 const categorySlug = computed(() => route.params.category as string)
 const productSlug = computed(() => route.params.slug as string)
@@ -165,6 +175,42 @@ const priceUpdateTime = computed(() => {
   return formatRelativeTime(p?.updated_at)
 })
 
+// 庫存狀態指示器
+const stockStatus = computed(() => {
+  const discount = discountPercent.value ?? 0
+
+  // 根據折扣力度顯示不同的緊迫度
+  if (discount >= 30) {
+    return {
+      label: '限量特惠',
+      icon: '🔥',
+      color: 'bg-red-500 text-white',
+      pulse: true,
+    }
+  } else if (discount >= 20) {
+    return {
+      label: '熱銷優惠中',
+      icon: '⚡',
+      color: 'bg-orange-500 text-white',
+      pulse: true,
+    }
+  } else if (discount >= 10) {
+    return {
+      label: '促銷中',
+      icon: '🏷️',
+      color: 'bg-yellow-500 text-gray-900',
+      pulse: false,
+    }
+  } else {
+    return {
+      label: '有現貨',
+      icon: '✓',
+      color: 'bg-green-500 text-white',
+      pulse: false,
+    }
+  }
+})
+
 // 分享功能
 const shareProduct = async () => {
   if (!product.value) return
@@ -190,6 +236,9 @@ const shareProduct = async () => {
 
 // 追蹤最近瀏覽
 onMounted(() => {
+  // 初始化收藏功能
+  initFavorites()
+
   if (product.value) {
     addToRecentlyViewed({
       id: product.value.id,
@@ -202,6 +251,29 @@ onMounted(() => {
     })
   }
 })
+
+// 加入比較功能
+const handleToggleCompare = () => {
+  if (!product.value) return
+
+  const wasInCompare = isInCompare(product.value.id)
+  if (!wasInCompare && isAtLimit.value) {
+    success('比較清單已滿（最多 4 項）')
+    return
+  }
+
+  toggleCompare(product.value)
+  success(wasInCompare ? '已從比較清單移除' : '已加入比較清單')
+}
+
+// 收藏功能
+const handleToggleFavorite = () => {
+  if (!product.value) return
+
+  const wasFavorite = isFavorite(product.value.id)
+  toggleFavorite(product.value.id)
+  success(wasFavorite ? '已取消收藏' : '已加入收藏')
+}
 
 // 取得要顯示的規格（根據品類設定）
 const displaySpecs = computed(() => {
@@ -307,6 +379,8 @@ useHead({
     { property: 'og:url', content: pageUrl },
     { property: 'og:image', content: product.value?.image_url || '' },
     { property: 'og:image:alt', content: product.value?.name || '' },
+    { property: 'og:image:width', content: '800' },
+    { property: 'og:image:height', content: '800' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: pageTitle },
@@ -315,6 +389,7 @@ useHead({
     // Product specific
     { property: 'product:price:amount', content: String(product.value?.price || 0) },
     { property: 'product:price:currency', content: 'TWD' },
+    { property: 'product:availability', content: 'in stock' },
   ],
   link: [
     { rel: 'canonical', href: pageUrl },
@@ -381,15 +456,18 @@ const noiseComparison = computed(() => {
   return { text: '正常對話音量', icon: '💬', color: 'text-yellow-600' }
 })
 
-// 每月電費估算 (假設每天運轉 8 小時，電價 3.5 元/度)
+// 電費計算機 - 可調整使用時數
+const dailyHours = ref(8)
+const electricityRate = 4.5 // 台電平均電價 (2024年調整後約 4.5 元/度)
+
 const monthlyElectricity = computed(() => {
   const p = product.value as any
   const watts = p?.power_consumption ?? p?.specs?.power_consumption
   if (!watts) return null
-  const dailyKwh = (watts * 8) / 1000 // 每天耗電度數
+  const dailyKwh = (watts * dailyHours.value) / 1000 // 每天耗電度數
   const monthlyKwh = dailyKwh * 30
-  const cost = Math.round(monthlyKwh * 3.5)
-  return { kwh: monthlyKwh.toFixed(1), cost }
+  const cost = Math.round(monthlyKwh * electricityRate)
+  return { watts, kwh: monthlyKwh.toFixed(1), cost, dailyKwh: dailyKwh.toFixed(2) }
 })
 
 // 適用空間情境
@@ -441,6 +519,54 @@ const categoryTheme = computed(() => {
     fan: { gradient: 'from-indigo-600 to-purple-500', bgLight: 'bg-indigo-100' },
   }
   return themes[categorySlug.value] || themes.dehumidifier
+})
+
+// 同價位替代品比較
+const priceAlternatives = computed(() => {
+  if (!product.value) return []
+
+  const currentPrice = product.value.price
+  const priceRange = currentPrice * 0.15 // 15% 價格範圍
+  const minPrice = currentPrice - priceRange
+  const maxPrice = currentPrice + priceRange
+
+  // 找出同品類、同價位區間的商品（排除自己）
+  const alternatives = categoryProducts.value
+    .filter(p => {
+      if (p.id === product.value?.id) return false
+      if (p.price < minPrice || p.price > maxPrice) return false
+      return true
+    })
+    .map(p => {
+      // 計算各項目與當前商品的比較
+      const priceDiff = p.price - currentPrice
+      const capacityDiff = (p.daily_capacity ?? 0) - (product.value?.daily_capacity ?? 0)
+      const noiseDiff = (p.noise_level ?? 0) - (product.value?.noise_level ?? 0)
+
+      return {
+        ...p,
+        comparison: {
+          priceDiff,
+          priceLabel: priceDiff === 0 ? '相同' : priceDiff > 0 ? `貴 $${formatPrice(priceDiff)}` : `便宜 $${formatPrice(Math.abs(priceDiff))}`,
+          priceWin: priceDiff < 0,
+          capacityDiff,
+          capacityLabel: capacityDiff === 0 ? '相同' : capacityDiff > 0 ? `多 ${capacityDiff}L` : `少 ${Math.abs(capacityDiff)}L`,
+          capacityWin: capacityDiff > 0,
+          noiseDiff,
+          noiseLabel: noiseDiff === 0 ? '相同' : noiseDiff > 0 ? `大 ${noiseDiff}dB` : `小 ${Math.abs(noiseDiff)}dB`,
+          noiseWin: noiseDiff < 0,
+        }
+      }
+    })
+    .sort((a, b) => {
+      // 優先顯示 CP 值較高的
+      const aValue = a.daily_capacity ? a.price / a.daily_capacity : Infinity
+      const bValue = b.daily_capacity ? b.price / b.daily_capacity : Infinity
+      return aValue - bValue
+    })
+    .slice(0, 3) // 最多顯示 3 個替代品
+
+  return alternatives
 })
 
 // ============ 空氣清淨機視覺化 computed ============
@@ -811,25 +937,25 @@ const productDimensions = computed(() => {
         <div class="flex items-center gap-2 text-sm">
           <NuxtLink
             to="/"
-            class="flex items-center gap-1 text-gray-500 hover:text-blue-600 transition-colors"
+            class="flex items-center gap-1 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             <Home :size="14" />
             首頁
           </NuxtLink>
-          <ChevronRight :size="14" class="text-gray-300" />
+          <ChevronRight :size="14" class="text-gray-300 dark:text-gray-600" />
           <NuxtLink
             :to="`/${categorySlug}`"
-            class="text-gray-500 hover:text-blue-600 transition-colors"
+            class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             {{ categoryConfig?.name }}
           </NuxtLink>
-          <ChevronRight :size="14" class="text-gray-300" />
-          <span class="text-gray-900 font-medium truncate max-w-[200px]">{{ displayBrand || product.model }}</span>
+          <ChevronRight :size="14" class="text-gray-300 dark:text-gray-600" />
+          <span class="text-gray-900 dark:text-white font-medium truncate max-w-[200px]">{{ displayBrand || product.model }}</span>
         </div>
       </nav>
 
       <!-- Product Card -->
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div class="md:flex">
           <!-- Image -->
           <div class="md:w-2/5 relative">
@@ -849,30 +975,78 @@ const productDimensions = computed(() => {
 
           <!-- Info -->
           <div class="md:w-3/5 p-6">
-            <p v-if="displayBrand" class="text-gray-500 mb-1">{{ displayBrand }}</p>
+            <!-- Stock Status Badge -->
+            <div class="flex items-center gap-2 mb-2">
+              <span
+                :class="[
+                  'inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full',
+                  stockStatus.color,
+                  stockStatus.pulse ? 'animate-pulse' : ''
+                ]"
+              >
+                <span>{{ stockStatus.icon }}</span>
+                <span>{{ stockStatus.label }}</span>
+              </span>
+              <span v-if="displayBrand" class="text-gray-500 dark:text-gray-400 text-sm">{{ displayBrand }}</span>
+            </div>
             <div class="flex items-start justify-between gap-4 mb-4">
               <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
                 {{ product.name }}
               </h1>
-              <button
-                class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-gray-500 dark:text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors text-sm"
-                @click="shareProduct"
-                title="分享此商品"
-              >
-                <Share2 :size="16" />
-                <span class="hidden sm:inline">分享</span>
-              </button>
+              <!-- 操作按鈕組 -->
+              <div class="flex-shrink-0 flex items-center gap-1">
+                <!-- 加入比較 -->
+                <button
+                  :class="[
+                    'flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm',
+                    isInCompare(product.id)
+                      ? 'text-purple-600 bg-purple-50 dark:bg-purple-900/30 dark:text-purple-400'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-gray-700'
+                  ]"
+                  @click="handleToggleCompare"
+                  :title="isInCompare(product.id) ? '從比較清單移除' : '加入比較'"
+                  :aria-label="isInCompare(product.id) ? '從比較清單移除' : '加入比較'"
+                >
+                  <Scale :size="16" aria-hidden="true" />
+                  <span class="hidden sm:inline">{{ isInCompare(product.id) ? '比較中' : '比較' }}</span>
+                </button>
+                <!-- 收藏 -->
+                <button
+                  :class="[
+                    'flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors text-sm',
+                    isFavorite(product.id)
+                      ? 'text-red-500 bg-red-50 dark:bg-red-900/30'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-gray-700'
+                  ]"
+                  @click="handleToggleFavorite"
+                  :title="isFavorite(product.id) ? '取消收藏' : '加入收藏'"
+                  :aria-label="isFavorite(product.id) ? '取消收藏' : '加入收藏'"
+                >
+                  <Heart :size="16" :fill="isFavorite(product.id) ? 'currentColor' : 'none'" aria-hidden="true" />
+                  <span class="hidden sm:inline">{{ isFavorite(product.id) ? '已收藏' : '收藏' }}</span>
+                </button>
+                <!-- 分享 -->
+                <button
+                  class="flex items-center gap-1.5 px-3 py-1.5 text-gray-500 dark:text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors text-sm"
+                  @click="shareProduct"
+                  title="分享此商品"
+                  aria-label="分享此商品"
+                >
+                  <Share2 :size="16" aria-hidden="true" />
+                  <span class="hidden sm:inline">分享</span>
+                </button>
+              </div>
             </div>
 
             <!-- Price -->
             <div class="mb-6">
               <div v-if="product.original_price && product.original_price > product.price" class="mb-2">
-                <span class="text-sm text-gray-500">市售價 </span>
-                <span class="text-lg text-gray-400 line-through">NT$ {{ formatPrice(product.original_price) }}</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400">市售價 </span>
+                <span class="text-lg text-gray-400 dark:text-gray-500 line-through">NT$ {{ formatPrice(product.original_price) }}</span>
               </div>
               <div class="flex items-baseline gap-2">
-                <span class="text-sm text-gray-500">促銷價</span>
-                <span class="text-3xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400">促銷價</span>
+                <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">NT$ {{ formatPrice(product.price) }}</span>
               </div>
               <p v-if="savingsAmount && savingsAmount >= 500" class="text-red-500 text-sm font-medium mt-1">
                 🔥 現省 NT$ {{ formatPrice(savingsAmount) }}
@@ -1028,23 +1202,64 @@ const productDimensions = computed(() => {
             </div>
           </div>
 
-          <!-- 電費估算 -->
-          <div v-if="monthlyElectricity" class="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl animate-fade-in-up animation-delay-200 hover:shadow-lg transition-shadow duration-300 group">
+          <!-- 電費計算機 (互動式) -->
+          <div v-if="monthlyElectricity" class="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl animate-fade-in-up animation-delay-200 hover:shadow-lg transition-shadow duration-300 group">
             <div class="flex items-center gap-3 mb-3">
-              <CircleDollarSign class="text-green-600 group-hover:animate-spin-slow" :size="20" />
-              <span class="font-medium text-gray-900">每月電費預估</span>
+              <Calculator class="text-green-600 dark:text-green-400" :size="20" />
+              <span class="font-medium text-gray-900 dark:text-white">電費計算機</span>
             </div>
-            <div class="flex items-end gap-2 mb-2">
-              <span class="text-sm text-green-600 mb-1">≈</span>
-              <span class="text-4xl font-bold text-green-600 tabular-nums">${{ monthlyElectricity.cost }}</span>
-              <span class="text-sm text-gray-500 mb-1">/ 月</span>
-            </div>
-            <!-- 電費視覺化小圖示 -->
-            <div class="flex items-center gap-2 mt-2">
-              <div class="flex gap-0.5">
-                <span v-for="i in Math.min(Math.ceil(monthlyElectricity.cost / 50), 5)" :key="i" class="text-yellow-500 animate-pulse" :style="{ animationDelay: `${i * 0.2}s` }">⚡</span>
+
+            <!-- 使用時數調整 -->
+            <div class="mb-4">
+              <div class="flex items-center justify-between text-sm mb-2">
+                <span class="text-gray-600 dark:text-gray-400">每日使用時數</span>
+                <span class="font-medium text-green-600 dark:text-green-400">{{ dailyHours }} 小時</span>
               </div>
-              <span class="text-xs text-gray-400">{{ monthlyElectricity.kwh }} 度/月 (每天 8 小時)</span>
+              <input
+                type="range"
+                v-model.number="dailyHours"
+                min="1"
+                max="24"
+                step="1"
+                class="w-full h-2 bg-green-200 dark:bg-green-800 rounded-lg appearance-none cursor-pointer slider-green"
+              />
+              <div class="flex justify-between text-xs text-gray-400 mt-1">
+                <span>1hr</span>
+                <span>12hr</span>
+                <span>24hr</span>
+              </div>
+            </div>
+
+            <!-- 計算結果 -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-3 mb-3">
+              <div class="flex items-end gap-2 mb-2">
+                <span class="text-sm text-green-600 dark:text-green-400 mb-1">≈</span>
+                <span class="text-4xl font-bold text-green-600 dark:text-green-400 tabular-nums">${{ monthlyElectricity.cost }}</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400 mb-1">/ 月</span>
+              </div>
+              <!-- 電費視覺化 -->
+              <div class="flex items-center gap-2">
+                <div class="flex gap-0.5">
+                  <span v-for="i in Math.min(Math.ceil(monthlyElectricity.cost / 50), 5)" :key="i" class="text-yellow-500 animate-pulse" :style="{ animationDelay: `${i * 0.2}s` }">⚡</span>
+                </div>
+                <span class="text-xs text-gray-400">{{ monthlyElectricity.kwh }} 度/月</span>
+              </div>
+            </div>
+
+            <!-- 計算明細 -->
+            <div class="text-xs text-gray-500 dark:text-gray-400 space-y-1 border-t border-green-100 dark:border-green-800 pt-2">
+              <p class="flex justify-between">
+                <span>消耗功率</span>
+                <span class="font-mono">{{ monthlyElectricity.watts }}W</span>
+              </p>
+              <p class="flex justify-between">
+                <span>每日用電</span>
+                <span class="font-mono">{{ monthlyElectricity.dailyKwh }} 度</span>
+              </p>
+              <p class="flex justify-between">
+                <span>電價 (台電平均)</span>
+                <span class="font-mono">$4.5/度</span>
+              </p>
             </div>
           </div>
 
@@ -1554,6 +1769,118 @@ const productDimensions = computed(() => {
       </div>
     </div>
 
+    <!-- Same Price Alternatives -->
+    <div v-if="priceAlternatives.length > 0" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div class="flex items-center gap-3 mb-6">
+          <Scale class="text-purple-600 dark:text-purple-400" :size="24" />
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white">同價位比一比</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">價差 15% 內的替代選擇</p>
+          </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="overflow-x-auto -mx-6 px-6">
+          <table class="w-full min-w-[600px]">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-gray-700">
+                <th class="text-left py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">商品</th>
+                <th class="text-center py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">價格</th>
+                <th class="text-center py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">除濕力</th>
+                <th class="text-center py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">噪音</th>
+                <th class="text-center py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Current Product (Reference) -->
+              <tr class="bg-blue-50 dark:bg-blue-900/20 border-b border-gray-200 dark:border-gray-700">
+                <td class="py-3 px-2">
+                  <div class="flex items-center gap-3">
+                    <img :src="product.image_url" :alt="product.name" class="w-12 h-12 object-cover rounded-lg" />
+                    <div>
+                      <p class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1">{{ product.name }}</p>
+                      <p class="text-xs text-blue-600 dark:text-blue-400 font-medium">目前瀏覽</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center py-3 px-2">
+                  <span class="font-semibold text-gray-900 dark:text-white">${{ formatPrice(product.price) }}</span>
+                </td>
+                <td class="text-center py-3 px-2">
+                  <span class="text-gray-900 dark:text-white">{{ product.daily_capacity ?? '-' }}L</span>
+                </td>
+                <td class="text-center py-3 px-2">
+                  <span class="text-gray-900 dark:text-white">{{ product.noise_level ?? '-' }}dB</span>
+                </td>
+                <td class="text-center py-3 px-2">
+                  <span class="text-xs text-gray-400">基準</span>
+                </td>
+              </tr>
+              <!-- Alternatives -->
+              <tr
+                v-for="alt in priceAlternatives"
+                :key="alt.id"
+                class="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors"
+              >
+                <td class="py-3 px-2">
+                  <NuxtLink :to="`/${categorySlug}/${getProductSlug(alt)}`" class="flex items-center gap-3 group">
+                    <img :src="alt.image_url" :alt="alt.name" class="w-12 h-12 object-cover rounded-lg" />
+                    <div>
+                      <p class="text-sm font-medium text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{{ alt.name }}</p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">{{ alt.brand }}</p>
+                    </div>
+                  </NuxtLink>
+                </td>
+                <td class="text-center py-3 px-2">
+                  <div>
+                    <span class="font-semibold text-gray-900 dark:text-white">${{ formatPrice(alt.price) }}</span>
+                    <p :class="[
+                      'text-xs mt-0.5',
+                      alt.comparison.priceWin ? 'text-green-600 dark:text-green-400' : 'text-red-500'
+                    ]">
+                      {{ alt.comparison.priceLabel }}
+                    </p>
+                  </div>
+                </td>
+                <td class="text-center py-3 px-2">
+                  <div>
+                    <span class="text-gray-900 dark:text-white">{{ alt.daily_capacity ?? '-' }}L</span>
+                    <p v-if="alt.daily_capacity" :class="[
+                      'text-xs mt-0.5',
+                      alt.comparison.capacityWin ? 'text-green-600 dark:text-green-400' : alt.comparison.capacityDiff < 0 ? 'text-red-500' : 'text-gray-400'
+                    ]">
+                      {{ alt.comparison.capacityLabel }}
+                    </p>
+                  </div>
+                </td>
+                <td class="text-center py-3 px-2">
+                  <div>
+                    <span class="text-gray-900 dark:text-white">{{ alt.noise_level ?? '-' }}dB</span>
+                    <p v-if="alt.noise_level" :class="[
+                      'text-xs mt-0.5',
+                      alt.comparison.noiseWin ? 'text-green-600 dark:text-green-400' : alt.comparison.noiseDiff > 0 ? 'text-red-500' : 'text-gray-400'
+                    ]">
+                      {{ alt.comparison.noiseLabel }}
+                    </p>
+                  </div>
+                </td>
+                <td class="text-center py-3 px-2">
+                  <NuxtLink
+                    :to="`/${categorySlug}/${getProductSlug(alt)}`"
+                    class="inline-flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    查看
+                    <ChevronRight :size="14" />
+                  </NuxtLink>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- Similar Products -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
       <SimilarProducts
@@ -1704,5 +2031,32 @@ const productDimensions = computed(() => {
     max-height: 0;
     transform: translateY(-10px);
   }
+}
+
+/* Range Slider - Green Theme */
+.slider-green::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #16a34a;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
+  transition: all 0.2s;
+}
+
+.slider-green::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 3px 10px rgba(22, 163, 74, 0.4);
+}
+
+.slider-green::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #16a34a;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
 }
 </style>

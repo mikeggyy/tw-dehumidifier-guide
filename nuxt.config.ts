@@ -66,7 +66,11 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'manifest', href: '/manifest.json' },
-        { rel: 'apple-touch-icon', href: '/icon-192.png' }
+        { rel: 'apple-touch-icon', href: '/icon-192.png' },
+        // DNS Prefetch for external resources
+        { rel: 'dns-prefetch', href: 'https://tqyefifafabyudtyjfam.supabase.co' },
+        { rel: 'preconnect', href: 'https://tqyefifafabyudtyjfam.supabase.co' },
+        { rel: 'dns-prefetch', href: 'https://www.googletagmanager.com' }
       ],
       // Google Analytics 4
       script: [
@@ -111,6 +115,16 @@ export default defineNuxtConfig({
         changefreq: 'daily',
         priority: 0.9,
       })),
+      // 指南頁面
+      { loc: '/guide', changefreq: 'weekly', priority: 0.8 },
+      { loc: '/guide/dehumidifier-buying-guide', changefreq: 'monthly', priority: 0.7 },
+      { loc: '/guide/air-purifier-buying-guide', changefreq: 'monthly', priority: 0.7 },
+      { loc: '/guide/air-conditioner-buying-guide', changefreq: 'monthly', priority: 0.7 },
+      { loc: '/guide/dehumidifier-vs-air-purifier', changefreq: 'monthly', priority: 0.7 },
+      // 品牌頁面
+      { loc: '/brand', changefreq: 'weekly', priority: 0.8 },
+      // 比較頁面
+      { loc: '/compare', changefreq: 'daily', priority: 0.6 },
     ],
   },
 
@@ -121,6 +135,16 @@ export default defineNuxtConfig({
         '/',
         // Category listing pages (crawler will discover product pages from here)
         ...categorySlugs.map(slug => `/${slug}`),
+        // Guide pages
+        '/guide',
+        '/guide/dehumidifier-buying-guide',
+        '/guide/air-purifier-buying-guide',
+        '/guide/air-conditioner-buying-guide',
+        '/guide/dehumidifier-vs-air-purifier',
+        // Brand pages
+        '/brand',
+        // Compare page
+        '/compare',
       ],
       // Ignore static files that are served from public folder
       ignore: ['/manifest.json', '/favicon.svg', '/icon-192.png', '/screenshot-wide.png', '/screenshot-narrow.png'],

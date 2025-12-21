@@ -80,42 +80,112 @@ async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier
     } else if (category === 'air-purifier') {
       const data = await import('~/data/air_purifiers.json')
       if (data.products && data.products.length > 0) {
-        products.push(...data.products.map((p: any) => ({
-          ...p,
-          category_slug: 'air-purifier',
-          slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
-          affiliate_url: p.affiliate_url || p.momo_url,
-        })))
+        products.push(...data.products.map((p: any) => {
+          // 從 features 提取功能資訊
+          const features = p.features || []
+          const featuresStr = features.join(' ').toLowerCase()
+          const hasAppControl = featuresStr.includes('app') || featuresStr.includes('wifi') || featuresStr.includes('智能')
+          const hasPm25Sensor = featuresStr.includes('pm2.5') || featuresStr.includes('感測') || featuresStr.includes('sensor')
+
+          // 展平 specs 到頂層
+          const specs = p.specs || {}
+
+          return {
+            ...p,
+            category_slug: 'air-purifier',
+            slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
+            affiliate_url: p.affiliate_url || p.momo_url,
+            // 展平規格欄位
+            cadr: specs.cadr ?? null,
+            coverage: specs.coverage_area ?? specs.coverage ?? null,
+            noise_level: specs.noise_level ?? null,
+            power_consumption: specs.power_consumption ?? null,
+            filter_type: specs.filter_type ?? null,
+            filter_life: specs.filter_life ?? null,
+            filter_cost: specs.filter_cost ?? null,
+            // 從 features 提取的布林值
+            app_control: hasAppControl,
+            pm25_sensor: hasPm25Sensor,
+          }
+        }))
       }
     } else if (category === 'air-conditioner') {
       const data = await import('~/data/air_conditioners.json')
       if (data.products && data.products.length > 0) {
-        products.push(...data.products.map((p: any) => ({
-          ...p,
-          category_slug: 'air-conditioner',
-          slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
-          affiliate_url: p.affiliate_url || p.momo_url,
-        })))
+        products.push(...data.products.map((p: any) => {
+          // 展平 specs 到頂層
+          const specs = p.specs || {}
+          return {
+            ...p,
+            category_slug: 'air-conditioner',
+            slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
+            affiliate_url: p.affiliate_url || p.momo_url,
+            // 展平規格欄位
+            cooling_capacity: specs.cooling_capacity ?? null,
+            coverage: specs.coverage ?? null,
+            type: specs.type ?? null,
+            inverter: specs.inverter ?? null,
+            cspf: specs.cspf ?? null,
+            energy_efficiency: specs.energy_efficiency ?? null,
+            noise_indoor: specs.noise_indoor ?? null,
+            noise_outdoor: specs.noise_outdoor ?? null,
+            heating: specs.heating ?? false,
+          }
+        }))
       }
     } else if (category === 'heater') {
       const data = await import('~/data/heaters.json')
       if (data.products && data.products.length > 0) {
-        products.push(...data.products.map((p: any) => ({
-          ...p,
-          category_slug: 'heater',
-          slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
-          affiliate_url: p.affiliate_url || p.momo_url,
-        })))
+        products.push(...data.products.map((p: any) => {
+          // 展平 specs 到頂層
+          const specs = p.specs || {}
+          return {
+            ...p,
+            category_slug: 'heater',
+            slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
+            affiliate_url: p.affiliate_url || p.momo_url,
+            // 展平規格欄位
+            heating_power: specs.heating_power ?? null,
+            type: specs.type ?? null,
+            coverage: specs.coverage ?? null,
+            oscillation: specs.oscillation ?? false,
+            timer: specs.timer ?? false,
+            tip_over_protection: specs.tip_over_protection ?? false,
+          }
+        }))
       }
     } else if (category === 'fan') {
       const data = await import('~/data/fans.json')
       if (data.products && data.products.length > 0) {
-        products.push(...data.products.map((p: any) => ({
-          ...p,
-          category_slug: 'fan',
-          slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
-          affiliate_url: p.affiliate_url || p.momo_url,
-        })))
+        products.push(...data.products.map((p: any) => {
+          // 從 features 提取遙控器和定時功能
+          const features = p.features || []
+          const featuresLower = features.map((f: string) => f.toLowerCase())
+          const hasRemote = featuresLower.some((f: string) =>
+            f.includes('遙控') || f.includes('remote')
+          )
+          const hasTimer = featuresLower.some((f: string) =>
+            f.includes('定時') || f.includes('timer')
+          )
+
+          // 展平 specs 到頂層
+          const specs = p.specs || {}
+
+          return {
+            ...p,
+            category_slug: 'fan',
+            slug: p.slug || `${p.brand.toLowerCase()}-${p.id}`.replace(/[\s_]/g, '-'),
+            affiliate_url: p.affiliate_url || p.momo_url,
+            // 展平規格欄位
+            fan_type: specs.fan_type || null,
+            motor_type: specs.motor_type || null,
+            size: specs.size || null,
+            noise_level: specs.noise_level || null,
+            // 從 features 提取的布林值
+            has_remote: hasRemote,
+            has_timer: hasTimer,
+          }
+        }))
       }
     }
   } catch (e) {

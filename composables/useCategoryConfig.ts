@@ -239,6 +239,7 @@ const airPurifierConfig: CategoryConfig = {
       label: 'PM2.5 感測器',
       icon: 'Gauge',
       filterType: 'checkbox',
+      formatValue: (v: boolean) => v ? '有' : '無',
       compareDirection: 'none',
       showInCompare: true,
       showInDetail: true,
@@ -248,6 +249,7 @@ const airPurifierConfig: CategoryConfig = {
       label: 'APP 控制',
       icon: 'Smartphone',
       filterType: 'checkbox',
+      formatValue: (v: boolean) => v ? '有' : '無',
       compareDirection: 'none',
       showInCompare: true,
       showInDetail: true,
@@ -324,6 +326,14 @@ const airConditionerConfig: CategoryConfig = {
         { value: 'window', label: '窗型' },
         { value: 'portable', label: '移動式' },
       ],
+      formatValue: (v: string) => {
+        const map: Record<string, string> = {
+          'split': '分離式',
+          'window': '窗型',
+          'portable': '移動式',
+        }
+        return map[v] || v
+      },
       compareDirection: 'none',
       showInCard: true,
       showInCompare: true,
@@ -339,6 +349,16 @@ const airConditionerConfig: CategoryConfig = {
         { value: 'inverter', label: '變頻' },
         { value: 'fixed', label: '定頻' },
       ],
+      formatValue: (v: string | boolean) => {
+        if (typeof v === 'boolean') return v ? '變頻' : '定頻'
+        const map: Record<string, string> = {
+          'inverter': '變頻',
+          'fixed': '定頻',
+          'true': '變頻',
+          'false': '定頻',
+        }
+        return map[v] || v
+      },
       compareDirection: 'none',
       showInCard: true,
       showInCompare: true,
@@ -394,6 +414,7 @@ const airConditionerConfig: CategoryConfig = {
       label: '冷暖兩用',
       icon: 'Flame',
       filterType: 'checkbox',
+      formatValue: (v: boolean) => v ? '冷暖' : '單冷',
       compareDirection: 'none',
       showInCompare: true,
       showInDetail: true,
@@ -459,6 +480,19 @@ const heaterConfig: CategoryConfig = {
         { value: 'halogen', label: '鹵素/碳素' },
         { value: 'fan', label: '暖風機' },
       ],
+      formatValue: (v: string) => {
+        const map: Record<string, string> = {
+          'ceramic': '陶瓷式',
+          'oil': '葉片式',
+          'halogen': '鹵素/碳素',
+          'carbon': '碳素式',
+          'fan': '暖風機',
+          'ptc': 'PTC陶瓷式',
+          'infrared': '紅外線',
+          'convection': '對流式',
+        }
+        return map[v] || v
+      },
       compareDirection: 'none',
       showInCard: true,
       showInCompare: true,
@@ -480,6 +514,7 @@ const heaterConfig: CategoryConfig = {
       label: '擺頭功能',
       icon: 'RotateCw',
       filterType: 'checkbox',
+      formatValue: (v: boolean) => v ? '有' : '無',
       compareDirection: 'none',
       showInCompare: true,
       showInDetail: true,
@@ -489,6 +524,7 @@ const heaterConfig: CategoryConfig = {
       label: '定時功能',
       icon: 'Clock',
       filterType: 'checkbox',
+      formatValue: (v: boolean) => v ? '有' : '無',
       compareDirection: 'none',
       showInCompare: true,
       showInDetail: true,
@@ -498,6 +534,7 @@ const heaterConfig: CategoryConfig = {
       label: '傾倒斷電',
       icon: 'ShieldCheck',
       filterType: 'checkbox',
+      formatValue: (v: boolean) => v ? '有' : '無',
       compareDirection: 'none',
       showInCompare: true,
       showInDetail: true,
@@ -534,7 +571,7 @@ const fanConfig: CategoryConfig = {
   seoDescription: '2025 最完整的電風扇規格比較，收錄 DC 變頻扇、循環扇、大廈扇，提供風量、噪音比較。',
   specs: [
     {
-      key: 'type',
+      key: 'fan_type',  // 對應資料庫 specs.fan_type
       label: '類型',
       icon: 'LayoutGrid',
       filterType: 'select',
@@ -545,13 +582,22 @@ const fanConfig: CategoryConfig = {
         { value: 'tower', label: '大廈扇' },
         { value: 'desk', label: '桌扇' },
       ],
+      formatValue: (v: string) => {
+        const map: Record<string, string> = {
+          'stand': '立扇',
+          'circulator': '循環扇',
+          'tower': '大廈扇',
+          'desk': '桌扇',
+        }
+        return map[v] || v
+      },
       compareDirection: 'none',
       showInCard: true,
       showInCompare: true,
       showInDetail: true,
     },
     {
-      key: 'motor_type',
+      key: 'motor_type',  // 對應資料庫 specs.motor_type
       label: '馬達類型',
       icon: 'Cpu',
       filterType: 'select',
@@ -560,13 +606,14 @@ const fanConfig: CategoryConfig = {
         { value: 'dc', label: 'DC 變頻' },
         { value: 'ac', label: 'AC 定頻' },
       ],
+      formatValue: (v: string) => v === 'dc' ? 'DC 變頻' : 'AC 定頻',
       compareDirection: 'none',
       showInCard: true,
       showInCompare: true,
       showInDetail: true,
     },
     {
-      key: 'blade_size',
+      key: 'size',  // 對應資料庫 specs.size (原本是 blade_size)
       label: '扇葉尺寸',
       unit: '吋',
       icon: 'Circle',
@@ -584,48 +631,32 @@ const fanConfig: CategoryConfig = {
       showInDetail: true,
     },
     {
-      key: 'speed_levels',
-      label: '風速段數',
-      icon: 'Gauge',
-      filterType: 'none',
-      compareDirection: 'higher',
-      showInCompare: true,
-      showInDetail: true,
-    },
-    {
-      key: 'noise_level',
+      key: 'noise_level',  // 對應資料庫 specs.noise_level
       label: '噪音值',
       unit: 'dB',
       icon: 'Volume2',
       filterType: 'none',
       compareDirection: 'lower',
+      showInCard: true,
       showInCompare: true,
       showInDetail: true,
     },
     {
-      key: 'power_consumption',
-      label: '消耗功率',
-      unit: 'W',
-      icon: 'Zap',
-      filterType: 'none',
-      compareDirection: 'lower',
-      showInCompare: true,
-      showInDetail: true,
-    },
-    {
-      key: 'remote_control',
+      key: 'has_remote',  // 從 features 提取
       label: '遙控器',
       icon: 'Radio',
       filterType: 'checkbox',
+      formatValue: (v: boolean) => v ? '有' : '無',
       compareDirection: 'none',
       showInCompare: true,
       showInDetail: true,
     },
     {
-      key: 'timer',
+      key: 'has_timer',  // 從 features 提取
       label: '定時功能',
       icon: 'Clock',
       filterType: 'checkbox',
+      formatValue: (v: boolean) => v ? '有' : '無',
       compareDirection: 'none',
       showInCompare: true,
       showInDetail: true,
@@ -633,8 +664,8 @@ const fanConfig: CategoryConfig = {
   ],
   quickTags: [
     { label: 'DC變頻', filterKey: 'motor_type', filterValue: 'dc' },
-    { label: '循環扇', filterKey: 'type', filterValue: 'circulator' },
-    { label: '大廈扇', filterKey: 'type', filterValue: 'tower' },
+    { label: '循環扇', filterKey: 'fan_type', filterValue: 'circulator' },
+    { label: '大廈扇', filterKey: 'fan_type', filterValue: 'tower' },
     { label: '高CP值', sortBy: 'value_asc' },
     { label: '超值折扣', sortBy: 'discount_desc' },
   ],
@@ -647,8 +678,8 @@ const fanConfig: CategoryConfig = {
     { value: 'price_desc', label: '價格：高到低' },
     { value: 'noise_asc', label: '最安靜' },
   ],
-  popularBrands: ['Panasonic', 'SAMPO', '聲寶', 'HERAN', '禾聯', 'AIRMATE', '艾美特', 'CHIMEI', '奇美'],
-  cpValueSpec: 'blade_size',
+  popularBrands: ['Panasonic', 'SAMPO', '聲寶', 'HERAN', '禾聯', 'AIRMATE', '艾美特', 'CHIMEI', '奇美', 'TECO', '東元', 'IRIS'],
+  cpValueSpec: 'size',  // 改為 size
 }
 
 // 所有品類設定

@@ -3,7 +3,9 @@ import { computed, ref, onUnmounted } from 'vue'
 import { Check, GitCompare, Heart, Eye } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
 import { useProducts } from '~/composables/useProducts'
+import { useProductBadges } from '~/composables/useProductBadges'
 import ProductQuickPreview from '~/components/ProductQuickPreview.vue'
+import ProductBadge from '~/components/ProductBadge.vue'
 import {
   formatPrice,
   getDiscountPercent,
@@ -74,8 +76,12 @@ const emit = defineEmits<{
 }>()
 
 const { getProductSlug } = useProducts()
+const { getBadges } = useProductBadges()
 
 const slug = computed(() => getProductSlug(props.product))
+
+// Product badges (hot, editor-pick, best-value, flash-sale)
+const badges = computed(() => getBadges(props.product, props.categorySlug))
 
 // 產品連結（支援品類路由）
 const productUrl = computed(() => `/${props.categorySlug}/${slug.value}`)
@@ -106,12 +112,27 @@ const valueScore = computed(() => getValueScore(props.product.price, props.produ
 // Display brand - hide "Other", try to extract from name
 const displayBrand = computed(() => getDisplayBrand(props.product))
 
-// Search highlighting
+// HTML escape function to prevent XSS
+const escapeHtml = (text: string): string => {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }
+  return text.replace(/[&<>"']/g, (char) => map[char])
+}
+
+// Search highlighting with XSS protection
 const highlightText = (text: string): string => {
-  if (!props.searchQuery || props.searchQuery.length < 2) return text
-  const query = props.searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const regex = new RegExp(`(${query})`, 'gi')
-  return text.replace(regex, '<mark class="bg-yellow-200 text-gray-900 px-0.5 rounded">$1</mark>')
+  if (!props.searchQuery || props.searchQuery.length < 2) return escapeHtml(text)
+  // Escape HTML first, then apply highlighting
+  const escapedText = escapeHtml(text)
+  const escapedQuery = escapeHtml(props.searchQuery)
+  const queryForRegex = escapedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const regex = new RegExp(`(${queryForRegex})`, 'gi')
+  return escapedText.replace(regex, '<mark class="bg-yellow-200 text-gray-900 px-0.5 rounded">$1</mark>')
 }
 
 const highlightedName = computed(() => highlightText(props.product.name))
@@ -153,9 +174,13 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
         />
         <!-- Hover overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
-        <!-- Energy Badge -->
+        <!-- Product Badges (Hot, Editor Pick, etc.) -->
+        <div v-if="badges.length > 0" class="absolute top-3 left-3 flex flex-col gap-1">
+          <ProductBadge v-for="badge in badges" :key="badge.type" :badge="badge" />
+        </div>
+        <!-- Energy Badge (show if no product badges) -->
         <span
-          v-if="product.energy_efficiency"
+          v-else-if="product.energy_efficiency"
           :class="[energyColor, 'absolute top-3 left-3 text-white text-xs font-medium px-2 py-1 rounded-full']"
         >
           {{ energyLabel }}

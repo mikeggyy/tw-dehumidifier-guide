@@ -5,6 +5,7 @@ import SkipLink from '~/components/SkipLink.vue'
 import ScreenReaderAnnouncer from '~/components/ScreenReaderAnnouncer.vue'
 import PWAInstallPrompt from '~/components/PWAInstallPrompt.vue'
 import OfflineIndicator from '~/components/OfflineIndicator.vue'
+import CookieConsent from '~/components/CookieConsent.vue'
 import { useDarkMode } from '~/composables/useDarkMode'
 import { usePWA } from '~/composables/usePWA'
 
@@ -30,6 +31,7 @@ usePWA()
     <ToastContainer />
     <KeyboardShortcutsHelp />
     <PWAInstallPrompt />
+    <CookieConsent />
   </div>
 </template>
 

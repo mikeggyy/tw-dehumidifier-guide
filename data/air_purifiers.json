@@ -1,8 +1,8 @@
 {
-  "scraped_at": "2025-12-19T20:53:06.656002",
+  "scraped_at": "2025-12-19T22:50:16.531453",
   "category": "air-purifier",
-  "total_count": 304,
-  "in_stock_count": 304,
+  "total_count": 293,
+  "in_stock_count": 293,
   "sold_out_count": 0,
   "products": [
     {
@@ -25,7 +25,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/416/877/12416877_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12416877",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://buyforfun.biz/3Or0S"
     },
     {
       "id": "12540748",
@@ -47,47 +48,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/540/748/12540748_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12540748",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
-    },
-    {
-      "id": "12663338",
-      "brand": "Dyson",
-      "model": "dyson",
-      "name": "【dyson 戴森】BP04 Purifier Big+Quiet Formaldehyde 強效極靜甲醛偵測空氣清淨機(普魯士藍及金色)",
-      "price": 29900,
-      "original_price": 34900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/663/338/12663338_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12663338",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
-    },
-    {
-      "id": "13319092",
-      "brand": "Dyson",
-      "model": "dyson",
-      "name": "【dyson 戴森】HP10 Purifier Hot+Cool Gen1 三合一涼暖空氣清淨機 循環風扇",
-      "price": 12900,
-      "original_price": 20900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/319/092/13319092_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13319092",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://pinkrose.info/3Or0T"
     },
     {
       "id": "8512957",
@@ -107,7 +69,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/512/957/8512957_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8512957",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://shopsquare.co/3Or0U"
     },
     {
       "id": "12165636",
@@ -127,7 +90,29 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/165/636/12165636_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12165636",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://adcenter.conn.tw/3Or0V"
+    },
+    {
+      "id": "11311189",
+      "brand": "LG",
+      "model": "CADR480",
+      "name": "【LG 樂金】新革新超淨化大白抗敏空氣清淨機(CADR480/AS601HWG0/PuriCare)",
+      "price": 6684,
+      "original_price": 12900,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": 480.0,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/311/189/11311189_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11311189",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://ibanana.biz/3Or0W"
     },
     {
       "id": "12661609",
@@ -149,27 +134,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/661/609/12661609_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12661609",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
-    },
-    {
-      "id": "11311189",
-      "brand": "LG",
-      "model": "CADR480",
-      "name": "【LG 樂金】新革新超淨化大白抗敏空氣清淨機(CADR480/AS601HWG0/PuriCare)",
-      "price": 6684,
-      "original_price": 12900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": 480.0,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/311/189/11311189_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11311189",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://product.mchannles.com/3Or0X"
     },
     {
       "id": "11314215",
@@ -189,7 +155,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/314/215/11314215_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11314215",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or0Y"
     },
     {
       "id": "14152516",
@@ -211,71 +178,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/152/516/14152516_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14152516",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
-    },
-    {
-      "id": "14269462",
-      "brand": "CHIMEI",
-      "model": "CHIMEI",
-      "name": "【CHIMEI 奇美】 淨方白雙入組 一級能效DC直流HEPA微濾淨空氣清淨機",
-      "price": 2990,
-      "original_price": 0,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [
-        "HEPA濾網"
-      ],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/269/462/14269462_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14269462",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
-    },
-    {
-      "id": "9492802",
-      "brand": "SHARP",
-      "model": "FU-NC01-W",
-      "name": "【SHARP 夏普】360°呼吸圓柱PCI自動除菌離子空氣清淨機(FU-NC01-W)",
-      "price": 2790,
-      "original_price": 3876,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/492/802/9492802_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9492802",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
-    },
-    {
-      "id": "12705312",
-      "brand": "Electrolux",
-      "model": "PA91-406GY",
-      "name": "【Electrolux 伊萊克斯】高效抗菌智能旗艦清淨機Pure A9(PA91-406GY)",
-      "price": 8999,
-      "original_price": 21900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [
-        "智慧控制"
-      ],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/705/312/12705312_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12705312",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://shopsquare.co/3Or0Z"
     },
     {
       "id": "12147385",
@@ -297,7 +201,75 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/147/385/12147385_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12147385",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://idragon.info/3Or0a"
+    },
+    {
+      "id": "14269462",
+      "brand": "CHIMEI",
+      "model": "CHIMEI",
+      "name": "【CHIMEI 奇美】 淨方白雙入組 一級能效DC直流HEPA微濾淨空氣清淨機",
+      "price": 2990,
+      "original_price": 0,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [
+        "HEPA濾網"
+      ],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/269/462/14269462_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14269462",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://pinkrose.info/3Or0b"
+    },
+    {
+      "id": "12705312",
+      "brand": "Electrolux",
+      "model": "PA91-406GY",
+      "name": "【Electrolux 伊萊克斯】高效抗菌智能旗艦清淨機Pure A9(PA91-406GY)",
+      "price": 8999,
+      "original_price": 21900,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [
+        "智慧控制"
+      ],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/705/312/12705312_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12705312",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://easyfun.biz/3Or0c"
+    },
+    {
+      "id": "9492802",
+      "brand": "SHARP",
+      "model": "FU-NC01-W",
+      "name": "【SHARP 夏普】360°呼吸圓柱PCI自動除菌離子空氣清淨機(FU-NC01-W)",
+      "price": 2790,
+      "original_price": 3876,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/492/802/9492802_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9492802",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://adcenter.conn.tw/3Or0d"
     },
     {
       "id": "14633023",
@@ -317,7 +289,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/633/023/14633023_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14633023",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or0e"
     },
     {
       "id": "7443543",
@@ -337,7 +310,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/443/543/7443543_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7443543",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:23.469308"
+      "scraped_at": "2025-12-19T22:49:38.161452",
+      "affiliate_url": "https://shopsquare.co/3Or0f"
     },
     {
       "id": "13945840",
@@ -359,7 +333,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/945/840/13945840_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13945840",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://iorange.biz/3Or0g"
     },
     {
       "id": "9595881",
@@ -376,13 +351,14 @@
         "power_consumption": null
       },
       "features": [
-        "PM2.5偵測",
-        "負離子"
+        "負離子",
+        "PM2.5偵測"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/595/881/9595881_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9595881",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or0h"
     },
     {
       "id": "13407446",
@@ -402,7 +378,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/407/446/13407446_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13407446",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://pinkrose.info/3Or0i"
     },
     {
       "id": "13407445",
@@ -422,7 +399,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/407/445/13407445_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13407445",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://pinkrose.info/3Or0j"
     },
     {
       "id": "13407391",
@@ -442,27 +420,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/407/391/13407391_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13407391",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
-    },
-    {
-      "id": "9618763",
-      "brand": "SHARP",
-      "model": "IG-NX2T-B",
-      "name": "【SHARP 夏普】好空氣隨行杯PCI自動除菌離子-隨身型空氣淨化器(IG-NX2T-B)",
-      "price": 2590,
-      "original_price": 4190,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/618/763/9618763_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9618763",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://dreamstore.info/3Or0k"
     },
     {
       "id": "4956959",
@@ -482,7 +441,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0004/956/959/4956959_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=4956959",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or0l"
     },
     {
       "id": "9618761",
@@ -502,7 +462,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/618/761/9618761_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9618761",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://easyfun.biz/3Or0m"
     },
     {
       "id": "13344358",
@@ -522,7 +483,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/344/358/13344358_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13344358",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://pinkrose.info/3Or0n"
     },
     {
       "id": "10983454",
@@ -544,7 +506,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/983/454/10983454_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10983454",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://product.mchannles.com/3Or0o"
     },
     {
       "id": "14626683",
@@ -564,7 +527,29 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/626/683/14626683_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14626683",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.084584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://product.mchannles.com/3Or0p"
+    },
+    {
+      "id": "12663338",
+      "brand": "Dyson",
+      "model": "dyson",
+      "name": "【dyson 戴森】BP04 Purifier Big+Quiet Formaldehyde 強效極靜甲醛偵測空氣清淨機(普魯士藍及金色)",
+      "price": 29900,
+      "original_price": 34900,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/663/338/12663338_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12663338",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://igamepark.biz/3Or0q"
     },
     {
       "id": "13258721",
@@ -586,7 +571,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/258/721/13258721_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13258721",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.085584"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or0r"
     },
     {
       "id": "14251976",
@@ -608,27 +594,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/251/976/14251976_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14251976",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:25.085584"
-    },
-    {
-      "id": "9804035",
-      "brand": "Dyson",
-      "model": "dyson",
-      "name": "【dyson 戴森】TP07 Purifier Cool 二合一空氣清淨機(黑鋼色)",
-      "price": 12900,
-      "original_price": 20900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/804/035/9804035_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9804035",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:39.986494",
+      "affiliate_url": "https://adcenter.conn.tw/3Or0s"
     },
     {
       "id": "12447738",
@@ -650,7 +617,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/447/738/12447738_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12447738",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://iorange.biz/3Or0t"
     },
     {
       "id": "10795364",
@@ -670,7 +638,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/795/364/10795364_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10795364",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://igrape.net/3Or0u"
     },
     {
       "id": "13709899",
@@ -690,7 +659,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/709/899/13709899_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13709899",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://igamepark.biz/3Or0v"
     },
     {
       "id": "13744668",
@@ -707,14 +677,36 @@
         "power_consumption": null
       },
       "features": [
+        "UV殺菌",
         "HEPA濾網",
-        "智慧控制",
-        "UV殺菌"
+        "智慧控制"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/744/668/13744668_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13744668",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://easymall.co/3Or0w"
+    },
+    {
+      "id": "13319092",
+      "brand": "Dyson",
+      "model": "dyson",
+      "name": "【dyson 戴森】HP10 Purifier Hot+Cool Gen1 三合一涼暖空氣清淨機 循環風扇",
+      "price": 12900,
+      "original_price": 20900,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/319/092/13319092_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13319092",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://ibanana.biz/3Or0x"
     },
     {
       "id": "12705311",
@@ -734,7 +726,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/705/311/12705311_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12705311",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://igamepark.biz/3Or0y"
     },
     {
       "id": "14723178",
@@ -756,7 +749,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/723/178/14723178_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14723178",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://product.mchannles.com/3Or0z"
     },
     {
       "id": "12268976",
@@ -776,7 +770,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/268/976/12268976_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12268976",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://iorange.biz/3Or0_"
     },
     {
       "id": "14697499",
@@ -798,7 +793,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/697/499/14697499_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14697499",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://shopsquare.co/3Or0-"
     },
     {
       "id": "9618760",
@@ -818,7 +814,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/618/760/9618760_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9618760",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:26.760189"
+      "scraped_at": "2025-12-19T22:49:41.422929",
+      "affiliate_url": "https://shoppingfun.co/3Or10"
     },
     {
       "id": "14315722",
@@ -841,7 +838,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/315/722/14315722_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14315722",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.082730",
+      "affiliate_url": "https://easymall.co/3Or11"
     },
     {
       "id": "10983455",
@@ -861,7 +859,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/983/455/10983455_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10983455",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.082730",
+      "affiliate_url": "https://ibanana.biz/3Or12"
     },
     {
       "id": "4202864",
@@ -881,7 +880,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0004/202/864/4202864_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=4202864",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://ibanana.biz/3Or13"
     },
     {
       "id": "8980655",
@@ -903,7 +903,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/980/655/8980655_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8980655",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://wonderfulapple.net/3Or14"
     },
     {
       "id": "9853844",
@@ -923,7 +924,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/853/844/9853844_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9853844",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://idragon.info/3Or15"
     },
     {
       "id": "13457748",
@@ -943,7 +945,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/457/748/13457748_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13457748",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://shoppingfun.co/3Or16"
     },
     {
       "id": "12994628",
@@ -965,7 +968,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/994/628/12994628_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12994628",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://wonderfulapple.net/3Or17"
     },
     {
       "id": "10778221",
@@ -985,7 +989,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/778/221/10778221_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10778221",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://igamepark.biz/3Or18"
     },
     {
       "id": "12419328",
@@ -1007,7 +1012,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/419/328/12419328_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12419328",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://product.mchannles.com/3Or19"
     },
     {
       "id": "5946801",
@@ -1029,7 +1035,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0005/946/801/5946801_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=5946801",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://ibestfun.net/3Or1A"
     },
     {
       "id": "13572925",
@@ -1049,7 +1056,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/572/925/13572925_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13572925",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://shoppingfun.co/3Or1B"
     },
     {
       "id": "5879007",
@@ -1069,7 +1077,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0005/879/007/5879007_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=5879007",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://easymall.co/3Or1C"
     },
     {
       "id": "12165564",
@@ -1089,7 +1098,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/165/564/12165564_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12165564",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:43.083728",
+      "affiliate_url": "https://easymall.co/3Or1D"
     },
     {
       "id": "12312728",
@@ -1111,7 +1121,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/312/728/12312728_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12312728",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:44.560585",
+      "affiliate_url": "https://whitehippo.net/3Or1E"
     },
     {
       "id": "14315720",
@@ -1134,7 +1145,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/315/720/14315720_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14315720",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:28.321433"
+      "scraped_at": "2025-12-19T22:49:44.560585",
+      "affiliate_url": "https://igamepark.biz/3Or1F"
     },
     {
       "id": "12419326",
@@ -1156,7 +1168,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/419/326/12419326_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12419326",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.863525"
+      "scraped_at": "2025-12-19T22:49:44.560585",
+      "affiliate_url": "https://easyfun.biz/3Or1G"
     },
     {
       "id": "9809613",
@@ -1176,7 +1189,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/809/613/9809613_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9809613",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.863525"
+      "scraped_at": "2025-12-19T22:49:44.560585",
+      "affiliate_url": "https://dreamstore.info/3Or1H"
     },
     {
       "id": "14633020",
@@ -1196,7 +1210,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/633/020/14633020_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14633020",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
+      "scraped_at": "2025-12-19T22:49:44.561585",
+      "affiliate_url": "https://shopsquare.co/3Or1I"
     },
     {
       "id": "12296854",
@@ -1216,7 +1231,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/296/854/12296854_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12296854",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
+      "scraped_at": "2025-12-19T22:49:44.561585",
+      "affiliate_url": "https://igrape.net/3Or1J"
     },
     {
       "id": "8980654",
@@ -1238,7 +1254,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/980/654/8980654_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8980654",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
+      "scraped_at": "2025-12-19T22:49:44.561585",
+      "affiliate_url": "https://igamepark.biz/3Or1K"
     },
     {
       "id": "13227428",
@@ -1258,7 +1275,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/227/428/13227428_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13227428",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
+      "scraped_at": "2025-12-19T22:49:44.561585",
+      "affiliate_url": "https://product.mchannles.com/3Or1L"
     },
     {
       "id": "14018317",
@@ -1280,27 +1298,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/018/317/14018317_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14018317",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
-    },
-    {
-      "id": "11112403",
-      "brand": "",
-      "model": "ible",
-      "name": "【ible】小艾寶Airvida C1 - LINE FRIENDS穿戴式空氣清淨機/ 熊大款(熊大)",
-      "price": 3712,
-      "original_price": 5230,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/112/403/11112403_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11112403",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
+      "scraped_at": "2025-12-19T22:49:44.561585",
+      "affiliate_url": "https://adcenter.conn.tw/3Or1M"
     },
     {
       "id": "14404107",
@@ -1322,7 +1321,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/404/107/14404107_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14404107",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
+      "scraped_at": "2025-12-19T22:49:44.561585",
+      "affiliate_url": "https://igamepark.biz/3Or1N"
     },
     {
       "id": "9353825",
@@ -1342,7 +1342,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/353/825/9353825_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9353825",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
+      "scraped_at": "2025-12-19T22:49:44.561585",
+      "affiliate_url": "https://igrape.net/3Or1O"
     },
     {
       "id": "13563436",
@@ -1364,7 +1365,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/563/436/13563436_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13563436",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or1P"
     },
     {
       "id": "12651020",
@@ -1384,7 +1386,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/651/020/12651020_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12651020",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:29.864526"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://idragon.info/3Or1Q"
     },
     {
       "id": "12149028",
@@ -1404,7 +1407,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/149/028/12149028_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12149028",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.320064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://greenmall.info/3Or1R"
     },
     {
       "id": "11137045",
@@ -1421,13 +1425,14 @@
         "power_consumption": null
       },
       "features": [
-        "WiFi連線",
-        "UV殺菌"
+        "UV殺菌",
+        "WiFi連線"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/137/045/11137045_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11137045",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or1S"
     },
     {
       "id": "14715375",
@@ -1449,7 +1454,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/715/375/14715375_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14715375",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or1U"
     },
     {
       "id": "11401934",
@@ -1471,7 +1477,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/401/934/11401934_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11401934",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://igrape.net/3Or1V"
     },
     {
       "id": "14633022",
@@ -1491,7 +1498,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/633/022/14633022_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14633022",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://shoppingfun.co/3Or1W"
     },
     {
       "id": "12939973",
@@ -1513,7 +1521,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/939/973/12939973_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12939973",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://iorange.biz/3Or1X"
     },
     {
       "id": "14164048",
@@ -1533,7 +1542,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/164/048/14164048_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14164048",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://igrape.net/3Or1Y"
     },
     {
       "id": "9027398",
@@ -1553,7 +1563,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/027/398/9027398_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9027398",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://buyforfun.biz/3Or1Z"
     },
     {
       "id": "14440320",
@@ -1573,7 +1584,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/440/320/14440320_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14440320",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://easyfun.biz/3Or1a"
     },
     {
       "id": "10702610",
@@ -1595,7 +1607,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/702/610/10702610_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10702610",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://buyforfun.biz/3Or1b"
     },
     {
       "id": "13682714",
@@ -1615,7 +1628,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/682/714/13682714_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13682714",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://iorange.biz/3Or1c"
     },
     {
       "id": "14573867",
@@ -1637,7 +1651,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/573/867/14573867_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14573867",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:31.321064"
+      "scraped_at": "2025-12-19T22:49:45.897373",
+      "affiliate_url": "https://igamepark.biz/3Or1d"
     },
     {
       "id": "14579966",
@@ -1657,7 +1672,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/579/966/14579966_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14579966",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.184890",
+      "affiliate_url": "https://igamepark.biz/3Or1e"
     },
     {
       "id": "14633028",
@@ -1677,7 +1693,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/633/028/14633028_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14633028",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.184890",
+      "affiliate_url": "https://ibanana.biz/3Or1f"
     },
     {
       "id": "13635481",
@@ -1697,7 +1714,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/635/481/13635481_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13635481",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.184890",
+      "affiliate_url": "https://iorange.biz/3Or1g"
     },
     {
       "id": "12533329",
@@ -1717,7 +1735,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/533/329/12533329_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12533329",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.185890",
+      "affiliate_url": "https://shopsquare.co/3Or1h"
     },
     {
       "id": "14566154",
@@ -1737,7 +1756,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/566/154/14566154_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14566154",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.185890",
+      "affiliate_url": "https://ibanana.biz/3Or1i"
     },
     {
       "id": "13120112",
@@ -1757,7 +1777,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/120/112/13120112_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13120112",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.185890",
+      "affiliate_url": "https://buyforfun.biz/3Or1j"
     },
     {
       "id": "13283683",
@@ -1779,7 +1800,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/283/683/13283683_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13283683",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.185890",
+      "affiliate_url": "https://shopsquare.co/3Or1k"
     },
     {
       "id": "11740844",
@@ -1801,7 +1823,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/740/844/11740844_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11740844",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.185890",
+      "affiliate_url": "https://ibestfun.net/3Or1l"
     },
     {
       "id": "12296855",
@@ -1821,7 +1844,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/296/855/12296855_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12296855",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.185890",
+      "affiliate_url": "https://dreamstore.info/3Or1m"
     },
     {
       "id": "10656990",
@@ -1843,7 +1867,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/656/990/10656990_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10656990",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.185890",
+      "affiliate_url": "https://whitehippo.net/3Or1n"
     },
     {
       "id": "14334698",
@@ -1863,7 +1888,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/334/698/14334698_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14334698",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
+      "scraped_at": "2025-12-19T22:49:47.185890",
+      "affiliate_url": "https://shoppingfun.co/3Or1o"
     },
     {
       "id": "13728621",
@@ -1883,89 +1909,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/728/621/13728621_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13728621",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:32.746686"
-    },
-    {
-      "id": "9698806",
-      "brand": "Dyson",
-      "model": "dyson",
-      "name": "【dyson 戴森】TP07 Purifier Cool 二合一空氣清淨機(黑鋼色)",
-      "price": 11112,
-      "original_price": 20900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/698/806/9698806_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9698806",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
-    },
-    {
-      "id": "13575341",
-      "brand": "LG",
-      "model": "PuriCare",
-      "name": "【LG 樂金】PuriCare™ AeroTower Hit 風革機-三合一涼暖系列清淨機 FS151PCJ0/經典版(奶茶棕)",
-      "price": 18112,
-      "original_price": 20900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/575/341/13575341_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13575341",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
-    },
-    {
-      "id": "12423903",
-      "brand": "LG",
-      "model": "AS101DBY0",
-      "name": "【LG 樂金】寵物版雙層抗敏循環空氣清淨機-二代專業版(360°全室淨化/AS101DBY0/UVnano)",
-      "price": 32800,
-      "original_price": 38800,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [
-        "UV殺菌"
-      ],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/423/903/12423903_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12423903",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
-    },
-    {
-      "id": "9853854",
-      "brand": "Daikin",
-      "model": "MC40USCT7",
-      "name": "【DAIKIN 大金】9.5坪閃流放電空氣清淨機(MC40USCT7)",
-      "price": 5980,
-      "original_price": 12150,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": 9.5,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/853/854/9853854_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9853854",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
+      "scraped_at": "2025-12-19T22:49:47.185890",
+      "affiliate_url": "https://easyfun.biz/3Or1p"
     },
     {
       "id": "9795419",
@@ -1985,7 +1930,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/795/419/9795419_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9795419",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://wonderfulapple.net/3Or1q"
     },
     {
       "id": "12854832",
@@ -2007,7 +1953,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/854/832/12854832_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12854832",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://buyforfun.biz/3Or1r"
     },
     {
       "id": "14723137",
@@ -2029,7 +1976,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/723/137/14723137_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14723137",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://joymall.co/3Or1s"
     },
     {
       "id": "12537932",
@@ -2049,7 +1997,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/537/932/12537932_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12537932",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://buyforfun.biz/3Or1t"
     },
     {
       "id": "14633024",
@@ -2069,7 +2018,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/633/024/14633024_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14633024",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or1u"
     },
     {
       "id": "11141805",
@@ -2089,7 +2039,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/141/805/11141805_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11141805",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://whitehippo.net/3Or1v"
     },
     {
       "id": "8866357",
@@ -2109,7 +2060,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/866/357/8866357_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8866357",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://wonderfulapple.net/3Or1w"
     },
     {
       "id": "13263893",
@@ -2131,7 +2083,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/263/893/13263893_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13263893",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.316359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://idragon.info/3Or1x"
     },
     {
       "id": "12298283",
@@ -2151,7 +2104,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/298/283/12298283_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12298283",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.317359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://ibestfun.net/3Or1y"
     },
     {
       "id": "6580474",
@@ -2173,7 +2127,29 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0006/580/474/6580474_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6580474",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:34.317359"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://buyforfun.biz/3Or1z"
+    },
+    {
+      "id": "12296951",
+      "brand": "Coway",
+      "model": "Coway",
+      "name": "【Coway】(抑制流感)10-20坪急速循環+5-12坪急速循環空氣清淨機(AP-1516D+AP-1220B)",
+      "price": 17800,
+      "original_price": 38700,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": 10.0,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/296/951/12296951_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12296951",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://igrape.net/3Or1_"
     },
     {
       "id": "14652037",
@@ -2193,7 +2169,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/652/037/14652037_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14652037",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.776672"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or1-"
     },
     {
       "id": "10464294",
@@ -2211,13 +2188,14 @@
       },
       "features": [
         "智慧控制",
-        "APP控制",
-        "除臭功能"
+        "除臭功能",
+        "APP控制"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/464/294/10464294_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10464294",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.776672"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://igamepark.biz/3Or20"
     },
     {
       "id": "14726513",
@@ -2237,7 +2215,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/726/513/14726513_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14726513",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.776672"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://easymall.co/3Or21"
     },
     {
       "id": "14266876",
@@ -2260,7 +2239,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/266/876/14266876_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14266876",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.776672"
+      "scraped_at": "2025-12-19T22:49:48.530183",
+      "affiliate_url": "https://ibanana.biz/3Or22"
     },
     {
       "id": "11117938",
@@ -2277,15 +2257,16 @@
         "power_consumption": null
       },
       "features": [
-        "HEPA濾網",
         "UV殺菌",
-        "負離子",
-        "靜音模式"
+        "HEPA濾網",
+        "靜音模式",
+        "負離子"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/117/938/11117938_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11117938",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.778174"
+      "scraped_at": "2025-12-19T22:49:49.662156",
+      "affiliate_url": "https://adcenter.conn.tw/3Or23"
     },
     {
       "id": "13035918",
@@ -2305,7 +2286,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/035/918/13035918_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13035918",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.778174"
+      "scraped_at": "2025-12-19T22:49:49.662156",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or24"
     },
     {
       "id": "11401936",
@@ -2327,7 +2309,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/401/936/11401936_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11401936",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.778174"
+      "scraped_at": "2025-12-19T22:49:49.662156",
+      "affiliate_url": "https://pinkrose.info/3Or25"
     },
     {
       "id": "12699034",
@@ -2347,7 +2330,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/699/034/12699034_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12699034",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.778174"
+      "scraped_at": "2025-12-19T22:49:49.662156",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or26"
     },
     {
       "id": "13421461",
@@ -2369,7 +2353,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/421/461/13421461_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13421461",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.778174"
+      "scraped_at": "2025-12-19T22:49:49.662156",
+      "affiliate_url": "https://shopsquare.co/3Or27"
     },
     {
       "id": "14135355",
@@ -2391,7 +2376,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/135/355/14135355_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14135355",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.778174"
+      "scraped_at": "2025-12-19T22:49:49.662156",
+      "affiliate_url": "https://whitehippo.net/3Or28"
     },
     {
       "id": "12537935",
@@ -2411,7 +2397,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/537/935/12537935_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12537935",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.778174"
+      "scraped_at": "2025-12-19T22:49:49.662156",
+      "affiliate_url": "https://idragon.info/3Or29"
     },
     {
       "id": "13975829",
@@ -2433,7 +2420,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/975/829/13975829_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13975829",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.778174"
+      "scraped_at": "2025-12-19T22:49:49.662156",
+      "affiliate_url": "https://iorange.biz/3Or2A"
     },
     {
       "id": "13607834",
@@ -2455,7 +2443,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/607/834/13607834_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13607834",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:35.778174"
+      "scraped_at": "2025-12-19T22:49:49.663158",
+      "affiliate_url": "https://ibanana.biz/3Or2B"
     },
     {
       "id": "14546833",
@@ -2475,7 +2464,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/546/833/14546833_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14546833",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:37.196106"
+      "scraped_at": "2025-12-19T22:49:49.663158",
+      "affiliate_url": "https://shopsquare.co/3Or2C"
     },
     {
       "id": "14651981",
@@ -2495,7 +2485,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/651/981/14651981_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14651981",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:37.196106"
+      "scraped_at": "2025-12-19T22:49:49.663158",
+      "affiliate_url": "https://product.mchannles.com/3Or2D"
     },
     {
       "id": "11999858",
@@ -2515,7 +2506,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/999/858/11999858_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11999858",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:37.196106"
+      "scraped_at": "2025-12-19T22:49:50.971560",
+      "affiliate_url": "https://igamepark.biz/3Or2E"
     },
     {
       "id": "12821357",
@@ -2535,7 +2527,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/821/357/12821357_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12821357",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:37.196106"
+      "scraped_at": "2025-12-19T22:49:50.971560",
+      "affiliate_url": "https://joymall.co/3Or2F"
     },
     {
       "id": "13797530",
@@ -2555,7 +2548,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/797/530/13797530_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13797530",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:37.196106"
+      "scraped_at": "2025-12-19T22:49:50.971560",
+      "affiliate_url": "https://buyforfun.biz/3Or2G"
     },
     {
       "id": "13227429",
@@ -2575,7 +2569,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/227/429/13227429_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13227429",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:37.196106"
+      "scraped_at": "2025-12-19T22:49:50.971560",
+      "affiliate_url": "https://iorange.biz/3Or2H"
     },
     {
       "id": "11212141",
@@ -2595,7 +2590,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/212/141/11212141_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11212141",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:37.196106"
+      "scraped_at": "2025-12-19T22:49:50.971560",
+      "affiliate_url": "https://shoppingfun.co/3Or2I"
     },
     {
       "id": "9901422",
@@ -2615,7 +2611,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/901/422/9901422_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9901422",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://igrape.net/3Or2J"
     },
     {
       "id": "13361266",
@@ -2637,7 +2634,29 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/361/266/13361266_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13361266",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://easyfun.biz/3Or2K"
+    },
+    {
+      "id": "9698806",
+      "brand": "Dyson",
+      "model": "dyson",
+      "name": "【dyson 戴森】TP07 Purifier Cool 二合一空氣清淨機(黑鋼色)",
+      "price": 11112,
+      "original_price": 20900,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/698/806/9698806_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9698806",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://igrape.net/3Or2L"
     },
     {
       "id": "12885719",
@@ -2657,7 +2676,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/885/719/12885719_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12885719",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://igrape.net/3Or2M"
     },
     {
       "id": "8967684",
@@ -2674,14 +2694,15 @@
         "power_consumption": null
       },
       "features": [
-        "WiFi連線",
         "智慧控制",
+        "WiFi連線",
         "APP控制"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/967/684/8967684_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8967684",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://wonderfulapple.net/3Or2N"
     },
     {
       "id": "14146067",
@@ -2701,7 +2722,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/146/067/14146067_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14146067",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://shoppingfun.co/3Or2O"
     },
     {
       "id": "14778674",
@@ -2721,7 +2743,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/778/674/14778674_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14778674",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://shopsquare.co/3Or2P"
     },
     {
       "id": "9795482",
@@ -2741,7 +2764,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/795/482/9795482_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9795482",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://shoppingfun.co/3Or2Q"
     },
     {
       "id": "12939975",
@@ -2761,7 +2785,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/939/975/12939975_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12939975",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://whitehippo.net/3Or2R"
     },
     {
       "id": "14767514",
@@ -2781,7 +2806,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/767/514/14767514_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14767514",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://igrape.net/3Or2S"
     },
     {
       "id": "14510195",
@@ -2801,7 +2827,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/510/195/14510195_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14510195",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://idragon.info/3Or2T"
     },
     {
       "id": "7954818",
@@ -2821,27 +2848,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/954/818/7954818_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7954818",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:38.745115"
-    },
-    {
-      "id": "9634447",
-      "brand": "",
-      "model": "BC400",
-      "name": "【LUFTRUM 瑞際】電漿除菌清淨機BC400(BC400)",
-      "price": 16800,
-      "original_price": 21800,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/634/447/9634447_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9634447",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:40.846526"
+      "scraped_at": "2025-12-19T22:49:52.315378",
+      "affiliate_url": "https://product.mchannles.com/3Or2U"
     },
     {
       "id": "14193182",
@@ -2861,7 +2869,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/193/182/14193182_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14193182",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:40.846526"
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://whitehippo.net/3Or2V"
     },
     {
       "id": "7891912",
@@ -2881,7 +2890,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/891/912/7891912_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7891912",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:40.846526"
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://ibestfun.net/3Or2W"
     },
     {
       "id": "13392482",
@@ -2903,7 +2913,50 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/392/482/13392482_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13392482",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:40.846526"
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://igamepark.biz/3Or2X"
+    },
+    {
+      "id": "9618763",
+      "brand": "SHARP",
+      "model": "IG-NX2T-B",
+      "name": "【SHARP 夏普】好空氣隨行杯PCI自動除菌離子-隨身型空氣淨化器(IG-NX2T-B)",
+      "price": 2590,
+      "original_price": 4190,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/618/763/9618763_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9618763",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://greenmall.info/3Or2Y"
+    },
+    {
+      "id": "11112403",
+      "brand": "",
+      "model": "ible",
+      "name": "【ible】小艾寶Airvida C1 - LINE FRIENDS穿戴式空氣清淨機/ 熊大款(熊大)",
+      "price": 3712,
+      "original_price": 5230,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/112/403/11112403_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11112403",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or2Z"
     },
     {
       "id": "11463336",
@@ -2925,7 +2978,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/463/336/11463336_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11463336",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:40.847526"
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://igamepark.biz/3Or2a"
     },
     {
       "id": "8958601",
@@ -2947,7 +3001,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/958/601/8958601_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8958601",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:40.847526"
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://igamepark.biz/3Or2b"
     },
     {
       "id": "7124740",
@@ -2967,7 +3022,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/124/740/7124740_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7124740",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:40.847526"
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://wonderfulapple.net/3Or2c"
     },
     {
       "id": "10424566",
@@ -2989,7 +3045,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/424/566/10424566_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10424566",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:40.847526"
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://shopsquare.co/3Or2d"
     },
     {
       "id": "8958598",
@@ -3011,92 +3068,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/958/598/8958598_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8958598",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:40.847526"
-    },
-    {
-      "id": "4827832",
-      "brand": "",
-      "model": "IONION",
-      "name": "【IONION】LX日本原裝 超輕量隨身空氣清淨機 兒童吊飾鍊組 鵝絨黃",
-      "price": 2180,
-      "original_price": 5860,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0004/827/832/4827832_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=4827832",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:42.224460"
-    },
-    {
-      "id": "12821752",
-      "brand": "Xiaomi",
-      "model": "Xiaomi",
-      "name": "【小米】Xiaomi 空氣淨化器 4 (原廠公司貨/一年保固/聯強代理/米家APP/AC-M16-SC)",
-      "price": 4895,
-      "original_price": 4995,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [
-        "APP控制"
-      ],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/821/752/12821752_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12821752",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:42.224460"
-    },
-    {
-      "id": "12357398",
-      "brand": "",
-      "model": "HYPURE",
-      "name": "【HYPURE 艾璞而】奈米光觸媒小型靜音除臭空氣清淨機-經典款(除臭抗敏/小型/靜音/ 空氣淨化器)",
-      "price": 1512,
-      "original_price": 3360,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [
-        "除臭功能",
-        "靜音模式"
-      ],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/357/398/12357398_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12357398",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:42.224460"
-    },
-    {
-      "id": "4827833",
-      "brand": "",
-      "model": "IONION",
-      "name": "【IONION】LX日本原裝 超輕量隨身空氣清淨機 兒童吊飾鍊組 櫻花粉",
-      "price": 2180,
-      "original_price": 5860,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0004/827/833/4827833_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=4827833",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:42.224460"
+      "scraped_at": "2025-12-19T22:49:53.718983",
+      "affiliate_url": "https://shopsquare.co/3Or2e"
     },
     {
       "id": "11293281",
@@ -3116,7 +3089,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/293/281/11293281_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11293281",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:42.224460"
+      "scraped_at": "2025-12-19T22:49:54.974346",
+      "affiliate_url": "https://igamepark.biz/3Or2f"
     },
     {
       "id": "14726515",
@@ -3136,7 +3110,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/726/515/14726515_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14726515",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:42.224460"
+      "scraped_at": "2025-12-19T22:49:54.974346",
+      "affiliate_url": "https://joymall.co/3Or2g"
     },
     {
       "id": "14659694",
@@ -3156,7 +3131,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/659/694/14659694_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14659694",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:42.224460"
+      "scraped_at": "2025-12-19T22:49:54.974346",
+      "affiliate_url": "https://adcenter.conn.tw/3Or2h"
     },
     {
       "id": "7124728",
@@ -3178,7 +3154,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/124/728/7124728_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7124728",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:42.224460"
+      "scraped_at": "2025-12-19T22:49:54.974346",
+      "affiliate_url": "https://idragon.info/3Or2i"
     },
     {
       "id": "10461417",
@@ -3198,7 +3175,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/461/417/10461417_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10461417",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.593902"
+      "scraped_at": "2025-12-19T22:49:54.974346",
+      "affiliate_url": "https://dreamstore.info/3Or2j"
     },
     {
       "id": "6580476",
@@ -3220,67 +3198,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0006/580/476/6580476_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6580476",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.593902"
-    },
-    {
-      "id": "9128797",
-      "brand": "",
-      "model": "AP551-50W",
-      "name": "【acerpure】新一代 acerpure pro 高效淨化空氣清淨機(AP551-50W)",
-      "price": 4990,
-      "original_price": 8990,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/128/797/9128797_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9128797",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.593902"
-    },
-    {
-      "id": "10865572",
-      "brand": "Dyson",
-      "model": "dyson",
-      "name": "【dyson 戴森】HP12 Purifier Hot+Cool De-NOx 三合一甲醛NOx偵測涼暖空氣清淨機(鎳金色)",
-      "price": 26900,
-      "original_price": 29900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/865/572/10865572_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10865572",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.593902"
-    },
-    {
-      "id": "5063432",
-      "brand": "",
-      "model": "IONION",
-      "name": "【IONION】LX日本原裝 超輕量隨身空氣清淨機 獨家款 桃紅吊飾鍊組",
-      "price": 2180,
-      "original_price": 5860,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0005/063/432/5063432_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=5063432",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.593902"
+      "scraped_at": "2025-12-19T22:49:54.974346",
+      "affiliate_url": "https://wonderfulapple.net/3Or2k"
     },
     {
       "id": "14165627",
@@ -3300,7 +3219,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/165/627/14165627_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14165627",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.593902"
+      "scraped_at": "2025-12-19T22:49:56.054363",
+      "affiliate_url": "https://shoppingfun.co/3Or2l"
     },
     {
       "id": "11717813",
@@ -3320,7 +3240,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/717/813/11717813_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11717813",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.593902"
+      "scraped_at": "2025-12-19T22:49:56.054363",
+      "affiliate_url": "https://adcenter.conn.tw/3Or2m"
     },
     {
       "id": "7124731",
@@ -3342,7 +3263,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/124/731/7124731_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7124731",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.594902"
+      "scraped_at": "2025-12-19T22:49:56.054363",
+      "affiliate_url": "https://igrape.net/3Or2n"
     },
     {
       "id": "13957096",
@@ -3362,7 +3284,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/957/096/13957096_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13957096",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.594902"
+      "scraped_at": "2025-12-19T22:49:56.054363",
+      "affiliate_url": "https://ibanana.biz/3Or2o"
     },
     {
       "id": "6580475",
@@ -3384,7 +3307,29 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0006/580/475/6580475_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6580475",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:43.594902"
+      "scraped_at": "2025-12-19T22:49:56.054363",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or2p"
+    },
+    {
+      "id": "12533330",
+      "brand": "SHARP",
+      "model": "FU-H40T-T",
+      "name": "【SHARP 夏普】PCI自動除菌離子空氣清淨機-鳶茶棕(FU-H40T-T)",
+      "price": 5990,
+      "original_price": 7990,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/533/330/12533330_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12533330",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:56.054363",
+      "affiliate_url": "https://igrape.net/3Or2q"
     },
     {
       "id": "11922806",
@@ -3404,7 +3349,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/922/806/11922806_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11922806",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
+      "scraped_at": "2025-12-19T22:49:56.054363",
+      "affiliate_url": "https://ibanana.biz/3Or2r"
     },
     {
       "id": "13444108",
@@ -3426,7 +3372,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/444/108/13444108_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13444108",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
+      "scraped_at": "2025-12-19T22:49:56.054363",
+      "affiliate_url": "https://shopsquare.co/3Or2s"
     },
     {
       "id": "13635758",
@@ -3448,29 +3395,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/635/758/13635758_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13635758",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
-    },
-    {
-      "id": "11062705",
-      "brand": "Dyson",
-      "model": "dyson",
-      "name": "【dyson 戴森】TP11 Purifier Cool 二合一涼風智能空氣清淨機",
-      "price": 11900,
-      "original_price": 19900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [
-        "智慧控制"
-      ],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/062/705/11062705_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11062705",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
+      "scraped_at": "2025-12-19T22:49:56.054363",
+      "affiliate_url": "https://easyfun.biz/3Or2t"
     },
     {
       "id": "7124730",
@@ -3492,7 +3418,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/124/730/7124730_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7124730",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
+      "scraped_at": "2025-12-19T22:49:57.352255",
+      "affiliate_url": "https://buyforfun.biz/3Or2u"
     },
     {
       "id": "11597162",
@@ -3512,7 +3439,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/597/162/11597162_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11597162",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
+      "scraped_at": "2025-12-19T22:49:57.352255",
+      "affiliate_url": "https://pinkrose.info/3Or2v"
     },
     {
       "id": "14583888",
@@ -3529,13 +3457,14 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
-        "負離子"
+        "負離子",
+        "除甲醛"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/583/888/14583888_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14583888",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
+      "scraped_at": "2025-12-19T22:49:57.352255",
+      "affiliate_url": "https://greenmall.info/3Or2w"
     },
     {
       "id": "7124732",
@@ -3557,7 +3486,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/124/732/7124732_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7124732",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
+      "scraped_at": "2025-12-19T22:49:57.352255",
+      "affiliate_url": "https://whitehippo.net/3Or2x"
     },
     {
       "id": "7124729",
@@ -3579,7 +3509,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/124/729/7124729_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7124729",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
+      "scraped_at": "2025-12-19T22:49:57.352255",
+      "affiliate_url": "https://idragon.info/3Or2y"
     },
     {
       "id": "12905529",
@@ -3599,7 +3530,50 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/905/529/12905529_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12905529",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:45.033289"
+      "scraped_at": "2025-12-19T22:49:57.352255",
+      "affiliate_url": "https://easymall.co/3Or2z"
+    },
+    {
+      "id": "7368659",
+      "brand": "",
+      "model": "SA-HX03",
+      "name": "【防疫大作戰  抑制流感】SABA 抗過敏空氣清淨機(SA-HX03)",
+      "price": 5549,
+      "original_price": 12900,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/368/659/7368659_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7368659",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:57.352255",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or2_"
+    },
+    {
+      "id": "13457749",
+      "brand": "",
+      "model": "DIKE",
+      "name": "【DIKE】寵愛抗敏清淨機-落地型-HCF610(去病毒、臭味、浮毛 一鍵搞定)",
+      "price": 8091,
+      "original_price": 11190,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/457/749/13457749_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13457749",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:49:57.353255",
+      "affiliate_url": "https://adcenter.conn.tw/3Or2-"
     },
     {
       "id": "12781790",
@@ -3621,7 +3595,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/781/790/12781790_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12781790",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:46.386184"
+      "scraped_at": "2025-12-19T22:49:57.353255",
+      "affiliate_url": "https://ibestfun.net/3Or30"
     },
     {
       "id": "14547265",
@@ -3641,7 +3616,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/547/265/14547265_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14547265",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:46.386184"
+      "scraped_at": "2025-12-19T22:49:57.353255",
+      "affiliate_url": "https://ibestfun.net/3Or31"
     },
     {
       "id": "13544680",
@@ -3661,7 +3637,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/544/680/13544680_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13544680",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:46.386184"
+      "scraped_at": "2025-12-19T22:49:57.353255",
+      "affiliate_url": "https://pinkrose.info/3Or32"
     },
     {
       "id": "12350374",
@@ -3681,7 +3658,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/350/374/12350374_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12350374",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:46.386184"
+      "scraped_at": "2025-12-19T22:49:58.623310",
+      "affiliate_url": "https://buyforfun.biz/3Or33"
     },
     {
       "id": "14037024",
@@ -3703,7 +3681,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/037/024/14037024_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14037024",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:46.386184"
+      "scraped_at": "2025-12-19T22:49:58.623310",
+      "affiliate_url": "https://idragon.info/3Or34"
     },
     {
       "id": "10865584",
@@ -3723,7 +3702,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/865/584/10865584_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10865584",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:46.386184"
+      "scraped_at": "2025-12-19T22:49:58.623310",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or35"
     },
     {
       "id": "13575340",
@@ -3743,7 +3723,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/575/340/13575340_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13575340",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:46.386184"
+      "scraped_at": "2025-12-19T22:49:58.624305",
+      "affiliate_url": "https://shoppingfun.co/3Or36"
     },
     {
       "id": "14593047",
@@ -3765,7 +3746,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/593/047/14593047_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14593047",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:46.387184"
+      "scraped_at": "2025-12-19T22:49:58.624305",
+      "affiliate_url": "https://easyfun.biz/3Or37"
     },
     {
       "id": "10398689",
@@ -3785,7 +3767,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/398/689/10398689_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10398689",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:47.762462"
+      "scraped_at": "2025-12-19T22:49:59.849323",
+      "affiliate_url": "https://adcenter.conn.tw/3Or38"
     },
     {
       "id": "14623306",
@@ -3805,7 +3788,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/623/306/14623306_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14623306",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:47.762462"
+      "scraped_at": "2025-12-19T22:49:59.849323",
+      "affiliate_url": "https://easyfun.biz/3Or39"
     },
     {
       "id": "13610573",
@@ -3825,7 +3809,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/610/573/13610573_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13610573",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:47.762462"
+      "scraped_at": "2025-12-19T22:49:59.849323",
+      "affiliate_url": "https://igamepark.biz/3Or3A"
     },
     {
       "id": "14266877",
@@ -3848,7 +3833,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/266/877/14266877_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14266877",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:47.762462"
+      "scraped_at": "2025-12-19T22:49:59.849323",
+      "affiliate_url": "https://easyfun.biz/3Or3B"
     },
     {
       "id": "14635349",
@@ -3872,7 +3858,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/635/349/14635349_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14635349",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:47.762462"
+      "scraped_at": "2025-12-19T22:49:59.849323",
+      "affiliate_url": "https://wonderfulapple.net/3Or3C"
     },
     {
       "id": "14563424",
@@ -3894,154 +3881,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/563/424/14563424_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14563424",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:47.762462"
-    },
-    {
-      "id": "14717369",
-      "brand": "LG",
-      "model": "AS101DBY0",
-      "name": "【LG 樂金】360°全室淨化空氣清淨機-寵物版雙層抗敏循環-二代專業版(AS101DBY0.ATT)",
-      "price": 30304,
-      "original_price": 38800,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/717/369/14717369_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14717369",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
-    },
-    {
-      "id": "14572104",
-      "brand": "",
-      "model": "Felsted",
-      "name": "【Felsted 菲仕德】臭氧機 60g臭氧發生器 空氣清淨機(家用除甲醛 空氣淨化 消毒殺菌 除異味 新房空氣淨化)",
-      "price": 1500,
-      "original_price": 2399,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [
-        "除甲醛"
-      ],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/572/104/14572104_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14572104",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
-    },
-    {
-      "id": "12629880",
-      "brand": "",
-      "model": "DA-A1002RW",
-      "name": "【PINOH 品諾】22坪龍捲風長效空氣清淨機(DA-A1002RW)",
-      "price": 5656,
-      "original_price": 16900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": 22.0,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/629/880/12629880_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12629880",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
-    },
-    {
-      "id": "14510196",
-      "brand": "SHARP",
-      "model": "SHARP",
-      "name": "【SHARP 夏普】27坪Purefit PCI自動除菌離子空氣清淨機 FP-S90T-H(壇木黑)",
-      "price": 19800,
-      "original_price": 29900,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": 27.0,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/510/196/14510196_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14510196",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
-    },
-    {
-      "id": "14429528",
-      "brand": "",
-      "model": "Felsted",
-      "name": "【Felsted 菲仕德】空氣清淨機 空氣清淨機 數顯淨化機(負離子 除甲醛 除煙塵異味 桌上型家用 高效能除菌)",
-      "price": 2313,
-      "original_price": 2999,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [
-        "除甲醛",
-        "負離子"
-      ],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/429/528/14429528_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14429528",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
-    },
-    {
-      "id": "8986682",
-      "brand": "",
-      "model": "AirTamer",
-      "name": "【AirTamer】三入組A320S-美國個人隨身負離子空氣清淨機(☆黑白兩色可選)",
-      "price": 21800,
-      "original_price": 26970,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [
-        "負離子"
-      ],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/986/682/8986682_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8986682",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
-    },
-    {
-      "id": "8912264",
-      "brand": "",
-      "model": "IONION",
-      "name": "【IONION】升級款 MX 超輕量隨身空氣清淨機 優惠二入組 自行挑色",
-      "price": 6579,
-      "original_price": 11160,
-      "category_slug": "air-purifier",
-      "specs": {
-        "cadr": null,
-        "coverage_area": null,
-        "noise_level": null,
-        "power_consumption": null
-      },
-      "features": [],
-      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/912/264/8912264_R.webp",
-      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8912264",
-      "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
+      "scraped_at": "2025-12-19T22:49:59.849323",
+      "affiliate_url": "https://pinkrose.info/3Or3D"
     },
     {
       "id": "14298033",
@@ -4061,7 +3902,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/298/033/14298033_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14298033",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://wonderfulapple.net/3Or3E"
     },
     {
       "id": "12711776",
@@ -4078,13 +3920,14 @@
         "power_consumption": null
       },
       "features": [
-        "除臭功能",
-        "靜音模式"
+        "靜音模式",
+        "除臭功能"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/711/776/12711776_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12711776",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://adcenter.conn.tw/3Or3F"
     },
     {
       "id": "14635386",
@@ -4101,13 +3944,14 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
-        "負離子"
+        "負離子",
+        "除甲醛"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/635/386/14635386_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14635386",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://easyfun.biz/3Or3G"
     },
     {
       "id": "14614443",
@@ -4125,15 +3969,16 @@
       },
       "features": [
         "負離子",
-        "除甲醛",
         "智慧控制",
+        "除甲醛",
         "除臭功能",
         "靜音模式"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/614/443/14614443_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14614443",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://easymall.co/3Or3H"
     },
     {
       "id": "8912265",
@@ -4153,7 +3998,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/912/265/8912265_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8912265",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://idragon.info/3Or3I"
     },
     {
       "id": "8912266",
@@ -4173,7 +4019,102 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/912/266/8912266_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8912266",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:49.180527"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://dreamstore.info/3Or3J"
+    },
+    {
+      "id": "14371212",
+      "brand": "",
+      "model": "Healthy",
+      "name": "【Healthy樂居】壁掛式清淨機 寵物空氣淨化器 智能清淨機 空氣淨化器(殺菌/除臭/淨化/增香/送香薰精油)",
+      "price": 1398,
+      "original_price": 3374,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [
+        "智慧控制",
+        "除臭功能"
+      ],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/371/212/14371212_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14371212",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://easyfun.biz/3Or3K"
+    },
+    {
+      "id": "14635384",
+      "brand": "",
+      "model": "Felsted",
+      "name": "【Felsted 菲仕德】空氣清淨機 空氣淨化器 負離子消毒機(除味臭氧儀 除煙味/除異味/除甲醛/除臭/消毒殺菌)",
+      "price": 2399,
+      "original_price": 3199,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [
+        "除甲醛",
+        "負離子",
+        "除臭功能"
+      ],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/635/384/14635384_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14635384",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://dreamstore.info/3Or3L"
+    },
+    {
+      "id": "12423195",
+      "brand": "",
+      "model": "HYPURE",
+      "name": "【HYPURE 艾璞而】智慧光觸媒 除臭 靜音空氣清淨機(除臭抗菌抗敏 寵物異味 廁所除臭靜音空氣淨化器)",
+      "price": 8999,
+      "original_price": 14679,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [
+        "靜音模式",
+        "除臭功能"
+      ],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/423/195/12423195_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12423195",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://adcenter.conn.tw/3Or3M"
+    },
+    {
+      "id": "11610426",
+      "brand": "",
+      "model": "RAYCONO",
+      "name": "【RAYCONO】光合空氣清淨機",
+      "price": 2699,
+      "original_price": 11800,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/610/426/11610426_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11610426",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or3N"
     },
     {
       "id": "12507250",
@@ -4195,7 +4136,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/507/250/12507250_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12507250",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://ibanana.biz/3Or3O"
     },
     {
       "id": "14583865",
@@ -4212,13 +4154,14 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
-        "負離子"
+        "負離子",
+        "除甲醛"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/583/865/14583865_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14583865",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://greenmall.info/3Or3P"
     },
     {
       "id": "14635382",
@@ -4240,7 +4183,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/635/382/14635382_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14635382",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://pinkrose.info/3Or3Q"
     },
     {
       "id": "14673575",
@@ -4260,7 +4204,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/673/575/14673575_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14673575",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://ibanana.biz/3Or3R"
     },
     {
       "id": "10242170",
@@ -4280,7 +4225,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/242/170/10242170_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10242170",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:01.159160",
+      "affiliate_url": "https://idragon.info/3Or3S"
     },
     {
       "id": "14659695",
@@ -4300,7 +4246,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/659/695/14659695_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14659695",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:02.556387",
+      "affiliate_url": "https://easymall.co/3Or3T"
     },
     {
       "id": "11198032",
@@ -4320,7 +4267,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/198/032/11198032_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11198032",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:02.556387",
+      "affiliate_url": "https://pinkrose.info/3Or3U"
     },
     {
       "id": "14543292",
@@ -4342,7 +4290,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/543/292/14543292_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14543292",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:02.556387",
+      "affiliate_url": "https://ibanana.biz/3Or3V"
     },
     {
       "id": "14572106",
@@ -4364,7 +4313,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/572/106/14572106_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14572106",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:02.556387",
+      "affiliate_url": "https://wonderfulapple.net/3Or3W"
     },
     {
       "id": "7955675",
@@ -4381,13 +4331,14 @@
         "power_consumption": null
       },
       "features": [
-        "HEPA濾網",
-        "UV殺菌"
+        "UV殺菌",
+        "HEPA濾網"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/955/675/7955675_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7955675",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:50.742696"
+      "scraped_at": "2025-12-19T22:50:02.556387",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or3X"
     },
     {
       "id": "14635387",
@@ -4407,7 +4358,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/635/387/14635387_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14635387",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.136507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://igamepark.biz/3Or3Y"
     },
     {
       "id": "13581765",
@@ -4427,7 +4379,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/581/765/13581765_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13581765",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.136507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://ibanana.biz/3Or3Z"
     },
     {
       "id": "8912267",
@@ -4447,7 +4400,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/912/267/8912267_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8912267",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.136507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://easymall.co/3Or3a"
     },
     {
       "id": "12206030",
@@ -4467,7 +4421,29 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/206/030/12206030_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12206030",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.136507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://shopsquare.co/3Or3b"
+    },
+    {
+      "id": "9804035",
+      "brand": "Dyson",
+      "model": "dyson",
+      "name": "【dyson 戴森】TP07 Purifier Cool 二合一空氣清淨機(黑鋼色)",
+      "price": 12900,
+      "original_price": 20900,
+      "category_slug": "air-purifier",
+      "specs": {
+        "cadr": null,
+        "coverage_area": null,
+        "noise_level": null,
+        "power_consumption": null
+      },
+      "features": [],
+      "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/804/035/9804035_R.webp",
+      "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9804035",
+      "in_stock": true,
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://dreamstore.info/3Or3c"
     },
     {
       "id": "14610283",
@@ -4490,7 +4466,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/283/14610283_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610283",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.136507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://ibanana.biz/3Or3d"
     },
     {
       "id": "14610464",
@@ -4510,7 +4487,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/464/14610464_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610464",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.136507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://ibestfun.net/3Or3e"
     },
     {
       "id": "13071295",
@@ -4532,7 +4510,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/071/295/13071295_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13071295",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.136507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://easyfun.biz/3Or3f"
     },
     {
       "id": "11324625",
@@ -4552,7 +4531,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/324/625/11324625_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11324625",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.137507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://easyfun.biz/3Or3g"
     },
     {
       "id": "13057809",
@@ -4574,7 +4554,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/057/809/13057809_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13057809",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.137507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://wonderfulapple.net/3Or3h"
     },
     {
       "id": "8912263",
@@ -4594,7 +4575,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0008/912/263/8912263_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=8912263",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.137507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://ibanana.biz/3Or3i"
     },
     {
       "id": "14570190",
@@ -4618,7 +4600,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/570/190/14570190_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14570190",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.137507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://product.mchannles.com/3Or3j"
     },
     {
       "id": "14664117",
@@ -4635,13 +4618,14 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
-        "負離子"
+        "負離子",
+        "除甲醛"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/664/117/14664117_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14664117",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.137507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://buyforfun.biz/3Or3k"
     },
     {
       "id": "14635381",
@@ -4661,7 +4645,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/635/381/14635381_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14635381",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:52.137507"
+      "scraped_at": "2025-12-19T22:50:03.820808",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or3l"
     },
     {
       "id": "14646673",
@@ -4684,7 +4669,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/646/673/14646673_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14646673",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:53.702159"
+      "scraped_at": "2025-12-19T22:50:05.118958",
+      "affiliate_url": "https://iorange.biz/3Or3m"
     },
     {
       "id": "14664113",
@@ -4704,7 +4690,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/664/113/14664113_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14664113",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:53.703157"
+      "scraped_at": "2025-12-19T22:50:05.118958",
+      "affiliate_url": "https://dreamstore.info/3Or3n"
     },
     {
       "id": "14610490",
@@ -4727,7 +4714,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/490/14610490_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610490",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:53.703157"
+      "scraped_at": "2025-12-19T22:50:05.118958",
+      "affiliate_url": "https://dreamstore.info/3Or3o"
     },
     {
       "id": "10424567",
@@ -4749,7 +4737,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/424/567/10424567_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10424567",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:53.703157"
+      "scraped_at": "2025-12-19T22:50:05.118958",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or3p"
     },
     {
       "id": "14773402",
@@ -4769,7 +4758,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/773/402/14773402_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14773402",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:53.703157"
+      "scraped_at": "2025-12-19T22:50:05.118958",
+      "affiliate_url": "https://product.mchannles.com/3Or3q"
     },
     {
       "id": "14425024",
@@ -4792,7 +4782,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/425/024/14425024_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14425024",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:53.703157"
+      "scraped_at": "2025-12-19T22:50:05.118958",
+      "affiliate_url": "https://igrape.net/3Or3r"
     },
     {
       "id": "10469701",
@@ -4809,13 +4800,14 @@
         "power_consumption": null
       },
       "features": [
-        "智慧控制",
-        "UV殺菌"
+        "UV殺菌",
+        "智慧控制"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/469/701/10469701_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10469701",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:53.703157"
+      "scraped_at": "2025-12-19T22:50:05.118958",
+      "affiliate_url": "https://pinkrose.info/3Or3s"
     },
     {
       "id": "14635385",
@@ -4832,13 +4824,14 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
-        "負離子"
+        "負離子",
+        "除甲醛"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/635/385/14635385_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14635385",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:53.703157"
+      "scraped_at": "2025-12-19T22:50:05.118958",
+      "affiliate_url": "https://easyfun.biz/3Or3t"
     },
     {
       "id": "14572095",
@@ -4860,7 +4853,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/572/095/14572095_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14572095",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:53.703157"
+      "scraped_at": "2025-12-19T22:50:05.118958",
+      "affiliate_url": "https://wonderfulapple.net/3Or3u"
     },
     {
       "id": "14778673",
@@ -4880,7 +4874,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/778/673/14778673_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14778673",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:55.065907"
+      "scraped_at": "2025-12-19T22:50:06.352668",
+      "affiliate_url": "https://easymall.co/3Or3v"
     },
     {
       "id": "14631822",
@@ -4900,7 +4895,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/631/822/14631822_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14631822",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:55.065907"
+      "scraped_at": "2025-12-19T22:50:06.352668",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or3w"
     },
     {
       "id": "14593048",
@@ -4922,7 +4918,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/593/048/14593048_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14593048",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:55.065907"
+      "scraped_at": "2025-12-19T22:50:06.352668",
+      "affiliate_url": "https://iorange.biz/3Or3x"
     },
     {
       "id": "14631816",
@@ -4942,7 +4939,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/631/816/14631816_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14631816",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:55.065907"
+      "scraped_at": "2025-12-19T22:50:06.352668",
+      "affiliate_url": "https://dreamstore.info/3Or3y"
     },
     {
       "id": "10344158",
@@ -4965,7 +4963,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/344/158/10344158_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10344158",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:55.065907"
+      "scraped_at": "2025-12-19T22:50:06.352668",
+      "affiliate_url": "https://wonderfulapple.net/3Or3z"
     },
     {
       "id": "14543293",
@@ -4987,7 +4986,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/543/293/14543293_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14543293",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:55.065907"
+      "scraped_at": "2025-12-19T22:50:06.352668",
+      "affiliate_url": "https://igamepark.biz/3Or3_"
     },
     {
       "id": "12350379",
@@ -5004,13 +5004,14 @@
         "power_consumption": null
       },
       "features": [
-        "除臭功能",
-        "靜音模式"
+        "靜音模式",
+        "除臭功能"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/350/379/12350379_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12350379",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://pinkrose.info/3Or3-"
     },
     {
       "id": "14525049",
@@ -5030,7 +5031,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/525/049/14525049_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14525049",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://iorange.biz/3Or40"
     },
     {
       "id": "14050679",
@@ -5052,7 +5054,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/050/679/14050679_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14050679",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://ibanana.biz/3Or41"
     },
     {
       "id": "14610322",
@@ -5076,7 +5079,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/322/14610322_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610322",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://adcenter.conn.tw/3Or42"
     },
     {
       "id": "11836491",
@@ -5093,13 +5097,14 @@
         "power_consumption": null
       },
       "features": [
-        "HEPA濾網",
-        "UV殺菌"
+        "UV殺菌",
+        "HEPA濾網"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/836/491/11836491_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11836491",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://iorange.biz/3Or43"
     },
     {
       "id": "14664119",
@@ -5116,13 +5121,14 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
-        "負離子"
+        "負離子",
+        "除甲醛"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/664/119/14664119_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14664119",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://www1.gamepark.com.tw/3Or44"
     },
     {
       "id": "6335881",
@@ -5145,7 +5151,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0006/335/881/6335881_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6335881",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://igrape.net/3Or45"
     },
     {
       "id": "14664120",
@@ -5167,7 +5174,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/664/120/14664120_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14664120",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://whitehippo.net/3Or46"
     },
     {
       "id": "14778672",
@@ -5187,7 +5195,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/778/672/14778672_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14778672",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://iorange.biz/3Or47"
     },
     {
       "id": "9814942",
@@ -5207,7 +5216,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0009/814/942/9814942_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=9814942",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:56.399714"
+      "scraped_at": "2025-12-19T22:50:07.633376",
+      "affiliate_url": "https://igamepark.biz/3Or48"
     },
     {
       "id": "14572096",
@@ -5227,7 +5237,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/572/096/14572096_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14572096",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:57.965704"
+      "scraped_at": "2025-12-19T22:50:08.817752",
+      "affiliate_url": "https://iorange.biz/3Or49"
     },
     {
       "id": "7955672",
@@ -5250,7 +5261,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0007/955/672/7955672_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=7955672",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:57.965704"
+      "scraped_at": "2025-12-19T22:50:08.817752",
+      "affiliate_url": "https://igrape.net/3Or4A"
     },
     {
       "id": "14610314",
@@ -5274,7 +5286,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/314/14610314_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610314",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:57.965704"
+      "scraped_at": "2025-12-19T22:50:08.817752",
+      "affiliate_url": "https://igamepark.biz/3Or4B"
     },
     {
       "id": "14610486",
@@ -5294,7 +5307,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/486/14610486_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610486",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:57.965704"
+      "scraped_at": "2025-12-19T22:50:08.817752",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or4C"
     },
     {
       "id": "14610345",
@@ -5318,7 +5332,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/345/14610345_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610345",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:57.965704"
+      "scraped_at": "2025-12-19T22:50:08.817752",
+      "affiliate_url": "https://greenmall.info/3Or4D"
     },
     {
       "id": "14390812",
@@ -5340,7 +5355,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/390/812/14390812_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14390812",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:57.965704"
+      "scraped_at": "2025-12-19T22:50:08.817752",
+      "affiliate_url": "https://wonderfulapple.net/3Or4E"
     },
     {
       "id": "14610288",
@@ -5363,7 +5379,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/288/14610288_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610288",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://easymall.co/3Or4F"
     },
     {
       "id": "14610500",
@@ -5380,13 +5397,14 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
-        "負離子"
+        "負離子",
+        "除甲醛"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/500/14610500_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610500",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://adcenter.conn.tw/3Or4G"
     },
     {
       "id": "6854800",
@@ -5408,7 +5426,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0006/854/800/6854800_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=6854800",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://shopsquare.co/3Or4H"
     },
     {
       "id": "14710714",
@@ -5430,7 +5449,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/710/714/14710714_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14710714",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://idragon.info/3Or4I"
     },
     {
       "id": "14710723",
@@ -5453,7 +5473,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/710/723/14710723_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14710723",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://easyfun.biz/3Or4J"
     },
     {
       "id": "14610280",
@@ -5477,7 +5498,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/280/14610280_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610280",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://ibestfun.net/3Or4K"
     },
     {
       "id": "14542197",
@@ -5499,7 +5521,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/542/197/14542197_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14542197",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://ibanana.biz/3Or4L"
     },
     {
       "id": "14631821",
@@ -5524,7 +5547,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/631/821/14631821_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14631821",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or4M"
     },
     {
       "id": "10583512",
@@ -5546,7 +5570,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/583/512/10583512_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10583512",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://dreamstore.info/3Or4N"
     },
     {
       "id": "14390813",
@@ -5568,7 +5593,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/390/813/14390813_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14390813",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://adcenter.conn.tw/3Or4O"
     },
     {
       "id": "14664118",
@@ -5585,15 +5611,16 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
         "UV殺菌",
+        "除甲醛",
         "負離子",
         "除臭功能"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/664/118/14664118_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14664118",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://iorange.biz/3Or4P"
     },
     {
       "id": "14741081",
@@ -5613,7 +5640,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/741/081/14741081_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14741081",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://joymall.co/3Or4Q"
     },
     {
       "id": "14572101",
@@ -5637,7 +5665,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/572/101/14572101_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14572101",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://ibanana.biz/3Or4R"
     },
     {
       "id": "14710722",
@@ -5660,7 +5689,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/710/722/14710722_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14710722",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:52:59.595472"
+      "scraped_at": "2025-12-19T22:50:09.990673",
+      "affiliate_url": "https://wonderfulapple.net/3Or4S"
     },
     {
       "id": "14610503",
@@ -5683,7 +5713,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/503/14610503_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610503",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://dreamstore.info/3Or4T"
     },
     {
       "id": "14664121",
@@ -5706,7 +5737,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/664/121/14664121_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14664121",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://adcenter.conn.tw/3Or4U"
     },
     {
       "id": "14631819",
@@ -5728,7 +5760,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/631/819/14631819_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14631819",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://whitehippo.net/3Or4V"
     },
     {
       "id": "14631784",
@@ -5748,7 +5781,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/631/784/14631784_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14631784",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://dreamstore.info/3Or4W"
     },
     {
       "id": "11062854",
@@ -5768,7 +5802,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/062/854/11062854_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11062854",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://dreamstore.info/3Or4X"
     },
     {
       "id": "14563423",
@@ -5792,7 +5827,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/563/423/14563423_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14563423",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://iorange.biz/3Or4Y"
     },
     {
       "id": "14610511",
@@ -5815,7 +5851,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/511/14610511_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610511",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://buyforfun.biz/3Or4Z"
     },
     {
       "id": "14610457",
@@ -5837,7 +5874,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/457/14610457_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610457",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://www1.oeya.com.tw/3Or4a"
     },
     {
       "id": "14572105",
@@ -5854,13 +5892,14 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
-        "負離子"
+        "負離子",
+        "除甲醛"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/572/105/14572105_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14572105",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://easyfun.biz/3Or4b"
     },
     {
       "id": "14610478",
@@ -5882,7 +5921,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/478/14610478_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610478",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.026692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://shoppingfun.co/3Or4c"
     },
     {
       "id": "14646670",
@@ -5902,7 +5942,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/646/670/14646670_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14646670",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:01.027692"
+      "scraped_at": "2025-12-19T22:50:11.326520",
+      "affiliate_url": "https://pinkrose.info/3Or4d"
     },
     {
       "id": "14570192",
@@ -5924,7 +5965,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/570/192/14570192_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14570192",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://whitehippo.net/3Or4e"
     },
     {
       "id": "11155031",
@@ -5944,7 +5986,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0011/155/031/11155031_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=11155031",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://product.mchannles.com/3Or4f"
     },
     {
       "id": "14646672",
@@ -5961,13 +6004,14 @@
         "power_consumption": null
       },
       "features": [
-        "除甲醛",
-        "負離子"
+        "負離子",
+        "除甲醛"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/646/672/14646672_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14646672",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://idragon.info/3Or4g"
     },
     {
       "id": "13048718",
@@ -5987,7 +6031,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0013/048/718/13048718_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=13048718",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://idragon.info/3Or4h"
     },
     {
       "id": "14570186",
@@ -6009,7 +6054,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/570/186/14570186_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14570186",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://whitehippo.net/3Or4i"
     },
     {
       "id": "14610451",
@@ -6029,7 +6075,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/451/14610451_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610451",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://joymall.co/3Or4j"
     },
     {
       "id": "14778671",
@@ -6049,7 +6096,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/778/671/14778671_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14778671",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://dreamstore.info/3Or4k"
     },
     {
       "id": "14572099",
@@ -6073,7 +6121,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/572/099/14572099_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14572099",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://dreamstore.info/3Or4l"
     },
     {
       "id": "10344159",
@@ -6090,14 +6139,15 @@
         "power_consumption": null
       },
       "features": [
+        "UV殺菌",
         "HEPA濾網",
-        "PM2.5偵測",
-        "UV殺菌"
+        "PM2.5偵測"
       ],
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/344/159/10344159_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10344159",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://whitehippo.net/3Or4m"
     },
     {
       "id": "14610512",
@@ -6120,7 +6170,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/610/512/14610512_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14610512",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:02.426206"
+      "scraped_at": "2025-12-19T22:50:12.590712",
+      "affiliate_url": "https://whitehippo.net/3Or4n"
     },
     {
       "id": "14553177",
@@ -6142,7 +6193,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/553/177/14553177_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14553177",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:03.688358"
+      "scraped_at": "2025-12-19T22:50:13.710478",
+      "affiliate_url": "https://buyforfun.biz/3Or4o"
     },
     {
       "id": "12243372",
@@ -6162,7 +6214,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/243/372/12243372_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12243372",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:03.688358"
+      "scraped_at": "2025-12-19T22:50:13.710478",
+      "affiliate_url": "https://shopsquare.co/3Or4p"
     },
     {
       "id": "14787886",
@@ -6182,7 +6235,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/787/886/14787886_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14787886",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:05.023625"
+      "scraped_at": "2025-12-19T22:50:14.985686",
+      "affiliate_url": "https://shoppingfun.co/3Or4q"
     },
     {
       "id": "12767669",
@@ -6204,7 +6258,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/767/669/12767669_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12767669",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:05.023625"
+      "scraped_at": "2025-12-19T22:50:14.985686",
+      "affiliate_url": "https://product.mchannles.com/3Or4r"
     },
     {
       "id": "14664105",
@@ -6224,7 +6279,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/664/105/14664105_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14664105",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:05.023625"
+      "scraped_at": "2025-12-19T22:50:14.985686",
+      "affiliate_url": "https://joymall.co/3Or4s"
     },
     {
       "id": "14787487",
@@ -6246,7 +6302,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/787/487/14787487_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14787487",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:05.023625"
+      "scraped_at": "2025-12-19T22:50:14.985686",
+      "affiliate_url": "https://easymall.co/3Or4t"
     },
     {
       "id": "14715374",
@@ -6266,7 +6323,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/715/374/14715374_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14715374",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:05.023625"
+      "scraped_at": "2025-12-19T22:50:14.985686",
+      "affiliate_url": "https://wonderfulapple.net/3Or4u"
     },
     {
       "id": "12999139",
@@ -6288,7 +6346,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0012/999/139/12999139_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=12999139",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:05.024625"
+      "scraped_at": "2025-12-19T22:50:14.985686",
+      "affiliate_url": "https://shoppingfun.co/3Or4v"
     },
     {
       "id": "14778669",
@@ -6308,7 +6367,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/778/669/14778669_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14778669",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:05.024625"
+      "scraped_at": "2025-12-19T22:50:14.985686",
+      "affiliate_url": "https://igamepark.biz/3Or4w"
     },
     {
       "id": "4202888",
@@ -6328,7 +6388,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0004/202/888/4202888_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=4202888",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:05.024625"
+      "scraped_at": "2025-12-19T22:50:14.985686",
+      "affiliate_url": "https://shoppingfun.co/3Or4x"
     },
     {
       "id": "10856860",
@@ -6350,7 +6411,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0010/856/860/10856860_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=10856860",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:06.352475"
+      "scraped_at": "2025-12-19T22:50:16.230314",
+      "affiliate_url": "https://greenmall.info/3Or4y"
     },
     {
       "id": "14687517",
@@ -6373,7 +6435,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/687/517/14687517_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14687517",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:06.352475"
+      "scraped_at": "2025-12-19T22:50:16.230314",
+      "affiliate_url": "https://igamepark.biz/3Or4z"
     },
     {
       "id": "14778670",
@@ -6393,7 +6456,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/778/670/14778670_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14778670",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:06.352475"
+      "scraped_at": "2025-12-19T22:50:16.230314",
+      "affiliate_url": "https://ibestfun.net/3Or4_"
     },
     {
       "id": "14664104",
@@ -6413,7 +6477,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/664/104/14664104_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14664104",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:06.352475"
+      "scraped_at": "2025-12-19T22:50:16.230314",
+      "affiliate_url": "https://ibestfun.net/3Or4-"
     },
     {
       "id": "14687521",
@@ -6436,7 +6501,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/687/521/14687521_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14687521",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:06.352475"
+      "scraped_at": "2025-12-19T22:50:16.230314",
+      "affiliate_url": "https://greenmall.info/3Or50"
     },
     {
       "id": "14768346",
@@ -6458,7 +6524,8 @@
       "image_url": "https://i3.momoshop.com.tw/1700000000/goodsimg/0014/768/346/14768346_R.webp",
       "momo_url": "https://www.momoshop.com.tw/goods/GoodsDetail.jsp?i_code=14768346",
       "in_stock": true,
-      "scraped_at": "2025-12-19T20:53:06.352475"
+      "scraped_at": "2025-12-19T22:50:16.230314",
+      "affiliate_url": "https://pinkrose.info/3Or51"
     }
   ]
 }

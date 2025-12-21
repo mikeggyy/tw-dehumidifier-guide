@@ -181,7 +181,9 @@ const recommendedProducts = computed(() => {
 })
 
 const selectAnswer = (value: string) => {
-  currentQuestion.value.answer.value = value as any
+  const question = currentQuestion.value
+  if (!question) return
+  question.answer.value = value as any
   if (step.value < totalSteps) {
     setTimeout(() => step.value++, 300)
   } else {
@@ -257,7 +259,7 @@ const medals = ['🥇', '🥈', '🥉']
             :key="option.value"
             :class="[
               'w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 flex items-center gap-4 group',
-              currentQuestion.answer.value === option.value
+              currentQuestion?.answer?.value === option.value
                 ? 'border-blue-500 bg-blue-50 scale-[1.02] shadow-md'
                 : 'border-gray-100 hover:border-blue-300 hover:bg-blue-50/50 hover:scale-[1.01]'
             ]"
@@ -271,7 +273,7 @@ const medals = ['🥇', '🥈', '🥉']
             <ChevronRight
               :class="[
                 'transition-all',
-                currentQuestion.answer.value === option.value
+                currentQuestion?.answer?.value === option.value
                   ? 'text-blue-500 translate-x-1'
                   : 'text-gray-300 group-hover:text-blue-400 group-hover:translate-x-1'
               ]"

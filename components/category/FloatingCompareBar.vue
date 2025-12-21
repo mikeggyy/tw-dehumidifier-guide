@@ -1,9 +1,17 @@
 <script setup lang="ts">
 import { GitCompare, X } from 'lucide-vue-next'
-import type { Product } from '~/types'
+import { useCookieConsent } from '~/composables/useCookieConsent'
+
+// 比較欄只需要這些基本屬性
+interface CompareItem {
+  id: string
+  brand: string
+  model: string
+  name: string
+}
 
 const props = defineProps<{
-  compareList: Product[]
+  compareList: CompareItem[]
 }>()
 
 const emit = defineEmits<{
@@ -12,7 +20,9 @@ const emit = defineEmits<{
   compare: []
 }>()
 
-const getDisplayBrand = (product: Product): string => {
+const { showBanner: showCookieBanner } = useCookieConsent()
+
+const getDisplayBrand = (product: CompareItem): string => {
   const brand = product.brand
   if (brand && brand !== 'Other') return brand
   const match = product.name.match(/【([^】]+)】/)
@@ -24,7 +34,10 @@ const getDisplayBrand = (product: Product): string => {
   <Transition name="slide-up">
     <div
       v-if="compareList.length > 0"
-      class="fixed left-2 right-2 md:left-0 md:right-0 bg-white dark:bg-gray-800 border border-gray-200 md:border-t md:border-x-0 md:border-b-0 dark:border-gray-700 shadow-lg md:shadow-lg z-40 px-4 py-3 bottom-[68px] md:bottom-0 safe-area-bottom rounded-xl md:rounded-none"
+      :class="[
+        'fixed left-2 right-2 md:left-0 md:right-0 bg-white dark:bg-gray-800 border border-gray-200 md:border-t md:border-x-0 md:border-b-0 dark:border-gray-700 shadow-lg md:shadow-lg z-40 px-4 py-3 safe-area-bottom rounded-xl md:rounded-none transition-all duration-300',
+        showCookieBanner ? 'bottom-[136px] md:bottom-[56px]' : 'bottom-[68px] md:bottom-0'
+      ]"
     >
       <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <div class="flex items-center gap-2 min-w-0">

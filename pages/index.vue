@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch, onMounted, onUnmounted, defineAsyncComponent } from 'vue'
 import {
-  Filter,
   SlidersHorizontal,
-  X,
   ChevronLeft,
   ChevronRight,
-  Calculator,
   Sparkles,
   GitCompare,
-  Search,
   ArrowUp,
   Heart,
   SearchX,
@@ -25,16 +21,19 @@ import ProductCard from '~/components/ProductCard.vue'
 import ProductCardSkeleton from '~/components/ProductCardSkeleton.vue'
 import OnboardingTour from '~/components/OnboardingTour.vue'
 import SearchAutocomplete from '~/components/SearchAutocomplete.vue'
+import ScenarioRecommender from '~/components/ScenarioRecommender.vue'
+import FloatingCompareBar from '~/components/category/FloatingCompareBar.vue'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useStructuredData } from '~/composables/useStructuredData'
-import { formatPrice, getDisplayBrand } from '~/utils/product'
 import SiteHeader from '~/components/SiteHeader.vue'
 import { useHead } from '#imports'
+import { useCookieConsent } from '~/composables/useCookieConsent'
 
 // 動態載入 Modal 組件（減少初始 bundle 大小）
-const RoomCalculator = defineAsyncComponent(() => import('~/components/RoomCalculator.vue'))
 const CompareModal = defineAsyncComponent(() => import('~/components/CompareModal.vue'))
-const ProductFinder = defineAsyncComponent(() => import('~/components/ProductFinder.vue'))
+
+// Cookie 同意橫幅狀態
+const { showBanner: showCookieBanner } = useCookieConsent()
 
 // SSR 資料預載 - 在伺服器端就先載入資料
 await useProductsSSR()
@@ -73,9 +72,6 @@ const currentPage = ref(1)
 
 // 搜尋功能
 const searchQuery = ref('')
-
-// 活躍的快速標籤
-const activeQuickTag = ref<string | null>(null)
 
 // 回到頂部按鈕
 const showScrollTop = ref(false)
@@ -132,8 +128,6 @@ const isFavorite = (productId: string): boolean => {
 }
 
 // Modal states
-const showCalculator = ref(false)
-const showFinder = ref(false)
 const showCompareModal = ref(false)
 
 // Compare list (max 4)
@@ -158,66 +152,16 @@ const removeFromCompare = (id: string) => {
   compareList.value = compareList.value.filter(p => p.id !== id)
 }
 
-// Quick filter tags
-const quickTags = [
-  { label: '小坪數首選', filter: () => { filters.capacityRange = 'under10' } },
-  { label: '高CP值', filter: () => { sortBy.value = 'value_asc' } },
-  { label: '大容量', filter: () => { filters.capacityRange = 'over15' } },
-  { label: '超值折扣', filter: () => { sortBy.value = 'discount_desc' } },
-  { label: '靜音款', filter: () => { sortBy.value = 'noise_asc' } }
-]
-
-const applyQuickTag = (tag: { label: string, filter: () => void }) => {
-  if (activeQuickTag.value === tag.label) {
-    // 取消選擇
-    activeQuickTag.value = null
-    resetFilters()
-  } else {
-    activeQuickTag.value = tag.label
-    tag.filter()
-  }
-}
-
-// Apply capacity filter from calculator
-const applyCapacityFilter = (capacity: number) => {
-  if (capacity <= 10) {
-    filters.capacityRange = 'under10'
-  } else if (capacity <= 15) {
-    filters.capacityRange = '10to15'
-  } else {
-    filters.capacityRange = 'over15'
-  }
-}
+// 取得比較清單的品類 (以第一個商品為準)
+const compareCategorySlug = computed(() => {
+  if (compareList.value.length === 0) return 'dehumidifier'
+  return (compareList.value[0] as any).category_slug || 'dehumidifier'
+})
 
 // 資料已經在 SSR 階段載入完成
 const isReady = computed(() => allProducts.value.length > 0)
 
-// Get available brands and price range (reactive)
-const brands = computed(() => getAllBrands())
-const priceRange = computed(() => getPriceRange())
-
-// Brand filter - show major brands first, collapse others
-const showAllBrands = ref(false)
-const majorBrandNames = ['Panasonic', 'HITACHI', 'Mitsubishi', 'SHARP', 'LG', 'SAMPO', 'HERAN', 'Whirlpool', 'DAIKIN']
-
-const majorBrands = computed(() => {
-  return brands.value.filter(b =>
-    majorBrandNames.some(major => b.toUpperCase().includes(major.toUpperCase()))
-  )
-})
-
-const otherBrands = computed(() => {
-  return brands.value.filter(b =>
-    !majorBrandNames.some(major => b.toUpperCase().includes(major.toUpperCase()))
-  )
-})
-
-// 計算每個品牌的商品數量
-const getBrandCount = (brand: string): number => {
-  return allProducts.value.filter(p => p.brand === brand).length
-}
-
-// Filter state
+// Filter state (簡化版 - 首頁不使用分類篩選)
 const filters = reactive<FilterState>({
   brands: [],
   capacityRange: 'all',
@@ -225,20 +169,8 @@ const filters = reactive<FilterState>({
   priceMax: 100000
 })
 
-// 當資料載入完成後初始化價格範圍
-watch(isReady, (ready) => {
-  if (ready) {
-    const range = priceRange.value
-    filters.priceMin = range.min
-    filters.priceMax = range.max
-  }
-}, { immediate: true })
-
 // Sort state
 const sortBy = ref<SortOption>('popularity')
-
-// Mobile filter panel
-const showMobileFilters = ref(false)
 
 // Computed filtered and sorted products
 const displayedProducts = computed(() => {
@@ -309,28 +241,13 @@ const goToPage = (page: number) => {
 }
 
 // 當篩選條件改變時，重置到第一頁
-watch([() => filters.brands, () => filters.capacityRange, () => filters.priceMin, () => filters.priceMax, sortBy, searchQuery], () => {
+watch([sortBy, searchQuery], () => {
   currentPage.value = 1
 })
 
-// Toggle brand filter
-const toggleBrand = (brand: string) => {
-  const index = filters.brands.indexOf(brand)
-  if (index === -1) {
-    filters.brands.push(brand)
-  } else {
-    filters.brands.splice(index, 1)
-  }
-}
-
 // Reset filters
 const resetFilters = () => {
-  filters.brands = []
-  filters.capacityRange = 'all'
-  filters.priceMin = priceRange.value.min
-  filters.priceMax = priceRange.value.max
   sortBy.value = 'popularity'
-  activeQuickTag.value = null
   searchQuery.value = ''
   showFavoritesOnly.value = false
 }
@@ -340,24 +257,18 @@ const searchBrand = (brand: string) => {
   searchQuery.value = brand
 }
 
-// Sort options
+// Sort options (通用排序，適用所有品類)
 const sortOptions = [
   { value: 'popularity', label: '熱門推薦' },
   { value: 'discount_desc', label: '折扣幅度' },
-  { value: 'value_asc', label: 'CP值最高（花最少錢買到最強除濕力）' },
   { value: 'price_asc', label: '價格：低到高' },
   { value: 'price_desc', label: '價格：高到低' },
-  { value: 'capacity_desc', label: '除濕力：強到弱' },
-  { value: 'noise_asc', label: '最安靜' }
 ]
 
-// Capacity options
-const capacityOptions = [
-  { value: 'all', label: '全部容量' },
-  { value: 'under10', label: '10L 以下' },
-  { value: '10to15', label: '10-15L' },
-  { value: 'over15', label: '15L 以上' }
-]
+// 取得商品的分類 slug
+const getProductCategorySlug = (product: Dehumidifier): string => {
+  return (product as any).category_slug || 'dehumidifier'
+}
 
 // 根據品類計算商品數量
 const getCategoryCount = (slug: string): number => {
@@ -489,7 +400,14 @@ const categories = computed(() => [
       </div>
     </section>
 
-    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
+    <main
+      id="main-content"
+      :class="[
+        'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8',
+        showCookieBanner ? 'pb-44 sm:pb-24' : ''
+      ]"
+      role="main"
+    >
       <!-- Page Title -->
       <div class="mb-6 flex items-center justify-between">
         <div>
@@ -536,24 +454,9 @@ const categories = computed(() => [
         </div>
       </div>
 
-      <!-- Tool Buttons - 桌面版顯示 -->
-      <div class="hidden md:flex flex-wrap gap-3 mb-6">
+      <!-- Tool Buttons - 桌面版顯示 (收藏功能) -->
+      <div v-if="favorites.size > 0" class="hidden md:flex flex-wrap gap-3 mb-6">
         <button
-          class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium rounded-xl hover:from-blue-700 hover:to-blue-600 shadow-sm transition-all"
-          @click="showCalculator = true"
-        >
-          <Calculator :size="18" />
-          坪數計算器
-        </button>
-        <button
-          class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium rounded-xl hover:from-purple-700 hover:to-pink-600 shadow-sm transition-all"
-          @click="showFinder = true"
-        >
-          <Sparkles :size="18" />
-          幫我選
-        </button>
-        <button
-          v-if="favorites.size > 0"
           :class="[
             'flex items-center gap-2 px-4 py-2.5 font-medium rounded-xl transition-all',
             showFavoritesOnly
@@ -567,39 +470,37 @@ const categories = computed(() => [
         </button>
       </div>
 
-      <!-- Quick Filter Tags - 桌面版顯示 -->
-      <div class="hidden md:flex flex-wrap gap-2 mb-6">
-        <button
-          v-for="tag in quickTags"
-          :key="tag.label"
-          :class="[
-            'px-3 py-1.5 text-sm rounded-full transition-all',
-            activeQuickTag === tag.label
-              ? 'bg-blue-600 text-white border border-blue-600 shadow-sm'
-              : 'bg-white border border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
-          ]"
-          @click="applyQuickTag(tag)"
-        >
-          {{ tag.label }}
-        </button>
+      <!-- 情境推薦 -->
+      <div class="mb-6">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-2xl">🎯</span>
+          <h2 class="text-lg font-bold text-gray-900 dark:text-white">你的需求是？</h2>
+        </div>
+        <ScenarioRecommender />
       </div>
 
-      <div class="lg:flex lg:gap-8">
-        <!-- Mobile: Filter + Sort Bar (合併為一行) -->
-        <div class="lg:hidden flex items-center justify-between gap-3 mb-4 p-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-          <!-- 篩選按鈕 -->
-          <button
-            class="flex items-center gap-2 px-3 py-2 text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
-            @click="showMobileFilters = true"
-          >
-            <Filter :size="18" />
-            <span>篩選</span>
-          </button>
-
+      <div>
+        <!-- Mobile: Sort Bar -->
+        <div class="lg:hidden flex items-center justify-between gap-2 mb-4 p-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
           <!-- 商品數量 -->
-          <span class="text-sm text-gray-500 dark:text-gray-400">
-            {{ displayedProducts.length }} 項
+          <span class="text-sm text-gray-500 dark:text-gray-400 px-2">
+            {{ displayedProducts.length }} 項結果
           </span>
+
+          <!-- 收藏按鈕 (手機版) -->
+          <button
+            v-if="favorites.size > 0"
+            :class="[
+              'flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all',
+              showFavoritesOnly
+                ? 'bg-red-500 text-white'
+                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+            ]"
+            @click="showFavoritesOnly = !showFavoritesOnly"
+          >
+            <Heart :size="16" :fill="showFavoritesOnly ? 'currentColor' : 'none'" />
+            <span class="text-sm font-medium">{{ favorites.size }}</span>
+          </button>
 
           <!-- 排序選單 -->
           <div class="flex items-center gap-1.5 px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
@@ -614,272 +515,8 @@ const categories = computed(() => [
           </div>
         </div>
 
-        <!-- Sidebar Filters -->
-        <aside
-          v-if="showMobileFilters || true"
-          :class="[
-            'fixed inset-0 z-50 lg:relative lg:inset-auto',
-            'lg:block lg:w-64 lg:flex-shrink-0',
-            showMobileFilters ? 'block' : 'hidden lg:block'
-          ]"
-        >
-          <!-- 遮罩層 with fade animation -->
-          <Transition name="fade">
-            <div
-              v-if="showMobileFilters"
-              class="absolute inset-0 bg-black/50 lg:hidden"
-              @click="showMobileFilters = false"
-            />
-          </Transition>
-
-          <!-- 篩選面板 with slide animation -->
-          <Transition name="slide-right">
-            <div
-              v-show="showMobileFilters"
-              class="absolute right-0 top-0 h-full w-[85vw] max-w-80 bg-white dark:bg-gray-800 overflow-y-auto lg:hidden shadow-xl"
-            >
-              <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 z-10">
-                <span class="font-semibold text-gray-900 dark:text-white">篩選條件</span>
-                <button
-                  class="p-2 -mr-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-                  @click="showMobileFilters = false"
-                >
-                  <X :size="22" class="text-gray-500 dark:text-gray-400" />
-                </button>
-              </div>
-
-              <div class="p-4 space-y-6">
-                <!-- Brand Filter -->
-                <div>
-                  <h3 class="font-semibold text-gray-900 dark:text-white mb-3">品牌</h3>
-                  <div class="space-y-2">
-                    <label
-                      v-for="brand in majorBrands"
-                      :key="brand"
-                      class="flex items-center gap-2 cursor-pointer group"
-                    >
-                      <input
-                        type="checkbox"
-                        :checked="filters.brands.includes(brand)"
-                        class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                        @change="toggleBrand(brand)"
-                      />
-                      <span class="text-gray-700 dark:text-gray-200 flex-1">{{ brand }}</span>
-                      <span class="text-xs text-gray-400 group-hover:text-gray-600">{{ getBrandCount(brand) }}</span>
-                    </label>
-                    <div v-if="otherBrands.length > 0">
-                      <button
-                        class="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 font-medium mt-2 mb-2"
-                        @click="showAllBrands = !showAllBrands"
-                      >
-                        <ChevronRight
-                          :size="16"
-                          :class="['transition-transform', showAllBrands ? 'rotate-90' : '']"
-                        />
-                        {{ showAllBrands ? '收起' : `其他品牌 (${otherBrands.length})` }}
-                      </button>
-                      <div v-show="showAllBrands" class="space-y-2 pl-2 border-l-2 border-gray-100 dark:border-gray-700">
-                        <label
-                          v-for="brand in otherBrands"
-                          :key="brand"
-                          class="flex items-center gap-2 cursor-pointer group"
-                        >
-                          <input
-                            type="checkbox"
-                            :checked="filters.brands.includes(brand)"
-                            class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                            @change="toggleBrand(brand)"
-                          />
-                          <span class="text-gray-600 dark:text-gray-300 text-sm flex-1">{{ brand }}</span>
-                          <span class="text-xs text-gray-400 group-hover:text-gray-600">{{ getBrandCount(brand) }}</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Capacity Filter -->
-                <div>
-                  <h3 class="font-semibold text-gray-900 dark:text-white mb-3">日除濕量</h3>
-                  <div class="space-y-2">
-                    <label
-                      v-for="option in capacityOptions"
-                      :key="option.value"
-                      class="flex items-center gap-2 cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        :value="option.value"
-                        v-model="filters.capacityRange"
-                        class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                      />
-                      <span class="text-gray-700 dark:text-gray-200">{{ option.label }}</span>
-                    </label>
-                  </div>
-                </div>
-
-                <!-- Price Range Filter -->
-                <div>
-                  <h3 class="font-semibold text-gray-900 dark:text-white mb-3">價格範圍</h3>
-                  <div class="space-y-4">
-                    <div class="flex items-center gap-2">
-                      <input
-                        v-model.number="filters.priceMin"
-                        type="number"
-                        :min="priceRange.min"
-                        :max="filters.priceMax"
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="最低"
-                      />
-                      <span class="text-gray-400">-</span>
-                      <input
-                        v-model.number="filters.priceMax"
-                        type="number"
-                        :min="filters.priceMin"
-                        :max="priceRange.max"
-                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="最高"
-                      />
-                    </div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">
-                      NT$ {{ formatPrice(filters.priceMin) }} - NT$ {{ formatPrice(filters.priceMax) }}
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Reset Button -->
-                <button
-                  class="w-full py-2.5 text-sm text-blue-600 hover:text-blue-700 font-medium"
-                  @click="resetFilters"
-                >
-                  重設篩選條件
-                </button>
-              </div>
-
-              <!-- Mobile Apply Button -->
-              <div class="sticky bottom-0 p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-                <button
-                  class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors"
-                  @click="showMobileFilters = false"
-                >
-                  套用篩選 ({{ displayedProducts.length }} 項結果)
-                </button>
-              </div>
-            </div>
-          </Transition>
-
-          <!-- Desktop Filter Panel -->
-          <div class="hidden lg:block lg:w-full lg:relative lg:h-auto bg-transparent rounded-xl space-y-6">
-            <!-- Brand Filter -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-              <h3 class="font-semibold text-gray-900 dark:text-white mb-3">品牌</h3>
-              <div class="space-y-2">
-                <label
-                  v-for="brand in majorBrands"
-                  :key="brand"
-                  class="flex items-center gap-2 cursor-pointer group"
-                >
-                  <input
-                    type="checkbox"
-                    :checked="filters.brands.includes(brand)"
-                    class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                    @change="toggleBrand(brand)"
-                  />
-                  <span class="text-gray-700 dark:text-gray-200 flex-1">{{ brand }}</span>
-                  <span class="text-xs text-gray-400 group-hover:text-gray-600">{{ getBrandCount(brand) }}</span>
-                </label>
-                <div v-if="otherBrands.length > 0">
-                  <button
-                    class="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 font-medium mt-2 mb-2"
-                    @click="showAllBrands = !showAllBrands"
-                  >
-                    <ChevronRight
-                      :size="16"
-                      :class="['transition-transform', showAllBrands ? 'rotate-90' : '']"
-                    />
-                    {{ showAllBrands ? '收起' : `其他品牌 (${otherBrands.length})` }}
-                  </button>
-                  <div v-show="showAllBrands" class="space-y-2 pl-2 border-l-2 border-gray-100 dark:border-gray-700">
-                    <label
-                      v-for="brand in otherBrands"
-                      :key="brand"
-                      class="flex items-center gap-2 cursor-pointer group"
-                    >
-                      <input
-                        type="checkbox"
-                        :checked="filters.brands.includes(brand)"
-                        class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                        @change="toggleBrand(brand)"
-                      />
-                      <span class="text-gray-600 dark:text-gray-300 text-sm flex-1">{{ brand }}</span>
-                      <span class="text-xs text-gray-400 group-hover:text-gray-600">{{ getBrandCount(brand) }}</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Capacity Filter -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-              <h3 class="font-semibold text-gray-900 dark:text-white mb-3">日除濕量</h3>
-              <div class="space-y-2">
-                <label
-                  v-for="option in capacityOptions"
-                  :key="option.value"
-                  class="flex items-center gap-2 cursor-pointer"
-                >
-                  <input
-                    type="radio"
-                    :value="option.value"
-                    v-model="filters.capacityRange"
-                    class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                  />
-                  <span class="text-gray-700 dark:text-gray-200">{{ option.label }}</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Price Range Filter -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-              <h3 class="font-semibold text-gray-900 dark:text-white mb-3">價格範圍</h3>
-              <div class="space-y-4">
-                <div class="flex items-center gap-2">
-                  <input
-                    v-model.number="filters.priceMin"
-                    type="number"
-                    :min="priceRange.min"
-                    :max="filters.priceMax"
-                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="最低"
-                  />
-                  <span class="text-gray-400">-</span>
-                  <input
-                    v-model.number="filters.priceMax"
-                    type="number"
-                    :min="filters.priceMin"
-                    :max="priceRange.max"
-                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="最高"
-                  />
-                </div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                  NT$ {{ formatPrice(filters.priceMin) }} - NT$ {{ formatPrice(filters.priceMax) }}
-                </p>
-              </div>
-            </div>
-
-            <!-- Reset Button -->
-            <button
-              class="w-full py-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 font-medium"
-              @click="resetFilters"
-            >
-              重設篩選條件
-            </button>
-          </div>
-        </aside>
-
-        <!-- Main Content -->
-        <div class="flex-1">
+        <!-- Main Content (無側邊欄篩選器，首頁為綜合商品頁面) -->
+        <div class="w-full">
           <!-- Sort Bar (桌面版) -->
           <div class="hidden lg:block mb-6 bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between gap-2">
@@ -921,7 +558,7 @@ const categories = computed(() => [
               :is-in-compare="isInCompare(product.id)"
               :is-favorite="isFavorite(product.id)"
               :search-query="searchQuery"
-              category-slug="dehumidifier"
+              :category-slug="getProductCategorySlug(product)"
               @toggle-compare="toggleCompare(product)"
               @toggle-favorite="toggleFavorite(product.id)"
             />
@@ -1041,7 +678,12 @@ const categories = computed(() => [
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-16">
+    <footer
+      :class="[
+        'bg-white border-t border-gray-200 mt-16',
+        (compareList.length > 0 || showCookieBanner) ? 'pb-24' : ''
+      ]"
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="text-center text-gray-500 dark:text-gray-400 text-sm">
           <p>© 2025 比比看. 本站包含聯盟行銷連結。</p>
@@ -1054,83 +696,32 @@ const categories = computed(() => [
     <Transition name="fade">
       <button
         v-if="showScrollTop"
-        class="fixed bottom-24 right-6 z-50 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110"
+        :class="[
+          'fixed right-4 sm:right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110',
+          compareList.length > 0
+            ? (showCookieBanner ? 'bottom-52 sm:bottom-32' : 'bottom-36 sm:bottom-24')
+            : (showCookieBanner ? 'bottom-44 sm:bottom-20' : 'bottom-28 sm:bottom-6')
+        ]"
         @click="scrollToTop"
         aria-label="回到頂部"
       >
-        <ArrowUp :size="24" />
+        <ArrowUp :size="22" />
       </button>
     </Transition>
 
     <!-- Floating Compare Bar -->
-    <Transition name="slide-up">
-      <div
-        v-if="compareList.length > 0"
-        class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40 p-4"
-      >
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <GitCompare :size="20" class="text-blue-600" />
-            <span class="font-medium text-gray-900">
-              已選 {{ compareList.length }} / 4 項商品
-            </span>
-            <div class="hidden sm:flex items-center gap-2">
-              <div
-                v-for="product in compareList"
-                :key="product.id"
-                class="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-sm"
-              >
-                <span class="truncate max-w-[100px]">{{ getDisplayBrand(product) || product.model }}</span>
-                <button
-                  class="text-gray-400 hover:text-red-500"
-                  @click="removeFromCompare(product.id)"
-                >
-                  <X :size="14" />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="flex items-center gap-3">
-            <button
-              class="text-sm text-gray-500 hover:text-gray-700"
-              @click="compareList = []"
-            >
-              清除全部
-            </button>
-            <button
-              :disabled="compareList.length < 2"
-              :class="[
-                'px-4 py-2 rounded-lg font-medium transition-colors',
-                compareList.length >= 2
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              ]"
-              @click="showCompareModal = true"
-            >
-              比較 ({{ compareList.length }})
-            </button>
-          </div>
-        </div>
-      </div>
-    </Transition>
+    <FloatingCompareBar
+      :compare-list="compareList"
+      @remove="removeFromCompare"
+      @clear="compareList = []"
+      @compare="showCompareModal = true"
+    />
 
     <!-- Modals -->
-    <RoomCalculator
-      v-if="showCalculator"
-      :products="allProducts as Dehumidifier[]"
-      @close="showCalculator = false"
-      @apply-filter="applyCapacityFilter"
-    />
-
-    <ProductFinder
-      v-if="showFinder"
-      :products="allProducts as Dehumidifier[]"
-      @close="showFinder = false"
-    />
-
     <CompareModal
       v-if="showCompareModal"
       :products="compareList"
+      :category-slug="compareCategorySlug"
       @close="showCompareModal = false"
       @remove="removeFromCompare"
     />
@@ -1141,17 +732,6 @@ const categories = computed(() => [
 </template>
 
 <style scoped>
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.slide-up-enter-from,
-.slide-up-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
@@ -1160,19 +740,5 @@ const categories = computed(() => [
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-/* 篩選面板滑入動畫 */
-.slide-right-enter-active {
-  transition: transform 0.3s ease-out;
-}
-
-.slide-right-leave-active {
-  transition: transform 0.25s ease-in;
-}
-
-.slide-right-enter-from,
-.slide-right-leave-to {
-  transform: translateX(100%);
 }
 </style>

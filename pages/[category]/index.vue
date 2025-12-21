@@ -28,20 +28,56 @@ import FloatingCompareBar from '~/components/category/FloatingCompareBar.vue'
 import Pagination from '~/components/category/Pagination.vue'
 import { formatPrice, getDisplayBrand } from '~/utils/product'
 
+// Loading component for async components
+import LoadingModal from '~/components/LoadingModal.vue'
+
 // Lazy load Calculator and Finder components (only loaded when modal opens)
-const RoomCalculator = defineAsyncComponent(() => import('~/components/RoomCalculator.vue'))
-const ProductFinder = defineAsyncComponent(() => import('~/components/ProductFinder.vue'))
-const AirPurifierCalculator = defineAsyncComponent(() => import('~/components/AirPurifierCalculator.vue'))
-const AirPurifierFinder = defineAsyncComponent(() => import('~/components/AirPurifierFinder.vue'))
-const AirConditionerCalculator = defineAsyncComponent(() => import('~/components/AirConditionerCalculator.vue'))
-const AirConditionerFinder = defineAsyncComponent(() => import('~/components/AirConditionerFinder.vue'))
-const HeaterFinder = defineAsyncComponent(() => import('~/components/HeaterFinder.vue'))
-const FanFinder = defineAsyncComponent(() => import('~/components/FanFinder.vue'))
+const RoomCalculator = defineAsyncComponent({
+  loader: () => import('~/components/RoomCalculator.vue'),
+  loadingComponent: LoadingModal,
+  delay: 0,
+})
+const ProductFinder = defineAsyncComponent({
+  loader: () => import('~/components/ProductFinder.vue'),
+  loadingComponent: LoadingModal,
+  delay: 0,
+})
+const AirPurifierCalculator = defineAsyncComponent({
+  loader: () => import('~/components/AirPurifierCalculator.vue'),
+  loadingComponent: LoadingModal,
+  delay: 0,
+})
+const AirPurifierFinder = defineAsyncComponent({
+  loader: () => import('~/components/AirPurifierFinder.vue'),
+  loadingComponent: LoadingModal,
+  delay: 0,
+})
+const AirConditionerCalculator = defineAsyncComponent({
+  loader: () => import('~/components/AirConditionerCalculator.vue'),
+  loadingComponent: LoadingModal,
+  delay: 0,
+})
+const AirConditionerFinder = defineAsyncComponent({
+  loader: () => import('~/components/AirConditionerFinder.vue'),
+  loadingComponent: LoadingModal,
+  delay: 0,
+})
+const HeaterFinder = defineAsyncComponent({
+  loader: () => import('~/components/HeaterFinder.vue'),
+  loadingComponent: LoadingModal,
+  delay: 0,
+})
+const FanFinder = defineAsyncComponent({
+  loader: () => import('~/components/FanFinder.vue'),
+  loadingComponent: LoadingModal,
+  delay: 0,
+})
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
 import { useUrlFilters } from '~/composables/useUrlFilters'
 import { useStructuredData } from '~/composables/useStructuredData'
 import { useRoute, useHead, createError } from '#imports'
+import { useCookieConsent } from '~/composables/useCookieConsent'
 
 const route = useRoute()
 const categorySlug = computed(() => route.params.category as string)
@@ -61,6 +97,9 @@ if (!categoryConfig.value) {
 
 // SSR 資料預載
 await useProductsSSR()
+
+// Cookie 同意橫幅狀態
+const { showBanner: showCookieBanner } = useCookieConsent()
 
 const { allProducts, isLoading, getAllBrands, getPriceRange, filterProducts, sortProducts, getProductSlug } = useProducts()
 
@@ -247,13 +286,20 @@ const removeFromCompare = (id: string) => {
 }
 
 // 快速標籤
-const applyQuickTag = (tag: { label: string }) => {
+const applyQuickTag = (tag: { label: string; filterKey?: string; filterValue?: any; sortBy?: string }) => {
   if (activeQuickTag.value === tag.label) {
     activeQuickTag.value = null
     resetFilters()
   } else {
     activeQuickTag.value = tag.label
-    // TODO: Apply tag filter based on categoryConfig
+    // Apply filter based on tag configuration
+    if (tag.filterKey && tag.filterValue !== undefined) {
+      (filters as any)[tag.filterKey] = tag.filterValue
+    }
+    // Apply sort if specified
+    if (tag.sortBy) {
+      sortBy.value = tag.sortBy as SortOption
+    }
   }
 }
 
@@ -457,7 +503,14 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
       :category-name="categoryConfig?.name || ''"
     />
 
-    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
+    <main
+      id="main-content"
+      :class="[
+        'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8',
+        showCookieBanner ? 'pb-44 sm:pb-24' : ''
+      ]"
+      role="main"
+    >
       <!-- Page Title -->
       <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
@@ -1020,7 +1073,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
     </main>
 
     <!-- Footer -->
-    <SiteFooter />
+    <SiteFooter :has-floating-bar="compareList.length > 0" />
 
     <!-- Scroll to top - 動態調整位置避免與底部元素衝突 -->
     <Transition name="fade">
@@ -1028,7 +1081,9 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
         v-if="showScrollTop"
         :class="[
           'fixed right-4 sm:right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110',
-          compareList.length > 0 ? 'bottom-36 md:bottom-24' : 'bottom-24 md:bottom-6'
+          compareList.length > 0
+            ? (showCookieBanner ? 'bottom-44 md:bottom-32' : 'bottom-36 md:bottom-24')
+            : (showCookieBanner ? 'bottom-32 md:bottom-20' : 'bottom-24 md:bottom-6')
         ]"
         @click="scrollToTop"
         aria-label="回到頂部"
@@ -1049,6 +1104,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
     <CompareModal
       v-if="showCompareModal"
       :products="compareList"
+      :category-slug="categorySlug"
       @close="showCompareModal = false"
       @remove="removeFromCompare"
     />

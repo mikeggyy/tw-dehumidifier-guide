@@ -11,6 +11,23 @@ export default {
   ],
   theme: {
     extend: {
+      // System font stack for optimal loading performance (no external font requests)
+      fontFamily: {
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          '"Noto Sans TC"',
+          '"PingFang TC"',
+          '"Microsoft JhengHei"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"'
+        ]
+      },
       colors: {
         primary: {
           50: '#eff6ff',
