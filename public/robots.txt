@@ -1,10 +1,28 @@
-# robots.txt for 除濕機比較推薦
+# robots.txt for 家電比比看
+# https://www.jiadian-tw.work
+
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://dehumidifier-compare.vercel.app/sitemap.xml
+# Sitemap 位置
+Sitemap: https://www.jiadian-tw.work/sitemap.xml
 
-# Disallow admin/internal paths (if any)
+# 禁止爬取的路徑
 Disallow: /_nuxt/
 Disallow: /api/
+Disallow: /*?sort=
+Disallow: /*?page=
+Disallow: /*?filter=
+
+# 爬蟲延遲 (秒)
+Crawl-delay: 1
+
+# Google 特定設定
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Bing 特定設定
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1

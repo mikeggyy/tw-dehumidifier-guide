@@ -87,11 +87,31 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: 'https://dehumidifier-compare.vercel.app'
+    url: 'https://www.jiadian-tw.work'
   },
 
   sitemap: {
-    strictNuxtContentPaths: true
+    strictNuxtContentPaths: true,
+    // SEO 優化設定
+    defaults: {
+      changefreq: 'daily',
+      priority: 0.8,
+      lastmod: new Date().toISOString(),
+    },
+    // 根據頁面類型設定不同優先級
+    urls: [
+      {
+        loc: '/',
+        changefreq: 'daily',
+        priority: 1.0,
+      },
+      // 品類頁面 - 高優先級
+      ...categorySlugs.map(slug => ({
+        loc: `/${slug}`,
+        changefreq: 'daily',
+        priority: 0.9,
+      })),
+    ],
   },
 
   nitro: {

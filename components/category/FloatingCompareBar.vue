@@ -24,7 +24,7 @@ const getDisplayBrand = (product: Product): string => {
   <Transition name="slide-up">
     <div
       v-if="compareList.length > 0"
-      class="fixed left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg z-40 px-4 py-3 bottom-[60px] md:bottom-0 safe-area-bottom"
+      class="fixed left-2 right-2 md:left-0 md:right-0 bg-white dark:bg-gray-800 border border-gray-200 md:border-t md:border-x-0 md:border-b-0 dark:border-gray-700 shadow-lg md:shadow-lg z-40 px-4 py-3 bottom-[68px] md:bottom-0 safe-area-bottom rounded-xl md:rounded-none"
     >
       <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <div class="flex items-center gap-2 min-w-0">
@@ -75,7 +75,7 @@ const getDisplayBrand = (product: Product): string => {
 
 <style scoped>
 .safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
 }
 
 .slide-up-enter-active,

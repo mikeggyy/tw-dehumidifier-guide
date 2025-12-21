@@ -11,7 +11,8 @@ This is a Nuxt 3 Programmatic SEO (pSEO) site for comparing home appliance speci
 ## Commands
 
 ```bash
-npm run dev       # Start development server (http://localhost:3000)
+npm run dev       # Start development server (port 3000, kills existing process first)
+npm run dev:fast  # Start dev server without killing existing process
 npm run build     # Build for production (SSR)
 npm run generate  # Generate static site for deployment
 npm run preview   # Preview production build locally
@@ -20,6 +21,13 @@ npm run preview   # Preview production build locally
 ## Known Windows Issue
 
 There is a Nuxt bug with Windows drive letter paths (e.g., `d:/project/test/`) that causes build errors locally. The project builds correctly on Linux-based CI/CD (Vercel, GitHub Actions). For local Windows development, use WSL.
+
+## Environment Variables
+
+Optional - defaults are provided in `nuxt.config.ts`:
+- `NUXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NUXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous/public key
+- `NUXT_PUBLIC_SITE_URL` - Production site URL (for SEO)
 
 ## Daily Scraper Workflow (重要!)
 
@@ -62,10 +70,10 @@ tw-dehumidifier-scraper/
 ## Architecture
 
 ### Data Flow
-- **Data Source**: Supabase 資料庫 (由爬蟲每日更新)
-- **Local Fallback**: `data/*.json` 檔案作為備援資料
-- **Type Definitions**: `types/index.ts` defines `Dehumidifier`, `FilterState`, and `SortOption`
-- **Filtering/Sorting**: All logic lives in `useProducts()` composable - no external state management
+- **Primary**: Supabase 資料庫 (products table, 由爬蟲每日更新)
+- **Fallback**: `data/*.json` 檔案作為備援資料 (Supabase 連線失敗時使用)
+- **Type Definitions**: `types/index.ts` - 使用 `Dehumidifier` 類型 (向後相容), 新商品使用 `Product` 類型
+- **No State Management**: All filtering/sorting lives in composables, no Vuex/Pinia
 
 ### Auto-Imports Disabled
 Due to Windows path bugs, Nuxt auto-imports are disabled in `nuxt.config.ts`. All Vue/Nuxt imports must be explicit:
@@ -75,6 +83,12 @@ import { useRoute, useHead, createError } from '#imports'
 import { useProducts } from '~/composables/useProducts'
 import ProductCard from '~/components/ProductCard.vue'
 ```
+
+### Multi-Category System
+品類設定集中在 `composables/useCategoryConfig.ts`:
+- `CategoryConfig` 定義每個品類的規格欄位、篩選器、排序選項
+- 新增品類: 在 `categoryConfigs` 物件加入設定, 在 `categoryList` 加入選項
+- 品類 slug: `dehumidifier`, `air-purifier`, `air-conditioner`, `heater`, `fan`
 
 ### Static Site Generation
 - 使用 `crawlLinks: true` 自動發現所有頁面
@@ -88,13 +102,30 @@ import ProductCard from '~/components/ProductCard.vue'
 
 ## Key Files
 
-- `nuxt.config.ts` - Sitemap config, prerender routes, SEO meta defaults
-- `composables/useProducts.ts` - 從 Supabase/JSON 載入資料, filtering, sorting
-- `composables/useCategoryConfig.ts` - 各品類的設定 (篩選器、規格欄位等)
+**Config**
+- `nuxt.config.ts` - Sitemap, prerender routes, SEO meta, runtime config
+
+**Pages** (dynamic routing)
+- `pages/index.vue` - 首頁 (品類卡片導覽)
 - `pages/[category]/index.vue` - 品類列表頁 (含篩選器、排序、比較功能)
 - `pages/[category]/[slug].vue` - 商品詳情頁
-- `pages/index.vue` - 首頁 (品類卡片導覽)
-- `data/*.json` - 各品類商品資料 (備援用)
+
+**Core Composables**
+- `composables/useProducts.ts` - 從 Supabase/JSON 載入資料, filtering, sorting
+- `composables/useCategoryConfig.ts` - 各品類的設定 (篩選器、規格欄位等)
+- `composables/useCompare.ts` - 商品比較功能 (localStorage 持久化)
+- `composables/useFavorites.ts` - 收藏功能
+- `composables/useDarkMode.ts` - 深色模式切換
+
+**Data**
+- `data/*.json` - 各品類商品資料 (Supabase 備援用)
+- `types/index.ts` - TypeScript 類型定義
+
+## UI Components
+
+- **Icons**: 使用 `lucide-vue-next` (e.g., `<Droplets />`, `<Wind />`)
+- **Styling**: Tailwind CSS with dark mode support
+- **Component imports**: 必須明確 import，沒有 auto-import
 
 ## Affiliate Integration (聯盟行銷)
 

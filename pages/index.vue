@@ -26,8 +26,10 @@ import ProductCardSkeleton from '~/components/ProductCardSkeleton.vue'
 import OnboardingTour from '~/components/OnboardingTour.vue'
 import SearchAutocomplete from '~/components/SearchAutocomplete.vue'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
+import { useStructuredData } from '~/composables/useStructuredData'
 import { formatPrice, getDisplayBrand } from '~/utils/product'
 import SiteHeader from '~/components/SiteHeader.vue'
+import { useHead } from '#imports'
 
 // 動態載入 Modal 組件（減少初始 bundle 大小）
 const RoomCalculator = defineAsyncComponent(() => import('~/components/RoomCalculator.vue'))
@@ -36,6 +38,32 @@ const ProductFinder = defineAsyncComponent(() => import('~/components/ProductFin
 
 // SSR 資料預載 - 在伺服器端就先載入資料
 await useProductsSSR()
+
+// 首頁 SEO - 結構化資料
+const { setWebsiteStructuredData, setOrganizationStructuredData, SITE_URL, SITE_NAME } = useStructuredData()
+
+// 設置 WebSite 和 Organization Schema (首頁專用)
+setWebsiteStructuredData()
+setOrganizationStructuredData()
+
+// 首頁 Meta Tags
+useHead({
+  title: `${SITE_NAME} | 台灣家電規格比較 2025`,
+  meta: [
+    { name: 'description', content: '台灣最完整的家電規格比較網站，收錄除濕機、空氣清淨機、冷氣、電暖器、電風扇等品類，比較 Panasonic、Hitachi、LG 等品牌的規格與價格。' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: `${SITE_NAME} | 台灣家電規格比較平台` },
+    { property: 'og:description', content: '比較台灣各大品牌家電規格與價格，幫你找到最適合的家電產品。' },
+    { property: 'og:url', content: SITE_URL },
+    { property: 'og:image', content: `${SITE_URL}/og-image.png` },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: `${SITE_NAME} | 台灣家電規格比較平台` },
+    { name: 'twitter:description', content: '比較台灣各大品牌家電規格與價格，幫你找到最適合的家電產品。' },
+  ],
+  link: [
+    { rel: 'canonical', href: SITE_URL },
+  ],
+})
 
 const { allProducts, isLoading, getAllBrands, getPriceRange, filterProducts, sortProducts } = useProducts()
 
