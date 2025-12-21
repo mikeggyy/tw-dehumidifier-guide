@@ -31,7 +31,7 @@ export default defineNuxtConfig({
     public: {
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://tqyefifafabyudtyjfam.supabase.co',
       supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD5',
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://bibikan.tw',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.jiadian-tw.work',
     }
   },
 

@@ -290,8 +290,8 @@ const productFeatures = computed(() => {
 })
 
 // SEO - 完整 Meta Tags
-const siteUrl = 'https://bibikan.tw'
-const pageUrl = `${siteUrl}/${categorySlug.value}/${productSlug.value}`
+const { SITE_URL } = useStructuredData()
+const pageUrl = `${SITE_URL}/${categorySlug.value}/${productSlug.value}`
 const pageTitle = `${product.value?.name || ''} | 比比看`
 const pageDescription = `${product.value?.name} - NT$ ${formatPrice(product.value?.price || 0)}，查看詳細規格與最新優惠價格。`
 
@@ -322,25 +322,29 @@ useHead({
 })
 
 // JSON-LD 結構化資料
-const { setProductStructuredData, setBreadcrumbStructuredData } = useStructuredData()
+const { setProductStructuredData, setBreadcrumbStructuredData, setFAQStructuredData } = useStructuredData()
 
 if (product.value) {
+  // Product Schema - 增強版
   setProductStructuredData({
     name: product.value.name,
     description: `${product.value.name} - 查看詳細規格、比較價格`,
     image: product.value.image_url,
     brand: displayBrand.value,
     model: product.value.model,
+    sku: product.value.id,
     price: product.value.price,
     originalPrice: product.value.original_price || undefined,
-    url: typeof window !== 'undefined' ? window.location.href : '',
+    url: pageUrl,
     category: categoryConfig.value?.name,
+    inStock: (product.value as any).in_stock !== false,
   })
 
+  // Breadcrumb Schema
   setBreadcrumbStructuredData([
-    { name: '首頁', url: 'https://bibikan.tw/' },
-    { name: categoryConfig.value?.name || '', url: `https://bibikan.tw/${categorySlug.value}` },
-    { name: product.value.name, url: `https://bibikan.tw/${categorySlug.value}/${productSlug.value}` },
+    { name: '首頁', url: `${SITE_URL}/` },
+    { name: categoryConfig.value?.name || '', url: `${SITE_URL}/${categorySlug.value}` },
+    { name: product.value.name, url: `${SITE_URL}/${categorySlug.value}/${productSlug.value}` },
   ])
 }
 
@@ -712,6 +716,11 @@ const productFAQ = computed(() => {
 
   return faqs
 })
+
+// 設置 FAQ Schema (在 productFAQ 計算後)
+if (product.value && productFAQ.value.length > 0) {
+  setFAQStructuredData(productFAQ.value)
+}
 
 // ============ 尺寸視覺化 ============
 const productDimensions = computed(() => {

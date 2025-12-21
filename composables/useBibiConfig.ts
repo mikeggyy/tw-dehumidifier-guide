@@ -8,12 +8,12 @@ export const bibiSiteConfig = {
   // 網站基本資訊
   name: '比比看',
   tagline: '台灣家電規格比較平台',
-  url: 'https://bibikan.tw',
+  url: 'https://www.jiadian-tw.work',
 
   // SEO 預設值
-  defaultTitle: '比比看 | 台灣家電規格比較平台',
+  defaultTitle: '家電比比看 | 台灣家電規格比較平台',
   defaultDescription: '比較台灣各大品牌家電規格與價格，包含除濕機、空氣清淨機、冷氣、電暖器等，幫你找到最適合的家電產品。',
-  defaultImage: 'https://bibikan.tw/og-image.png',
+  defaultImage: 'https://www.jiadian-tw.work/og-image.png',
 
   // 版權資訊
   copyright: '© 2025 比比看. 本站包含聯盟行銷連結。',

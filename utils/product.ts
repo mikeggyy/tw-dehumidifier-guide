@@ -18,7 +18,7 @@ export function getTrackedAffiliateUrl(
   if (!url) return ''
 
   const params = new URLSearchParams({
-    utm_source: 'bibikan',
+    utm_source: 'jiadian-tw',
     utm_medium: 'comparison',
     utm_campaign: source,
   })

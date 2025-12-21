@@ -1,5 +1,5 @@
 // Service Worker for PWA offline support
-const CACHE_NAME = 'bibikan-v1'
+const CACHE_NAME = 'jiadian-tw-v1'
 const OFFLINE_URL = '/'
 
 // Assets to cache immediately on install

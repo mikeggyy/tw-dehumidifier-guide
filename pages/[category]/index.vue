@@ -73,8 +73,8 @@ const categoryProducts = computed(() => {
 })
 
 // SEO - 完整 Meta Tags
-const siteUrl = 'https://bibikan.tw'
-const pageUrl = computed(() => `${siteUrl}/${categorySlug.value}`)
+const { SITE_URL } = useStructuredData()
+const pageUrl = computed(() => `${SITE_URL}/${categorySlug.value}`)
 const pageTitle = computed(() => `${categoryConfig.value?.name || ''}規格比較 2025 | 比比看`)
 const pageDescription = computed(() => categoryConfig.value?.seoDescription || `${categoryConfig.value?.name}規格比較，收錄多款商品，比較品牌、價格、規格。`)
 // 使用第一個商品的圖片作為 OG Image
@@ -82,7 +82,7 @@ const ogImage = computed(() => {
   if (categoryProducts.value.length > 0) {
     return categoryProducts.value[0].image_url
   }
-  return `${siteUrl}/og-image.png`
+  return `${SITE_URL}/og-image.png`
 })
 
 useHead({
@@ -113,7 +113,7 @@ const { setItemListStructuredData, setBreadcrumbStructuredData } = useStructured
 
 // 設置 Breadcrumb 結構化資料
 setBreadcrumbStructuredData([
-  { name: '首頁', url: siteUrl },
+  { name: '首頁', url: SITE_URL },
   { name: categoryConfig.value?.name || '', url: pageUrl.value },
 ])
 
@@ -121,7 +121,7 @@ setBreadcrumbStructuredData([
 const itemListData = computed(() => {
   return categoryProducts.value.slice(0, 10).map(product => ({
     name: product.name,
-    url: `${siteUrl}/${categorySlug.value}/${getProductSlug(product)}`,
+    url: `${SITE_URL}/${categorySlug.value}/${getProductSlug(product)}`,
     image: product.image_url,
     price: product.price,
   }))
@@ -496,13 +496,13 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
       <!-- Compare Tip Banner -->
       <div
         v-if="compareList.length === 0"
-        class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl"
+        class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border border-blue-100 dark:border-blue-800 rounded-xl"
       >
         <div class="flex items-start gap-3">
-          <GitCompare :size="20" class="text-blue-600 flex-shrink-0 mt-0.5" />
+          <GitCompare :size="20" class="text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
           <div>
-            <p class="text-sm font-medium text-blue-900">不知道選哪款？</p>
-            <p class="text-sm text-blue-700 mt-0.5">
+            <p class="text-sm font-medium text-blue-900 dark:text-blue-100">不知道選哪款？</p>
+            <p class="text-sm text-blue-700 dark:text-blue-300 mt-0.5">
               點擊商品卡片下方的「加入比較」按鈕，最多可選 4 款並排比較規格！
             </p>
           </div>
@@ -583,10 +583,10 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
         <button
           v-if="favorites.size > 0"
           :class="[
-            'flex items-center gap-2 px-4 py-2.5 font-medium rounded-xl transition-all',
+            'flex items-center gap-2 px-4 py-2.5 font-medium rounded-xl transition-all whitespace-nowrap flex-shrink-0',
             showFavoritesOnly
               ? 'bg-red-500 text-white'
-              : 'bg-white border border-gray-200 text-gray-700 hover:border-red-300 hover:text-red-500'
+              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-red-300 dark:hover:border-red-400 hover:text-red-500 dark:hover:text-red-400'
           ]"
           @click="showFavoritesOnly = !showFavoritesOnly"
         >
@@ -601,10 +601,10 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
           v-for="tag in categoryConfig.quickTags"
           :key="tag.label"
           :class="[
-            'px-3 py-1.5 text-sm rounded-full transition-all',
+            'px-4 py-2 text-sm rounded-full transition-all whitespace-nowrap flex-shrink-0',
             activeQuickTag === tag.label
               ? 'bg-blue-600 text-white border border-blue-600 shadow-sm'
-              : 'bg-white border border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600'
+              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400'
           ]"
           @click="applyQuickTag(tag)"
         >
@@ -613,14 +613,38 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
       </div>
 
       <div class="lg:flex lg:gap-8">
-        <!-- Mobile Filter Button -->
-        <button
-          class="lg:hidden w-full mb-4 flex items-center justify-center gap-2 px-4 py-3 bg-white rounded-lg border border-gray-200 text-gray-700 font-medium"
-          @click="showMobileFilters = true"
-        >
-          <Filter :size="20" />
-          篩選條件
-        </button>
+        <!-- Mobile: Filter + Sort Bar (合併為一行) -->
+        <div class="lg:hidden flex items-center justify-between gap-3 mb-4 p-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+          <!-- 篩選按鈕 -->
+          <button
+            class="flex items-center gap-2 px-3 py-2 text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            @click="showMobileFilters = true"
+          >
+            <Filter :size="18" />
+            <span>篩選</span>
+          </button>
+
+          <!-- 商品數量 -->
+          <span class="text-sm text-gray-500 dark:text-gray-400">
+            {{ displayedProducts.length }} 項
+          </span>
+
+          <!-- 排序選單 -->
+          <div class="flex items-center gap-1.5 px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
+            <select
+              v-model="sortBy"
+              class="text-sm bg-transparent text-gray-700 dark:text-gray-200 font-medium focus:ring-0 focus:outline-none cursor-pointer border-0 p-0 pr-6"
+            >
+              <option
+                v-for="option in categoryConfig?.sortOptions"
+                :key="option.value"
+                :value="option.value"
+              >
+                {{ option.label }}
+              </option>
+            </select>
+          </div>
+        </div>
 
         <!-- Sidebar Filters -->
         <aside
@@ -788,8 +812,8 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 
             <div class="p-4 lg:p-0 space-y-6">
               <!-- Brand Filter -->
-              <div class="bg-white rounded-xl p-4 lg:border lg:border-gray-200">
-                <h3 class="font-semibold text-gray-900 mb-3">品牌</h3>
+              <div class="bg-white dark:bg-gray-800 rounded-xl p-4 lg:border lg:border-gray-200 dark:border-gray-700">
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-3">品牌</h3>
                 <div class="space-y-2">
                   <label
                     v-for="brand in majorBrands"
@@ -799,16 +823,16 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                     <input
                       type="checkbox"
                       :checked="filters.brands.includes(brand)"
-                      class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                      class="w-4 h-4 text-blue-600 rounded border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:bg-gray-700"
                       @change="toggleBrand(brand)"
                     />
-                    <span class="text-gray-700 flex-1">{{ brand }}</span>
-                    <span class="text-xs text-gray-400 group-hover:text-gray-600">{{ getBrandCount(brand) }}</span>
+                    <span class="text-gray-700 dark:text-gray-200 flex-1">{{ brand }}</span>
+                    <span class="text-xs text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300">{{ getBrandCount(brand) }}</span>
                   </label>
 
                   <div v-if="otherBrands.length > 0">
                     <button
-                      class="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 font-medium mt-2 mb-2"
+                      class="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium mt-2 mb-2"
                       @click="showAllBrands = !showAllBrands"
                     >
                       <ChevronRight
@@ -818,7 +842,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                       {{ showAllBrands ? '收起' : `其他品牌 (${otherBrands.length})` }}
                     </button>
 
-                    <div v-show="showAllBrands" class="space-y-2 pl-2 border-l-2 border-gray-100">
+                    <div v-show="showAllBrands" class="space-y-2 pl-2 border-l-2 border-gray-100 dark:border-gray-600">
                       <label
                         v-for="brand in otherBrands"
                         :key="brand"
@@ -827,11 +851,11 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                         <input
                           type="checkbox"
                           :checked="filters.brands.includes(brand)"
-                          class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                          class="w-4 h-4 text-blue-600 rounded border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:bg-gray-700"
                           @change="toggleBrand(brand)"
                         />
-                        <span class="text-gray-600 text-sm flex-1">{{ brand }}</span>
-                        <span class="text-xs text-gray-400 group-hover:text-gray-600">{{ getBrandCount(brand) }}</span>
+                        <span class="text-gray-600 dark:text-gray-300 text-sm flex-1">{{ brand }}</span>
+                        <span class="text-xs text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300">{{ getBrandCount(brand) }}</span>
                       </label>
                     </div>
                   </div>
@@ -839,8 +863,8 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
               </div>
 
               <!-- Price Range Filter -->
-              <div class="bg-white rounded-xl p-4 lg:border lg:border-gray-200">
-                <h3 class="font-semibold text-gray-900 mb-3">價格範圍</h3>
+              <div class="bg-white dark:bg-gray-800 rounded-xl p-4 lg:border lg:border-gray-200 dark:border-gray-700">
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-3">價格範圍</h3>
                 <div class="space-y-4">
                   <div class="flex items-center gap-2">
                     <input
@@ -848,7 +872,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                       type="number"
                       :min="priceRange.min"
                       :max="filters.priceMax"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="最低"
                     />
                     <span class="text-gray-400">-</span>
@@ -857,7 +881,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                       type="number"
                       :min="filters.priceMin"
                       :max="priceRange.max"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="最高"
                     />
                   </div>
@@ -869,7 +893,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 
               <!-- Reset Button -->
               <button
-                class="w-full py-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                class="w-full py-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
                 @click="resetFilters"
               >
                 重設篩選條件
@@ -889,10 +913,10 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 
         <!-- Main Content -->
         <div class="flex-1">
-          <!-- Sort Bar -->
-          <div class="mb-6 bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-end md:justify-between gap-2">
-              <span class="result-count text-sm text-gray-600 dark:text-gray-300">
+          <!-- Sort Bar (桌面版) -->
+          <div class="hidden lg:block mb-6 bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-sm text-gray-600 dark:text-gray-300">
                 顯示 {{ (currentPage - 1) * ITEMS_PER_PAGE + 1 }}-{{ Math.min(currentPage * ITEMS_PER_PAGE, displayedProducts.length) }} / {{ displayedProducts.length }} 項結果
               </span>
               <div class="flex items-center gap-2">
@@ -960,10 +984,10 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
           <!-- No Results -->
           <div
             v-if="isReady && displayedProducts.length === 0"
-            class="text-center py-16 bg-white rounded-xl border border-gray-200"
+            class="text-center py-16 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700"
           >
-            <SearchX :size="48" class="mx-auto text-gray-300 mb-4" />
-            <p class="text-gray-900 font-medium mb-2">
+            <SearchX :size="48" class="mx-auto text-gray-300 dark:text-gray-600 mb-4" />
+            <p class="text-gray-900 dark:text-white font-medium mb-2">
               {{ showFavoritesOnly ? '您還沒有收藏任何商品' : '沒有找到符合條件的產品' }}
             </p>
             <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">
@@ -976,7 +1000,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                 <button
                   v-for="brand in searchSuggestions"
                   :key="brand"
-                  class="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors"
+                  class="px-3 py-1.5 text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
                   @click="searchBrand(brand)"
                 >
                   {{ brand }}
@@ -1107,17 +1131,6 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 .slide-right-enter-from,
 .slide-right-leave-to {
   transform: translateX(100%);
-}
-
-/* 手機版隱藏結果數量 */
-.result-count {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .result-count {
-    display: block;
-  }
 }
 
 /* 隱藏橫向滾動條 */

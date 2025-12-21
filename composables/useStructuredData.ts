@@ -1,17 +1,28 @@
 import { useHead } from '#imports'
 
+// 網站基本設定
+const SITE_URL = 'https://www.jiadian-tw.work'
+const SITE_NAME = '家電比比看'
+
 interface ProductData {
   name: string
   description?: string
   image: string
   brand?: string
   model?: string
+  sku?: string
   price: number
   originalPrice?: number
   url: string
   availability?: 'InStock' | 'OutOfStock' | 'PreOrder'
   category?: string
   specs?: Record<string, any>
+  inStock?: boolean
+}
+
+interface FAQItem {
+  question: string
+  answer: string
 }
 
 interface BreadcrumbItem {
@@ -20,9 +31,11 @@ interface BreadcrumbItem {
 }
 
 export function useStructuredData() {
-  // Product structured data (JSON-LD)
+  // Product structured data (JSON-LD) - 增強版
   const setProductStructuredData = (product: ProductData) => {
-    const jsonLd = {
+    const availability = product.inStock === false ? 'OutOfStock' : (product.availability || 'InStock')
+
+    const jsonLd: Record<string, any> = {
       '@context': 'https://schema.org',
       '@type': 'Product',
       name: product.name,
@@ -36,13 +49,22 @@ export function useStructuredData() {
       category: product.category,
       offers: {
         '@type': 'Offer',
-        url: product.url,
+        url: product.url || SITE_URL,
         priceCurrency: 'TWD',
         price: product.price,
         priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        availability: `https://schema.org/${product.availability || 'InStock'}`,
+        availability: `https://schema.org/${availability}`,
         itemCondition: 'https://schema.org/NewCondition',
+        seller: {
+          '@type': 'Organization',
+          name: SITE_NAME,
+        },
       },
+    }
+
+    // 加入 SKU
+    if (product.sku) {
+      jsonLd.sku = product.sku
     }
 
     // Add high price if there's a discount
@@ -55,6 +77,7 @@ export function useStructuredData() {
         {
           type: 'application/ld+json',
           innerHTML: JSON.stringify(jsonLd),
+          key: 'product-jsonld',
         },
       ],
     })
@@ -89,14 +112,15 @@ export function useStructuredData() {
     const jsonLd = {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: '比比看',
-      description: '台灣最完整的家電規格比較網站，幫你找到最適合的除濕機、空氣清淨機等家電',
-      url: 'https://bibikan.tw',
+      name: SITE_NAME,
+      description: '台灣最完整的家電規格比較網站，幫你找到最適合的除濕機、空氣清淨機、冷氣、電暖器、電風扇等家電',
+      url: SITE_URL,
+      inLanguage: 'zh-TW',
       potentialAction: {
         '@type': 'SearchAction',
         target: {
           '@type': 'EntryPoint',
-          urlTemplate: 'https://bibikan.tw/dehumidifier?q={search_term_string}',
+          urlTemplate: `${SITE_URL}/dehumidifier?q={search_term_string}`,
         },
         'query-input': 'required name=search_term_string',
       },
@@ -118,9 +142,10 @@ export function useStructuredData() {
     const jsonLd = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: '比比看',
-      url: 'https://bibikan.tw',
-      logo: 'https://bibikan.tw/favicon.svg',
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: `${SITE_URL}/favicon.svg`,
+      description: '台灣家電規格比較與推薦網站',
       sameAs: [],
     }
 
@@ -130,6 +155,34 @@ export function useStructuredData() {
           type: 'application/ld+json',
           innerHTML: JSON.stringify(jsonLd),
           key: 'organization-jsonld',
+        },
+      ],
+    })
+  }
+
+  // FAQPage structured data - 用於商品頁的常見問答
+  const setFAQStructuredData = (faqs: FAQItem[]) => {
+    if (!faqs || faqs.length === 0) return
+
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map(faq => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer,
+        },
+      })),
+    }
+
+    useHead({
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(jsonLd),
+          key: 'faq-jsonld',
         },
       ],
     })
@@ -174,5 +227,8 @@ export function useStructuredData() {
     setWebsiteStructuredData,
     setOrganizationStructuredData,
     setItemListStructuredData,
+    setFAQStructuredData,
+    SITE_URL,
+    SITE_NAME,
   }
 }
