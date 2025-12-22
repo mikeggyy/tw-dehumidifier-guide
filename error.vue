@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Home, ArrowLeft, Search, RefreshCw } from 'lucide-vue-next'
-import { useRouter } from '#imports'
+import { useRouter, useHead } from '#imports'
+
+// 錯誤頁面不應被搜尋引擎索引
+useHead({
+  meta: [
+    { name: 'robots', content: 'noindex, nofollow' }
+  ]
+})
 
 const props = defineProps<{
   error: {

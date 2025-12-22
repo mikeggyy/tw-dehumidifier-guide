@@ -49,6 +49,7 @@ import SocialShare from '~/components/SocialShare.vue'
 import RecentlyViewed from '~/components/RecentlyViewed.vue'
 import ImageZoom from '~/components/ImageZoom.vue'
 import SimilarProducts from '~/components/SimilarProducts.vue'
+import SameBrandProducts from '~/components/SameBrandProducts.vue'
 import SiteHeader from '~/components/SiteHeader.vue'
 import { useStructuredData } from '~/composables/useStructuredData'
 import {
@@ -374,6 +375,7 @@ useHead({
     { name: 'description', content: pageDescription },
     // Open Graph
     { property: 'og:type', content: 'product' },
+    { property: 'og:site_name', content: '比比看' },
     { property: 'og:title', content: pageTitle },
     { property: 'og:description', content: pageDescription },
     { property: 'og:url', content: pageUrl },
@@ -383,13 +385,16 @@ useHead({
     { property: 'og:image:height', content: '800' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:site', content: '@jiadian_tw' },
     { name: 'twitter:title', content: pageTitle },
     { name: 'twitter:description', content: pageDescription },
     { name: 'twitter:image', content: product.value?.image_url || '' },
+    { name: 'twitter:image:alt', content: product.value?.name || '' },
     // Product specific
     { property: 'product:price:amount', content: String(product.value?.price || 0) },
     { property: 'product:price:currency', content: 'TWD' },
     { property: 'product:availability', content: 'in stock' },
+    { property: 'product:brand', content: displayBrand.value },
   ],
   link: [
     { rel: 'canonical', href: pageUrl },
@@ -954,8 +959,8 @@ const productDimensions = computed(() => {
         </div>
       </nav>
 
-      <!-- Product Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <!-- Product Card - 使用 article 語意標籤 -->
+      <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" itemscope itemtype="https://schema.org/Product">
         <div class="md:flex">
           <!-- Image -->
           <div class="md:w-2/5 relative">
@@ -1118,7 +1123,7 @@ const productDimensions = computed(() => {
             </div>
           </div>
         </div>
-      </div>
+      </article>
 
       <!-- 這款商品適合你嗎？視覺化區塊 -->
       <div v-if="categorySlug === 'dehumidifier'" class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 p-6 overflow-hidden">
@@ -1595,25 +1600,25 @@ const productDimensions = computed(() => {
         </h2>
 
         <div class="grid md:grid-cols-2 gap-6">
-          <!-- 尺寸數據 -->
-          <div class="space-y-4">
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span class="text-gray-600">機身尺寸</span>
-              <span class="font-semibold text-gray-900">
+          <!-- 尺寸數據 - 使用 dl 定義列表語意化 -->
+          <dl class="space-y-4">
+            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <dt class="text-gray-600 dark:text-gray-400">機身尺寸</dt>
+              <dd class="font-semibold text-gray-900 dark:text-white">
                 約 {{ productDimensions.width }} × {{ productDimensions.depth }} × {{ productDimensions.height }} cm
-              </span>
+              </dd>
             </div>
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span class="text-gray-600">重量</span>
-              <span class="font-semibold text-gray-900">約 {{ productDimensions.weight }} kg</span>
+            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <dt class="text-gray-600 dark:text-gray-400">重量</dt>
+              <dd class="font-semibold text-gray-900 dark:text-white">約 {{ productDimensions.weight }} kg</dd>
             </div>
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span class="text-gray-600">體積分類</span>
-              <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <dt class="text-gray-600 dark:text-gray-400">體積分類</dt>
+              <dd class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
                 {{ productDimensions.sizeCategory }}
-              </span>
+              </dd>
             </div>
-          </div>
+          </dl>
 
           <!-- 視覺比較 -->
           <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-5 border border-purple-100">
@@ -1884,6 +1889,15 @@ const productDimensions = computed(() => {
     <!-- Similar Products -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
       <SimilarProducts
+        :current-product="product"
+        :category-slug="categorySlug"
+        :limit="4"
+      />
+    </div>
+
+    <!-- Same Brand Products - 加強內部連結 SEO -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <SameBrandProducts
         :current-product="product"
         :category-slug="categorySlug"
         :limit="4"

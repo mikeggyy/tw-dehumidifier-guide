@@ -26,12 +26,15 @@ const props = withDefaults(defineProps<{
   isFavorite?: boolean
   searchQuery?: string
   categorySlug?: string
+  // SEO: 首屏圖片優先載入
+  priority?: boolean
 }>(), {
   showCompare: false,
   isInCompare: false,
   isFavorite: false,
   searchQuery: '',
-  categorySlug: 'dehumidifier'
+  categorySlug: 'dehumidifier',
+  priority: false,
 })
 
 // Quick preview hover state
@@ -168,7 +171,8 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
           width="300"
           height="300"
           class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/card:scale-110"
-          loading="lazy"
+          :loading="priority ? 'eager' : 'lazy'"
+          :fetchpriority="priority ? 'high' : 'auto'"
           decoding="async"
           @error="handleImageError"
         />

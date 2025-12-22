@@ -26,6 +26,7 @@ import SiteHeader from '~/components/category/SiteHeader.vue'
 import SiteFooter from '~/components/category/SiteFooter.vue'
 import FloatingCompareBar from '~/components/category/FloatingCompareBar.vue'
 import Pagination from '~/components/category/Pagination.vue'
+import CategoryFAQ from '~/components/CategoryFAQ.vue'
 import { formatPrice, getDisplayBrand } from '~/utils/product'
 
 // Loading component for async components
@@ -131,6 +132,7 @@ useHead({
     { name: 'description', content: pageDescription.value },
     // Open Graph
     { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: '比比看' },
     { property: 'og:title', content: pageTitle.value },
     { property: 'og:description', content: pageDescription.value },
     { property: 'og:url', content: pageUrl.value },
@@ -138,9 +140,11 @@ useHead({
     { property: 'og:image:alt', content: `${categoryConfig.value?.name}規格比較` },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:site', content: '@jiadian_tw' },
     { name: 'twitter:title', content: pageTitle.value },
     { name: 'twitter:description', content: pageDescription.value },
     { name: 'twitter:image', content: ogImage.value },
+    { name: 'twitter:image:alt', content: `${categoryConfig.value?.name}規格比較` },
   ],
   link: [
     { rel: 'canonical', href: pageUrl.value },
@@ -148,7 +152,7 @@ useHead({
 })
 
 // Structured Data - ItemList for category page
-const { setItemListStructuredData, setBreadcrumbStructuredData } = useStructuredData()
+const { setItemListStructuredData, setBreadcrumbStructuredData, setFAQStructuredData } = useStructuredData()
 
 // 設置 Breadcrumb 結構化資料
 setBreadcrumbStructuredData([
@@ -172,6 +176,11 @@ watch(categoryProducts, (products) => {
     setItemListStructuredData(itemListData.value)
   }
 }, { immediate: true })
+
+// 設置 FAQ 結構化資料
+if (categoryConfig.value?.faqs && categoryConfig.value.faqs.length > 0) {
+  setFAQStructuredData(categoryConfig.value.faqs)
+}
 
 // 分頁設定
 const ITEMS_PER_PAGE = 20
@@ -1004,7 +1013,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
             class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
           >
             <ProductCard
-              v-for="product in paginatedProducts"
+              v-for="(product, index) in paginatedProducts"
               :key="product.id"
               :product="product"
               :show-compare="true"
@@ -1012,6 +1021,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
               :is-favorite="isFavorite(product.id)"
               :search-query="searchQuery"
               :category-slug="categorySlug"
+              :priority="currentPage === 1 && index < 6"
               @toggle-compare="toggleCompare(product)"
               @toggle-favorite="toggleFavorite(product.id)"
             />
@@ -1070,6 +1080,13 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
           </div>
         </div>
       </div>
+
+      <!-- FAQ Section -->
+      <CategoryFAQ
+        v-if="categoryConfig?.faqs && categoryConfig.faqs.length > 0"
+        :faqs="categoryConfig.faqs"
+        :category-name="categoryConfig.name"
+      />
     </main>
 
     <!-- Footer -->

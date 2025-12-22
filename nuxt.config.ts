@@ -32,6 +32,8 @@ export default defineNuxtConfig({
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://tqyefifafabyudtyjfam.supabase.co',
       supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD5',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.jiadian-tw.work',
+      // SEO: Google Search Console 驗證碼 (可選)
+      googleSiteVerification: process.env.NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
     }
   },
 
@@ -97,34 +99,37 @@ export default defineNuxtConfig({
   sitemap: {
     strictNuxtContentPaths: true,
     // SEO 優化設定
+    // 注意: 不在 defaults 設定 lastmod，避免每次 build 都更新所有頁面的時間戳
+    // 商品頁面的 lastmod 由爬蟲資料的 updated_at 決定（透過 crawler 自動發現）
     defaults: {
-      changefreq: 'daily',
-      priority: 0.8,
-      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: 0.7,
     },
-    // 根據頁面類型設定不同優先級
+    // 根據頁面類型設定不同優先級和更新頻率
     urls: [
       {
         loc: '/',
         changefreq: 'daily',
         priority: 1.0,
       },
-      // 品類頁面 - 高優先級
+      // 品類頁面 - 高優先級，每日更新（商品資料每天同步）
       ...categorySlugs.map(slug => ({
         loc: `/${slug}`,
         changefreq: 'daily',
         priority: 0.9,
       })),
-      // 指南頁面
+      // 指南頁面 - 靜態內容，更新頻率較低
       { loc: '/guide', changefreq: 'weekly', priority: 0.8 },
       { loc: '/guide/dehumidifier-buying-guide', changefreq: 'monthly', priority: 0.7 },
       { loc: '/guide/air-purifier-buying-guide', changefreq: 'monthly', priority: 0.7 },
       { loc: '/guide/air-conditioner-buying-guide', changefreq: 'monthly', priority: 0.7 },
+      { loc: '/guide/heater-buying-guide', changefreq: 'monthly', priority: 0.7 },
+      { loc: '/guide/fan-buying-guide', changefreq: 'monthly', priority: 0.7 },
       { loc: '/guide/dehumidifier-vs-air-purifier', changefreq: 'monthly', priority: 0.7 },
       // 品牌頁面
       { loc: '/brand', changefreq: 'weekly', priority: 0.8 },
-      // 比較頁面
-      { loc: '/compare', changefreq: 'daily', priority: 0.6 },
+      // 比較頁面 - 動態內容，不需要被索引
+      { loc: '/compare', changefreq: 'weekly', priority: 0.5 },
     ],
   },
 
@@ -140,6 +145,8 @@ export default defineNuxtConfig({
         '/guide/dehumidifier-buying-guide',
         '/guide/air-purifier-buying-guide',
         '/guide/air-conditioner-buying-guide',
+        '/guide/heater-buying-guide',
+        '/guide/fan-buying-guide',
         '/guide/dehumidifier-vs-air-purifier',
         // Brand pages
         '/brand',

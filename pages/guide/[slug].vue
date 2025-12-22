@@ -4,11 +4,16 @@ import { useRoute, useHead, createError } from '#imports'
 import { Clock, ArrowLeft, ArrowRight, List } from 'lucide-vue-next'
 import { useGuideConfig, type Guide } from '~/composables/useGuideConfig'
 import { useStructuredData } from '~/composables/useStructuredData'
+import { useProductsSSR } from '~/composables/useProducts'
 import SiteHeader from '~/components/SiteHeader.vue'
+import GuideRecommendedProducts from '~/components/GuideRecommendedProducts.vue'
+
+// SSR 預載商品資料（用於推薦商品區塊）
+await useProductsSSR()
 
 const route = useRoute()
 const { getGuideBySlug, getAllGuides } = useGuideConfig()
-const { SITE_URL, SITE_NAME } = useStructuredData()
+const { SITE_URL, SITE_NAME, setBreadcrumbStructuredData } = useStructuredData()
 
 const slug = computed(() => route.params.slug as string)
 const guide = computed(() => getGuideBySlug(slug.value))
@@ -24,17 +29,31 @@ const currentIndex = allGuides.findIndex(g => g.slug === slug.value)
 const prevGuide = computed(() => currentIndex > 0 ? allGuides[currentIndex - 1] : null)
 const nextGuide = computed(() => currentIndex < allGuides.length - 1 ? allGuides[currentIndex + 1] : null)
 
+// OG Image (使用通用圖片)
+const ogImage = `${SITE_URL}/og-image.png`
+
 // SEO
 useHead({
   title: guide.value.seoTitle,
   meta: [
     { name: 'description', content: guide.value.seoDescription },
+    // Open Graph
+    { property: 'og:type', content: 'article' },
+    { property: 'og:site_name', content: SITE_NAME },
     { property: 'og:title', content: guide.value.seoTitle },
     { property: 'og:description', content: guide.value.seoDescription },
     { property: 'og:url', content: `${SITE_URL}/guide/${slug.value}` },
-    { property: 'og:type', content: 'article' },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:image:alt', content: guide.value.title },
     { property: 'article:published_time', content: guide.value.updatedAt },
     { property: 'article:modified_time', content: guide.value.updatedAt },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:site', content: '@jiadian_tw' },
+    { name: 'twitter:title', content: guide.value.seoTitle },
+    { name: 'twitter:description', content: guide.value.seoDescription },
+    { name: 'twitter:image', content: ogImage },
+    { name: 'twitter:image:alt', content: guide.value.title },
   ],
   link: [
     { rel: 'canonical', href: `${SITE_URL}/guide/${slug.value}` }
@@ -49,6 +68,7 @@ useHead({
         description: guide.value.seoDescription,
         datePublished: guide.value.updatedAt,
         dateModified: guide.value.updatedAt,
+        image: ogImage,
         author: {
           '@type': 'Organization',
           name: SITE_NAME,
@@ -63,6 +83,13 @@ useHead({
     }
   ]
 })
+
+// Breadcrumb 結構化資料
+setBreadcrumbStructuredData([
+  { name: '首頁', url: SITE_URL },
+  { name: '選購指南', url: `${SITE_URL}/guide` },
+  { name: guide.value.title, url: `${SITE_URL}/guide/${slug.value}` }
+])
 
 // Scroll to section
 const scrollToSection = (sectionId: string) => {
@@ -220,6 +247,9 @@ const getCategoryName = (categorySlug: string): string => {
               <ArrowRight :size="18" class="text-gray-400" />
             </NuxtLink>
           </div>
+
+          <!-- Recommended Products -->
+          <GuideRecommendedProducts :category-slug="guide?.categorySlug || ''" :limit="4" />
 
           <!-- CTA -->
           <div class="mt-8 p-6 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl text-white text-center">

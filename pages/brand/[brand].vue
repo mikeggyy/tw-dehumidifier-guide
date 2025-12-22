@@ -16,7 +16,7 @@ const route = useRoute()
 const { getBrandBySlug, getBrandStats, getProductsByBrandAndCategory } = useBrandConfig()
 const { allProducts } = useProducts()
 const { categoryList } = useCategoryConfig()
-const { SITE_URL, SITE_NAME } = useStructuredData()
+const { SITE_URL, SITE_NAME, setBreadcrumbStructuredData } = useStructuredData()
 
 const brandSlug = computed(() => route.params.brand as string)
 const brandInfo = computed(() => getBrandBySlug(brandSlug.value))
@@ -46,20 +46,43 @@ const productsByCategory = computed(() => {
   }).filter(c => c.products.length > 0)
 })
 
+// OG Image
+const ogImage = `${SITE_URL}/og-image.png`
+const pageTitle = `${brandInfo.value?.name} 全系列商品 | ${SITE_NAME}`
+const pageDescription = `${brandInfo.value?.name} 家電全系列商品，包含${brandStats.value?.categories.length || 0}個品類、${brandStats.value?.totalProducts || 0}款商品，比較規格與價格。`
+
 // SEO
 useHead({
-  title: `${brandInfo.value?.name} 全系列商品 | ${SITE_NAME}`,
+  title: pageTitle,
   meta: [
-    { name: 'description', content: `${brandInfo.value?.name} 家電全系列商品，包含${brandStats.value?.categories.length || 0}個品類、${brandStats.value?.totalProducts || 0}款商品，比較規格與價格。` },
-    { property: 'og:title', content: `${brandInfo.value?.name} 全系列商品 | ${SITE_NAME}` },
-    { property: 'og:description', content: `探索 ${brandInfo.value?.name} 全系列家電商品，比較規格與價格。` },
-    { property: 'og:url', content: `${SITE_URL}/brand/${brandSlug.value}` },
+    { name: 'description', content: pageDescription },
+    // Open Graph
     { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: SITE_NAME },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:url', content: `${SITE_URL}/brand/${brandSlug.value}` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:image:alt', content: `${brandInfo.value?.name} - 家電比比看` },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:site', content: '@jiadian_tw' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+    { name: 'twitter:image:alt', content: `${brandInfo.value?.name} - 家電比比看` },
   ],
   link: [
     { rel: 'canonical', href: `${SITE_URL}/brand/${brandSlug.value}` }
   ]
 })
+
+// Breadcrumb 結構化資料
+setBreadcrumbStructuredData([
+  { name: '首頁', url: SITE_URL },
+  { name: '品牌專頁', url: `${SITE_URL}/brand` },
+  { name: brandInfo.value?.name || '', url: `${SITE_URL}/brand/${brandSlug.value}` }
+])
 </script>
 
 <template>

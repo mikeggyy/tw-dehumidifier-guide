@@ -12,7 +12,7 @@ await useProductsSSR()
 
 const { getAllBrands, getBrandStats } = useBrandConfig()
 const { allProducts } = useProducts()
-const { SITE_URL, SITE_NAME } = useStructuredData()
+const { SITE_URL, SITE_NAME, setBreadcrumbStructuredData } = useStructuredData()
 
 const brands = getAllBrands()
 
@@ -24,20 +24,42 @@ const brandsWithCount = computed(() => {
   })).filter(b => b.productCount > 0).sort((a, b) => b.productCount - a.productCount)
 })
 
+// OG Image
+const ogImage = `${SITE_URL}/og-image.png`
+const pageTitle = `品牌專頁 | ${SITE_NAME}`
+const pageDescription = '瀏覽 Panasonic、HITACHI、SHARP、LG 等知名家電品牌的全系列商品，比較各品牌規格與價格。'
+
 // SEO
 useHead({
-  title: `品牌專頁 | ${SITE_NAME}`,
+  title: pageTitle,
   meta: [
-    { name: 'description', content: '瀏覽 Panasonic、HITACHI、SHARP、LG 等知名家電品牌的全系列商品，比較各品牌規格與價格。' },
-    { property: 'og:title', content: `品牌專頁 | ${SITE_NAME}` },
-    { property: 'og:description', content: '瀏覽各大家電品牌全系列商品，比較規格與價格。' },
-    { property: 'og:url', content: `${SITE_URL}/brand` },
+    { name: 'description', content: pageDescription },
+    // Open Graph
     { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: SITE_NAME },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:url', content: `${SITE_URL}/brand` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:image:alt', content: '品牌專頁 - 家電比比看' },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:site', content: '@jiadian_tw' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+    { name: 'twitter:image:alt', content: '品牌專頁 - 家電比比看' },
   ],
   link: [
     { rel: 'canonical', href: `${SITE_URL}/brand` }
   ]
 })
+
+// Breadcrumb 結構化資料
+setBreadcrumbStructuredData([
+  { name: '首頁', url: SITE_URL },
+  { name: '品牌專頁', url: `${SITE_URL}/brand` }
+])
 </script>
 
 <template>

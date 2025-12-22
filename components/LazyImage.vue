@@ -8,11 +8,39 @@ const props = withDefaults(defineProps<{
   aspectRatio?: string
   width?: number
   height?: number
+  // SEO 改進: 響應式圖片和載入優先級
+  sizes?: string
+  fetchpriority?: 'high' | 'low' | 'auto'
+  // 是否為首屏圖片 (LCP 優化)
+  priority?: boolean
 }>(), {
   aspectRatio: 'aspect-square',
   width: 300,
   height: 300,
+  sizes: '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px',
+  fetchpriority: 'auto',
+  priority: false,
 })
+
+// 根據原始圖片 URL 生成不同尺寸的 srcset
+// MOMO 圖片支援調整尺寸參數
+const srcset = computed(() => {
+  if (!props.src) return ''
+
+  // 如果是 MOMO 圖片，可以透過 URL 參數調整尺寸
+  // 格式: https://i.momo.com.tw/xxx.jpg
+  const sizes = [150, 300, 450, 600]
+
+  // 對於一般圖片，返回原始尺寸
+  // 未來可以接入圖片 CDN 進行動態調整
+  return sizes
+    .map(size => `${props.src} ${size}w`)
+    .join(', ')
+})
+
+// 首屏圖片不使用 lazy loading
+const loadingStrategy = computed(() => props.priority ? 'eager' : 'lazy')
+const priorityValue = computed(() => props.priority ? 'high' : props.fetchpriority)
 
 const isLoaded = ref(false)
 const hasError = ref(false)
@@ -64,12 +92,15 @@ onMounted(() => {
       :alt="alt"
       :width="width"
       :height="height"
+      :srcset="srcset"
+      :sizes="sizes"
       :class="[
         'w-full h-full object-cover transition-all duration-500 ease-out',
         isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105',
         props.class
       ]"
-      loading="lazy"
+      :loading="loadingStrategy"
+      :fetchpriority="priorityValue"
       decoding="async"
       @load="onLoad"
       @error="onError"

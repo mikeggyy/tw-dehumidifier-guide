@@ -7,24 +7,46 @@ import GuideCard from '~/components/GuideCard.vue'
 import SiteHeader from '~/components/SiteHeader.vue'
 
 const { getAllGuides } = useGuideConfig()
-const { SITE_URL, SITE_NAME } = useStructuredData()
+const { SITE_URL, SITE_NAME, setBreadcrumbStructuredData } = useStructuredData()
 
 const guides = getAllGuides()
 
+// OG Image
+const ogImage = `${SITE_URL}/og-image.png`
+const pageTitle = `選購指南 | ${SITE_NAME}`
+const pageDescription = '家電選購完整指南，教你看懂除濕機、空氣清淨機、冷氣等家電的規格與選購要點。'
+
 // SEO
 useHead({
-  title: `選購指南 | ${SITE_NAME}`,
+  title: pageTitle,
   meta: [
-    { name: 'description', content: '家電選購完整指南，教你看懂除濕機、空氣清淨機、冷氣等家電的規格與選購要點。' },
-    { property: 'og:title', content: `選購指南 | ${SITE_NAME}` },
-    { property: 'og:description', content: '家電選購完整指南，教你看懂各種家電規格與選購要點。' },
-    { property: 'og:url', content: `${SITE_URL}/guide` },
+    { name: 'description', content: pageDescription },
+    // Open Graph
     { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: SITE_NAME },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:url', content: `${SITE_URL}/guide` },
+    { property: 'og:image', content: ogImage },
+    { property: 'og:image:alt', content: '選購指南 - 家電比比看' },
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:site', content: '@jiadian_tw' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: ogImage },
+    { name: 'twitter:image:alt', content: '選購指南 - 家電比比看' },
   ],
   link: [
     { rel: 'canonical', href: `${SITE_URL}/guide` }
   ]
 })
+
+// Breadcrumb 結構化資料
+setBreadcrumbStructuredData([
+  { name: '首頁', url: SITE_URL },
+  { name: '選購指南', url: `${SITE_URL}/guide` }
+])
 </script>
 
 <template>

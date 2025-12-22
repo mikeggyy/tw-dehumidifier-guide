@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import ToastContainer from '~/components/ToastContainer.vue'
 import KeyboardShortcutsHelp from '~/components/KeyboardShortcutsHelp.vue'
 import SkipLink from '~/components/SkipLink.vue'
@@ -8,12 +9,30 @@ import OfflineIndicator from '~/components/OfflineIndicator.vue'
 import CookieConsent from '~/components/CookieConsent.vue'
 import { useDarkMode } from '~/composables/useDarkMode'
 import { usePWA } from '~/composables/usePWA'
+import { useRuntimeConfig, useHead } from '#imports'
 
 // Initialize dark mode
 useDarkMode()
 
 // Initialize PWA (registers service worker)
 usePWA()
+
+// SEO: Google Search Console 驗證碼 (可選)
+const config = useRuntimeConfig()
+const googleVerification = computed(() => config.public.googleSiteVerification as string)
+
+useHead({
+  meta: computed(() => {
+    const metas: Array<{ name: string; content: string }> = []
+    if (googleVerification.value) {
+      metas.push({
+        name: 'google-site-verification',
+        content: googleVerification.value,
+      })
+    }
+    return metas
+  }),
+})
 </script>
 
 <template>
