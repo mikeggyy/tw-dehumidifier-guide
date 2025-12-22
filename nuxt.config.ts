@@ -44,7 +44,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'zh-TW'
       },
-      title: '比比看 | 家電規格比較 2025 - 除濕機、空氣清淨機、冷氣',
+      title: '比比看 - 台灣家電規格比較 2025 | 除濕機、空氣清淨機、冷氣',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },

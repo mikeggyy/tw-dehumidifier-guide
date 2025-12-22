@@ -108,11 +108,13 @@ export function useStructuredData() {
   }
 
   // Website structured data (for homepage)
+  // Google 會使用 name 作為搜尋結果中的網站名稱
   const setWebsiteStructuredData = () => {
     const jsonLd = {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: SITE_NAME,
+      name: '比比看',
+      alternateName: ['家電比比看', '比比看家電'],
       description: '台灣最完整的家電規格比較網站，幫你找到最適合的除濕機、空氣清淨機、冷氣、電暖器、電風扇等家電',
       url: SITE_URL,
       inLanguage: 'zh-TW',
