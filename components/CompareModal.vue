@@ -611,53 +611,52 @@ const handleRecommendation = (product: Dehumidifier) => {
         </div>
       </Transition>
 
-      <!-- Conclusion Panel -->
-      <div v-if="conclusions.summary && products.length >= 2" class="border-b border-gray-200 dark:border-gray-700">
-        <button
-          @click="showConclusion = !showConclusion"
-          class="w-full flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/30 dark:hover:to-orange-900/30 transition-colors"
-        >
-          <div class="flex items-center gap-2">
-            <Lightbulb :size="18" class="text-amber-500" />
-            <span class="font-medium text-gray-800 dark:text-gray-200 text-sm">比較結論</span>
-          </div>
-          <component :is="showConclusion ? ChevronUp : ChevronDown" :size="18" class="text-gray-400" />
-        </button>
-
-        <Transition name="slide">
-          <div v-if="showConclusion" class="p-3 sm:p-4 bg-gradient-to-r from-amber-50/50 to-orange-50/50 dark:from-amber-900/10 dark:to-orange-900/10">
-            <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">{{ conclusions.summary }}</p>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              <div v-if="conclusions.recommendations.budget" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💰 省錢首選</p>
-                <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.budget.product.brand }}</p>
-                <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.budget.reason }}</p>
-              </div>
-              <div v-if="conclusions.recommendations.quiet" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">🤫 最安靜</p>
-                <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.quiet.product.brand }}</p>
-                <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.quiet.reason }}</p>
-              </div>
-              <div v-if="conclusions.recommendations.powerful" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💪 最強力</p>
-                <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.powerful.product.brand }}</p>
-                <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.powerful.reason }}</p>
-              </div>
-              <div v-if="conclusions.recommendations.value" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">⭐ CP值王</p>
-                <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.value.product.brand }}</p>
-                <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.value.reason }}</p>
-              </div>
-            </div>
-          </div>
-        </Transition>
-      </div>
-
       <!-- Content for Screenshot -->
       <div ref="compareContentRef" class="flex-1 overflow-hidden flex flex-col bg-white dark:bg-gray-800">
-        <!-- Mobile: Card-based swipeable view -->
-        <div class="md:hidden flex-1 overflow-hidden flex flex-col">
+        <!-- Mobile: Scrollable content area -->
+        <div class="md:hidden flex-1 overflow-y-auto flex flex-col">
+          <!-- Conclusion Panel (Mobile - inside scrollable area) -->
+          <div v-if="conclusions.summary && products.length >= 2" class="border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+            <button
+              @click="showConclusion = !showConclusion"
+              class="w-full flex items-center justify-between p-3 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/30 dark:hover:to-orange-900/30 transition-colors"
+            >
+              <div class="flex items-center gap-2">
+                <Lightbulb :size="18" class="text-amber-500" />
+                <span class="font-medium text-gray-800 dark:text-gray-200 text-sm">比較結論</span>
+              </div>
+              <component :is="showConclusion ? ChevronUp : ChevronDown" :size="18" class="text-gray-400" />
+            </button>
+
+            <Transition name="slide">
+              <div v-if="showConclusion" class="p-3 bg-gradient-to-r from-amber-50/50 to-orange-50/50 dark:from-amber-900/10 dark:to-orange-900/10">
+                <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">{{ conclusions.summary }}</p>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div v-if="conclusions.recommendations.budget" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💰 省錢首選</p>
+                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.budget.product.brand }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.budget.reason }}</p>
+                  </div>
+                  <div v-if="conclusions.recommendations.powerful" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💪 最強力</p>
+                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.powerful.product.brand }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.powerful.reason }}</p>
+                  </div>
+                  <div v-if="conclusions.recommendations.value" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">⭐ CP值王</p>
+                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.value.product.brand }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.value.reason }}</p>
+                  </div>
+                  <div v-if="conclusions.recommendations.quiet" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">🤫 最安靜</p>
+                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.quiet.product.brand }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.quiet.reason }}</p>
+                  </div>
+                </div>
+              </div>
+            </Transition>
+          </div>
           <!-- Card indicators -->
           <div class="flex items-center justify-center gap-2 py-3 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
             <button
@@ -774,6 +773,49 @@ const handleRecommendation = (product: Dehumidifier) => {
 
         <!-- Desktop: Table view -->
         <div class="hidden md:flex flex-1 overflow-auto flex-col">
+          <!-- Conclusion Panel (Desktop) -->
+          <div v-if="conclusions.summary && products.length >= 2" class="border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+            <button
+              @click="showConclusion = !showConclusion"
+              class="w-full flex items-center justify-between p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/30 dark:hover:to-orange-900/30 transition-colors"
+            >
+              <div class="flex items-center gap-2">
+                <Lightbulb :size="18" class="text-amber-500" />
+                <span class="font-medium text-gray-800 dark:text-gray-200 text-sm">比較結論</span>
+              </div>
+              <component :is="showConclusion ? ChevronUp : ChevronDown" :size="18" class="text-gray-400" />
+            </button>
+
+            <Transition name="slide">
+              <div v-if="showConclusion" class="p-4 bg-gradient-to-r from-amber-50/50 to-orange-50/50 dark:from-amber-900/10 dark:to-orange-900/10">
+                <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">{{ conclusions.summary }}</p>
+
+                <div class="grid grid-cols-4 gap-2">
+                  <div v-if="conclusions.recommendations.budget" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💰 省錢首選</p>
+                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.budget.product.brand }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.budget.reason }}</p>
+                  </div>
+                  <div v-if="conclusions.recommendations.powerful" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💪 最強力</p>
+                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.powerful.product.brand }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.powerful.reason }}</p>
+                  </div>
+                  <div v-if="conclusions.recommendations.value" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">⭐ CP值王</p>
+                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.value.product.brand }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.value.reason }}</p>
+                  </div>
+                  <div v-if="conclusions.recommendations.quiet" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">🤫 最安靜</p>
+                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.quiet.product.brand }}</p>
+                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.quiet.reason }}</p>
+                  </div>
+                </div>
+              </div>
+            </Transition>
+          </div>
+
           <div class="flex-1 overflow-auto">
             <table class="w-full">
               <!-- Product Headers -->

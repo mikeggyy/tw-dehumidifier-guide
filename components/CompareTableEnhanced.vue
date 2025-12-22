@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { Check, X, Minus, Crown, ExternalLink } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
 import { formatPrice } from '~/utils/product'
+import { useCategoryConfig } from '~/composables/useCategoryConfig'
 
 const props = defineProps<{
   products: Dehumidifier[]
@@ -13,25 +14,30 @@ const emit = defineEmits<{
   remove: [id: string]
 }>()
 
-// Specs to compare based on category
+const { getCategoryConfig } = useCategoryConfig()
+
+// Specs to compare based on category config
 const specs = computed(() => {
-  if (props.categorySlug === 'air-purifier') {
+  const categorySlug = props.categorySlug || 'dehumidifier'
+  const config = getCategoryConfig(categorySlug)
+
+  if (!config) {
+    // Fallback for unknown categories
     return [
-      { key: 'cadr', label: 'CADR', unit: 'm³/h', higherBetter: true },
-      { key: 'coverage_area', label: '適用坪數', unit: '坪', higherBetter: true },
-      { key: 'noise_level', label: '噪音', unit: 'dB', higherBetter: false },
-      { key: 'power_consumption', label: '功率', unit: 'W', higherBetter: false },
-      { key: 'filter_type', label: '濾網類型', unit: '', higherBetter: null },
+      { key: 'price', label: '價格', unit: '元', higherBetter: false },
     ]
   }
-  // Default: dehumidifier
-  return [
-    { key: 'daily_capacity', label: '日除濕量', unit: 'L', higherBetter: true },
-    { key: 'tank_capacity', label: '水箱容量', unit: 'L', higherBetter: true },
-    { key: 'noise_level', label: '噪音', unit: 'dB', higherBetter: false },
-    { key: 'power_consumption', label: '功率', unit: 'W', higherBetter: false },
-    { key: 'energy_efficiency', label: '能效等級', unit: '級', higherBetter: false },
-  ]
+
+  // Get specs that should be shown in compare table
+  return config.specs
+    .filter(spec => spec.showInCompare !== false)
+    .map(spec => ({
+      key: spec.key,
+      label: spec.label,
+      unit: spec.unit || '',
+      higherBetter: spec.compareDirection === 'higher' ? true :
+                    spec.compareDirection === 'lower' ? false : null,
+    }))
 })
 
 // Find best value for each spec

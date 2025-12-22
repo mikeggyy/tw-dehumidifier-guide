@@ -223,6 +223,11 @@ const displayedProducts = computed(() => {
   return sortProducts(filtered, sortBy.value)
 })
 
+// 實際存在的收藏數量（排除已下架商品）
+const validFavoritesCount = computed(() => {
+  return allProducts.value.filter(p => favorites.value.has(p.id)).length
+})
+
 // 搜尋建議（當無結果時）
 const searchSuggestions = computed(() => {
   if (displayedProducts.value.length > 0 || !searchQuery.value.trim()) return []
@@ -484,7 +489,7 @@ const categories = computed(() => [
       </div>
 
       <!-- Tool Buttons - 桌面版顯示 (收藏功能) -->
-      <div v-if="favorites.size > 0" class="hidden md:flex flex-wrap gap-3 mb-6">
+      <div v-if="validFavoritesCount > 0" class="hidden md:flex flex-wrap gap-3 mb-6">
         <button
           :class="[
             'flex items-center gap-2 px-4 py-2.5 font-medium rounded-xl transition-all',
@@ -495,7 +500,7 @@ const categories = computed(() => [
           @click="showFavoritesOnly = !showFavoritesOnly"
         >
           <Heart :size="18" :fill="showFavoritesOnly ? 'currentColor' : 'none'" />
-          我的收藏 ({{ favorites.size }})
+          我的收藏 ({{ validFavoritesCount }})
         </button>
       </div>
 
@@ -518,7 +523,7 @@ const categories = computed(() => [
 
           <!-- 收藏按鈕 (手機版) -->
           <button
-            v-if="favorites.size > 0"
+            v-if="validFavoritesCount > 0"
             :class="[
               'flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all',
               showFavoritesOnly
@@ -528,7 +533,7 @@ const categories = computed(() => [
             @click="showFavoritesOnly = !showFavoritesOnly"
           >
             <Heart :size="16" :fill="showFavoritesOnly ? 'currentColor' : 'none'" />
-            <span class="text-sm font-medium">{{ favorites.size }}</span>
+            <span class="text-sm font-medium">{{ validFavoritesCount }}</span>
           </button>
 
           <!-- 排序選單 -->

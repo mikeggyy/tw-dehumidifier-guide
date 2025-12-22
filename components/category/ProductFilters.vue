@@ -33,7 +33,7 @@ const getBrandCount = (brand: string): number => {
 <template>
   <aside
     :class="[
-      'fixed inset-0 z-50 lg:relative lg:inset-auto',
+      'fixed inset-0 z-50 lg:relative lg:inset-auto lg:z-auto',
       'lg:block lg:w-64 lg:flex-shrink-0',
       showMobile ? 'block' : 'hidden'
     ]"

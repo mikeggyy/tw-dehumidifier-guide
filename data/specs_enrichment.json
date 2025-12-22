@@ -1,0 +1,704 @@
+{
+  "generated_at": "2025-12-22",
+  "total_models": 81,
+  "brands": {
+    "HITACHI": {
+      "RD-200HG": {
+        "power_consumption": 135,
+        "tank_capacity": 5.3,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "12坪",
+        "dimensions": "365x625x305",
+        "weight": 15.5,
+        "energy_factor": 3.09,
+        "features": ["低濕乾燥", "快速乾衣", "超廣角上吹+側吹", "負離子清淨", "PM2.5過濾", "四輪萬向移動", "自動收納電源線"]
+      },
+      "RD-340VJ": {
+        "power_consumption": 201,
+        "tank_capacity": 5.3,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "13-15坪",
+        "dimensions": "385x745x330",
+        "weight": 20.0,
+        "energy_factor": 3.52,
+        "features": ["AI變頻壓縮機", "超頻運轉", "4D乾衣", "160度超廣角立體出風", "APP雲端智慧控", "凍結洗淨", "Airion淨氣離子"]
+      },
+      "RD-260HC": {
+        "power_consumption": 181,
+        "tank_capacity": 5.3,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "365x625x305",
+        "weight": 17.0,
+        "energy_factor": 3.0,
+        "features": ["無動力熱管循環系統", "HEPA濾網", "高密度平織濾網", "APP雲端智慧控", "四種運轉模式"]
+      },
+      "RD-340VC": {
+        "power_consumption": 220,
+        "tank_capacity": 5.3,
+        "noise_level": 50,
+        "energy_efficiency": 1,
+        "coverage_area": "13-15坪",
+        "dimensions": "385x745x330",
+        "weight": 21.0,
+        "energy_factor": 3.22,
+        "features": ["AI變頻壓縮機", "凍結洗淨科技", "Airion淨氣離子", "HEPA濾網", "活性碳濾網", "APP遠端控制", "160度超廣角出風"]
+      },
+      "RD-520VJ": {
+        "power_consumption": null,
+        "tank_capacity": 5.3,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "23坪",
+        "dimensions": "385x745x330",
+        "weight": 21.0,
+        "energy_factor": null,
+        "features": ["AI變頻壓縮機", "超頻運轉120%", "160度超廣角立體出風", "APP雲端智慧控", "四輪萬向移動", "烘鞋暖衣套件"]
+      },
+      "RD-360HC": {
+        "power_consumption": 254,
+        "tank_capacity": 5.3,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "365x625x305",
+        "weight": 19.5,
+        "energy_factor": 2.98,
+        "features": ["無動力熱管循環系統", "PM2.5對應", "APP雲端智慧控", "過濾甲醛/甲苯/二甲苯", "抑制過敏原"]
+      },
+      "RD-300HC": {
+        "power_consumption": 208,
+        "tank_capacity": 5.3,
+        "noise_level": 60,
+        "energy_efficiency": 1,
+        "coverage_area": "20坪",
+        "dimensions": "365x625x305",
+        "weight": null,
+        "energy_factor": 3.0,
+        "features": ["無動力熱管循環系統", "HEPA濾網", "99.9% PM2.5去除率", "四種運轉模式", "超廣角出風90度", "APP雲端智慧控"]
+      },
+      "RD-380VJ": {
+        "power_consumption": 230,
+        "tank_capacity": 5.3,
+        "noise_level": 45,
+        "energy_efficiency": 1,
+        "coverage_area": "25坪以上",
+        "dimensions": "385x745x330",
+        "weight": 21.0,
+        "energy_factor": 3.44,
+        "features": ["AI變頻壓縮機", "凍結洗淨", "Airion淨氣離子", "APP遠端控制", "160度超廣角出風", "極靜除濕模式"]
+      },
+      "RD-14FJ": {
+        "power_consumption": 116,
+        "tank_capacity": 5.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "365x625x235",
+        "weight": 14.5,
+        "energy_factor": 2.52,
+        "features": ["PM2.5濾網", "90度廣域+前吹出風", "可調式大容量水箱", "舒適節電", "快速乾衣", "低濕乾燥"]
+      },
+      "RD-22FJ": {
+        "power_consumption": 173,
+        "tank_capacity": 5.0,
+        "noise_level": 60,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "365x625x235",
+        "weight": 15.5,
+        "energy_factor": 2.65,
+        "features": ["PM2.5濾網", "高密度平織濾網", "可調式水箱", "DC直流馬達", "低濕乾燥功能"]
+      },
+      "RD-460VJ": {
+        "power_consumption": 295,
+        "tank_capacity": 5.3,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "19-21坪",
+        "dimensions": "385x745x330",
+        "weight": 21.0,
+        "energy_factor": 3.25,
+        "features": ["AI變頻壓縮機", "超頻運轉", "4D乾衣", "凍結洗淨", "Airion淨氣離子", "APP雲端智慧控", "160度超廣角出風"]
+      },
+      "RD-460VC": {
+        "power_consumption": 314,
+        "tank_capacity": 5.3,
+        "noise_level": 50,
+        "energy_efficiency": 1,
+        "coverage_area": "19-21坪",
+        "dimensions": "385x745x330",
+        "weight": 22.0,
+        "energy_factor": null,
+        "features": ["AI變頻壓縮機", "凍結洗淨科技", "Airion淨氣離子99.9%除菌", "HEPA濾網", "活性碳濾網", "APP遠端控制", "五級風量模式"]
+      },
+      "RD-18FC": {
+        "power_consumption": 147,
+        "tank_capacity": 5.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "365x625x235",
+        "weight": 15.0,
+        "energy_factor": 2.55,
+        "features": ["HEPA濾網", "高密度平織濾網", "空氣清淨功能", "可調式水箱", "萬向四輪"]
+      },
+      "RD-22FC": {
+        "power_consumption": 180,
+        "tank_capacity": 5.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "14坪",
+        "dimensions": "365x625x235",
+        "weight": 16.0,
+        "energy_factor": 2.55,
+        "features": ["HEPA濾網", "高密度平織濾網", "99% PM2.5去除率", "可調式水箱", "DC馬達", "120度風板導角"]
+      },
+      "RD-18FJ": {
+        "power_consumption": 142,
+        "tank_capacity": 5.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "365x625x235",
+        "weight": 14.5,
+        "energy_factor": 2.62,
+        "features": ["PM2.5濾網", "高密度平織濾網", "可調式水箱", "舒適節電", "快速乾衣", "低濕乾燥"]
+      },
+      "RD-16FR1": {
+        "power_consumption": 133,
+        "tank_capacity": 3.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "330x600x220",
+        "weight": 13.0,
+        "energy_factor": 2.51,
+        "features": ["螺旋散熱系統", "低噪音送風系統", "FUZZY感溫適濕控制", "快速乾衣", "奈米銀負離子濾網", "自動除霜"]
+      },
+      "RD-520VC": {
+        "power_consumption": 361,
+        "tank_capacity": 5.3,
+        "noise_level": 50,
+        "energy_efficiency": 1,
+        "coverage_area": "22-24坪",
+        "dimensions": "385x745x330",
+        "weight": 22.0,
+        "energy_factor": 3.0,
+        "features": ["凍結洗淨科技", "Airion淨氣離子", "HEPA濾網", "活性碳濾網", "超頻運轉120%", "APP遠端控制", "五級風量模式"]
+      },
+      "RD-220HC": {
+        "power_consumption": 153,
+        "tank_capacity": 5.3,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "365x625x305",
+        "weight": 17.0,
+        "energy_factor": 3.0,
+        "features": ["無動力熱管循環系統", "HEPA濾網", "高密度平織濾網", "四種運轉模式", "APP雲端遙控", "萬向滾輪"]
+      }
+    },
+    "Mitsubishi": {
+      "MJ-EV250JV-TW": {
+        "power_consumption": 420,
+        "tank_capacity": 5.5,
+        "noise_level": 46,
+        "energy_efficiency": 1,
+        "coverage_area": "15-30坪",
+        "dimensions": "410x285x650",
+        "weight": 19.3,
+        "energy_factor": 2.54,
+        "features": ["智慧變頻壓縮機", "四重防護濾網", "三重除濕系統", "100度廣角自動擺葉", "浴室防霉", "夜間乾衣模式", "內部抗菌乾燥", "連續排水", "定時開關機"]
+      },
+      "MJ-EHV250JT-TW": {
+        "power_consumption": 414,
+        "tank_capacity": 5.5,
+        "noise_level": 46,
+        "energy_efficiency": 1,
+        "coverage_area": "15-30坪",
+        "dimensions": "410x285x650",
+        "weight": 19.3,
+        "energy_factor": 2.52,
+        "features": ["變頻壓縮機", "HEPA濾網", "活性碳濾網", "AI智慧偵測", "PM2.5螢幕顯示", "135度廣角自動擺葉", "衣物乾燥", "浴室防霉"]
+      },
+      "MJ-E120AT-TW": {
+        "power_consumption": 195,
+        "tank_capacity": 4.7,
+        "noise_level": 45,
+        "energy_efficiency": 1,
+        "coverage_area": "8-15坪",
+        "dimensions": "372x281x594",
+        "weight": 14.3,
+        "energy_factor": 2.56,
+        "features": ["PM2.5濾網", "90度廣角自動擺葉", "三段可變下吹風口", "夜間乾衣模式", "內部乾燥運轉", "連續排水", "兒童安全鎖"]
+      },
+      "MJ-EHV250JT": {
+        "power_consumption": 414,
+        "tank_capacity": 5.5,
+        "noise_level": 42,
+        "energy_efficiency": 1,
+        "coverage_area": "16-32坪",
+        "dimensions": "410x285x650",
+        "weight": 19.3,
+        "energy_factor": 2.52,
+        "features": ["變頻壓縮機", "HEPA濾網", "活性碳濾網", "AI智慧偵測", "PM2.5感知", "空清適用6坪"]
+      },
+      "MJ-E190HT-TW": {
+        "power_consumption": 305,
+        "tank_capacity": 5.5,
+        "noise_level": 48,
+        "energy_efficiency": 1,
+        "coverage_area": "12-24坪",
+        "dimensions": "410x299x630",
+        "weight": 17.9,
+        "energy_factor": 2.6,
+        "features": ["三重除濕系統", "三重防護濾網+PM2.5", "夜間乾衣模式", "100度廣角自動擺葉", "浴室抑菌", "連續排水", "濕度設定"]
+      },
+      "MJ-E120AT": {
+        "power_consumption": 195,
+        "tank_capacity": 4.7,
+        "noise_level": 45,
+        "energy_efficiency": 1,
+        "coverage_area": "8-15坪",
+        "dimensions": "372x281x594",
+        "weight": 14.3,
+        "energy_factor": 2.56,
+        "features": ["PM2.5濾網", "90度廣角自動擺葉", "三段可變下吹風口", "內部乾燥運轉"]
+      },
+      "MJ-EHV280KX-TW": {
+        "power_consumption": null,
+        "tank_capacity": 5.5,
+        "noise_level": 34,
+        "energy_efficiency": 1,
+        "coverage_area": "28坪",
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": null,
+        "features": ["五段熱交換器", "變頻壓縮機", "AI智慧偵測", "HEPA濾網", "活性碳濾網", "PM2.5偵測", "渦輪式多翼風扇"]
+      },
+      "MJ-EH150JT-TW": {
+        "power_consumption": 240,
+        "tank_capacity": 5.5,
+        "noise_level": 42,
+        "energy_efficiency": 1,
+        "coverage_area": "9-19坪",
+        "dimensions": "410x285x650",
+        "weight": 18.5,
+        "energy_factor": 2.6,
+        "features": ["HEPA濾網", "活性碳濾網", "AI智慧偵測", "濕度異味PM2.5 PM1.0感知", "清淨機單獨運轉", "連續排水", "定時開關機"]
+      },
+      "MJ-E155HT-TW": {
+        "power_consumption": 240,
+        "tank_capacity": 5.5,
+        "noise_level": 46,
+        "energy_efficiency": 1,
+        "coverage_area": "10-20坪",
+        "dimensions": "410x299x630",
+        "weight": 17,
+        "energy_factor": 2.69,
+        "features": ["三重除濕系統", "三重防護濾網+PM2.5", "夜間乾衣模式", "100度廣角自動擺葉", "浴室防霉", "內部乾燥機制"]
+      },
+      "MJ-EV150JX-TW": {
+        "power_consumption": null,
+        "tank_capacity": null,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": null,
+        "features": ["變頻大容量系列", "四重防護濾網", "智慧變頻", "日本製造"]
+      },
+      "MJ-EV180JX-TW": {
+        "power_consumption": 254,
+        "tank_capacity": 5.5,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": null,
+        "features": ["變頻大容量系列", "四重防護濾網", "連續排水", "定時開關機", "左右提把設計"]
+      },
+      "MJ-EHV200JW-TW": {
+        "power_consumption": 305,
+        "tank_capacity": 5.5,
+        "noise_level": 42,
+        "energy_efficiency": 1,
+        "coverage_area": "13-25坪",
+        "dimensions": "410x285x650",
+        "weight": 19.4,
+        "energy_factor": 2.73,
+        "features": ["變頻壓縮機", "HEPA濾網", "活性碳濾網", "AI智慧偵測", "135度超廣角自動擺葉", "兒童安全鎖"]
+      },
+      "MJ-EHV180JX-TW": {
+        "power_consumption": 250,
+        "tank_capacity": 5.5,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": null,
+        "features": ["變頻式設計", "三段熱交換器", "AI智慧偵測", "HEPA濾網", "活性碳濾網", "夜間乾衣模式", "135度超廣角自動擺葉"]
+      },
+      "MJ-EHV220KX-TW": {
+        "power_consumption": null,
+        "tank_capacity": 5.5,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "424x285x670",
+        "weight": 23.6,
+        "energy_factor": null,
+        "features": ["五段熱交換器", "AI智慧偵測", "智慧變頻", "HEPA濾網", "活性碳濾網", "PM2.5螢幕顯示", "100度廣角自動擺葉", "浴室防霉"]
+      }
+    },
+    "SHARP": {
+      "DW-WL6NT-W": {
+        "power_consumption": 109,
+        "tank_capacity": 2.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "290x240x476",
+        "weight": 11.6,
+        "energy_factor": 2.29,
+        "features": ["2026新能源效率1級", "自動濕度感應", "濕度設定40%/50%/60%/連續", "定時關機2/4/6小時", "自動除霜", "滿水自動保護", "高密度前置過濾網"]
+      },
+      "DW-X6NT-W": {
+        "power_consumption": 111,
+        "tank_capacity": 2.8,
+        "noise_level": 30,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "260x240x464",
+        "weight": 9.4,
+        "energy_factor": 2.24,
+        "features": ["Plasmacluster自動除菌離子", "四種運轉模式", "濕度設定40%/50%/60%/70%", "定時開關機1-12小時", "兒童安全鎖", "自動上下擺風", "R-134a環保冷媒"]
+      },
+      "DW-LT12FT-W": {
+        "power_consumption": 180,
+        "tank_capacity": 3.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "6坪(空氣清淨)",
+        "dimensions": "360x260x595",
+        "weight": 13.9,
+        "energy_factor": 2.77,
+        "features": ["Plasmacluster自動除菌離子", "HEPA集塵濾網+活性碳脫臭濾網", "PM2.5/異味/溫濕度感知器", "9段濕度控制", "獨立空氣清淨運轉模式", "Touch Panel觸控面板"]
+      },
+      "DW-LT8HT-W": {
+        "power_consumption": 134,
+        "tank_capacity": 4.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "314x225x527",
+        "weight": 10.6,
+        "energy_factor": 2.64,
+        "features": ["Plasmacluster自動除菌離子", "四種除濕模式", "多段精準濕度控制", "Touch Panel觸控面板", "5段濕度情境顯示", "定時關機1-8小時", "內部乾燥功能", "連續排水"]
+      },
+      "DW-WA12FT-S": {
+        "power_consumption": 180,
+        "tank_capacity": 3.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "6坪(空氣清淨)",
+        "dimensions": "360x271x595",
+        "weight": 14.0,
+        "energy_factor": 2.77,
+        "features": ["Plasmacluster自動除菌離子", "3合1智慧空氣清淨除濕機", "HEPA+活性碳濾網", "智慧遠端控制/監控", "DC變頻風扇馬達", "9段濕度控制"]
+      },
+      "DW-T19HT-W": {
+        "power_consumption": 258,
+        "tank_capacity": 4.5,
+        "noise_level": 40,
+        "energy_efficiency": 1,
+        "coverage_area": "23坪",
+        "dimensions": "359x248x665",
+        "weight": 17.7,
+        "energy_factor": 2.99,
+        "features": ["Plasmacluster自動除菌離子", "DC變頻風扇馬達", "雙氣流美型除濕機", "1-2 Tank快取水箱設計", "前開式隔音面板設計", "7段濕度控制", "烘鞋行程+大象配件"]
+      },
+      "DW-PA12FT-D": {
+        "power_consumption": null,
+        "tank_capacity": null,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "6坪(空氣清淨)",
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": null,
+        "features": ["Plasmacluster自動除菌離子", "3合1智慧空氣清淨除濕機", "HEPA+活性碳濾網", "智慧遠端控制/監控", "DC變頻風扇馬達", "9段濕度控制"]
+      },
+      "DW-LT12ST-W": {
+        "power_consumption": 180,
+        "tank_capacity": 3.0,
+        "noise_level": 36,
+        "energy_efficiency": 1,
+        "coverage_area": "15坪",
+        "dimensions": "360x260x595",
+        "weight": 14.0,
+        "energy_factor": 2.77,
+        "features": ["Plasmacluster自動除菌離子", "Touch Panel觸控面板", "四種模式", "四種擺風模式", "9段濕度控制", "5段濕度情境顯示", "台灣製造"]
+      },
+      "DW-P6HT-H": {
+        "power_consumption": 111,
+        "tank_capacity": 2.8,
+        "noise_level": 30,
+        "energy_efficiency": 1,
+        "coverage_area": "8坪",
+        "dimensions": "260x240x464",
+        "weight": 9.4,
+        "energy_factor": 2.24,
+        "features": ["Plasmacluster自動除菌離子", "乾淨方mini美型除濕機", "四種模式", "濕度控制40%/50%/60%/70%", "定時開關機1/2/4/8/12小時", "觸控式面板", "360度滾輪"]
+      },
+      "DW-LT10FT-W": {
+        "power_consumption": 177,
+        "tank_capacity": 3.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "6坪(空氣清淨)",
+        "dimensions": "360x260x595",
+        "weight": 14.2,
+        "energy_factor": 2.47,
+        "features": ["Plasmacluster自動除菌離子", "HEPA+活性碳濾網", "PM2.5數值顯示", "異味/溫濕度偵測", "9段濕度設定", "四段風速調節", "自動廣域送風", "台灣製造"]
+      },
+      "DW-LT6HT-W": {
+        "power_consumption": 109,
+        "tank_capacity": 2.5,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "304x203x480",
+        "weight": 9.0,
+        "energy_factor": 2.29,
+        "features": ["Plasmacluster自動除菌離子", "三種模式", "自動除霜", "滿水自動保護", "自動擺風", "定時開關機2/4/6小時", "台灣製造", "R-134a環保冷媒"]
+      }
+    },
+    "Whirlpool": {
+      "WDEE15TW": {
+        "power_consumption": 260,
+        "tank_capacity": 8.8,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "19坪",
+        "dimensions": "384x272x629",
+        "weight": 16.8,
+        "energy_factor": 2.52,
+        "features": ["第六感智能除濕", "廣口上吹式出風", "IPX1防滴水等級", "濕度設定30-80%", "預約開關機0.5-24小時", "360度萬向腳輪", "壓縮機5年保固"]
+      },
+      "WDEE06TW": {
+        "power_consumption": 135,
+        "tank_capacity": 2.5,
+        "noise_level": null,
+        "energy_efficiency": 2,
+        "coverage_area": "8坪",
+        "dimensions": "270x205x430",
+        "weight": 9.0,
+        "energy_factor": 1.86,
+        "features": ["第六感智能模式", "連續除濕模式", "乾衣模式", "通風模式", "濕度設定30-80%", "側吹式出風口", "IP21防塵防滴水", "壓縮機5年保固"]
+      },
+      "WDEE25TW": {
+        "power_consumption": 410,
+        "tank_capacity": 8.8,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "31坪",
+        "dimensions": "384x272x629",
+        "weight": 17.7,
+        "energy_factor": 2.54,
+        "features": ["第六感智能模式", "連續除濕模式", "手動設定模式", "濕度設定30-80%", "廣口上吹式出風", "IPX1防滴水等級", "360度萬向腳輪", "R32冷媒"]
+      },
+      "DS202HDTW": {
+        "power_consumption": 165,
+        "tank_capacity": 5.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "11-15坪",
+        "dimensions": "400x190x590",
+        "weight": 13.2,
+        "energy_factor": null,
+        "features": ["清淨除濕二合一", "第六感智能模式", "HEPA濾網", "5重過濾", "抑菌塗層", "蜂巢顆粒活性碳濾網", "19cm極薄窄身", "120度廣角出風", "變頻DC馬達"]
+      },
+      "WDEE30TW": {
+        "power_consumption": 495,
+        "tank_capacity": 8.8,
+        "noise_level": 46,
+        "energy_efficiency": 1,
+        "coverage_area": "38坪",
+        "dimensions": "384x272x629",
+        "weight": 17.7,
+        "energy_factor": 2.57,
+        "features": ["第六感智能模式", "連續除濕模式", "手動設定模式", "濕度設定30-80%", "廣口上吹式出風", "IPX1防滴水等級", "360度萬向腳輪", "R32冷媒"]
+      },
+      "DS242HCTW": {
+        "power_consumption": null,
+        "tank_capacity": 6.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": null,
+        "features": ["清淨除濕二合一", "第六感智能模式", "除濕/乾衣/夜間模式", "濕度設定40-80%", "HEPA過濾網+抗菌塗層", "負離子清淨功能", "120度廣角出風", "DC馬達"]
+      }
+    },
+    "LG": {
+      "MD161QPK3": {
+        "power_consumption": null,
+        "tank_capacity": null,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": 3.0,
+        "features": ["PuriCare雙變頻除濕機", "智慧雙迴變頻壓縮機", "WiFi變頻除濕機", "正負離子淨化", "水箱滿水自動停止", "水箱指示燈(小夜燈)", "自動乾燥系統", "烘鞋/烘衣櫥專用配件"]
+      },
+      "DD181MWE0": {
+        "power_consumption": null,
+        "tank_capacity": 5.0,
+        "noise_level": 37,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "410x210x640",
+        "weight": 16.0,
+        "energy_factor": 2.99,
+        "features": ["PuriCare雙變頻除濕機", "壓縮機/馬達雙變頻", "UV nano紫外線淨化", "奈米離子抑制細菌", "WiFi遠控功能", "30項安全裝置", "連續排水", "多重除濕模式", "全機3年/壓縮機10年/馬達10年保固"]
+      },
+      "DE221MWE0": {
+        "power_consumption": null,
+        "tank_capacity": null,
+        "noise_level": null,
+        "energy_efficiency": null,
+        "coverage_area": null,
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": null,
+        "features": ["UV抑菌雙變頻除濕機"]
+      },
+      "DD121MWE0": {
+        "power_consumption": null,
+        "tank_capacity": 4.25,
+        "noise_level": 32,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "410x210x640",
+        "weight": 15.5,
+        "energy_factor": 2.72,
+        "features": ["PuriCare雙變頻除濕機", "雙迴轉變頻壓縮機", "衣物乾燥模式(17L除濕力)", "UVnano光線殺菌(99.9%)", "LG ThinQ WiFi遠控", "隱藏式把手/電線收納", "360度滑輪", "靜音模式<32dB", "全機3年/壓縮機10年/馬達10年保固"]
+      },
+      "DD141MWE0": {
+        "power_consumption": null,
+        "tank_capacity": 4.25,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": null,
+        "dimensions": "410x210x640",
+        "weight": 15.5,
+        "energy_factor": null,
+        "features": ["PuriCare雙變頻除濕機", "壓縮機/馬達雙變頻", "UV nano紫外線淨化", "奈米離子抑制細菌病毒", "WiFi遠控功能", "ThinQ智慧診斷", "30項安全裝置", "烘鞋/烘衣櫥專用配件", "兒童安全鎖", "全機3年/壓縮機10年/馬達10年保固"]
+      }
+    },
+    "Daikin": {
+      "JP33ASCT-W": {
+        "power_consumption": 272,
+        "tank_capacity": 4.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "10-21坪",
+        "dimensions": "526x310x454",
+        "weight": 15.8,
+        "energy_factor": null,
+        "features": ["電眼紅外感應器", "溫度/濕度感應器", "風向切換(上下/左右自動)", "濕度設定40-70%", "電眼自動乾衣模式(縮短30%時間)", "2段風速調整", "定時關機1-12小時", "內部乾燥功能", "兒童安全鎖", "R-134a冷媒", "全機3年保固"]
+      },
+      "JP24ASCT-H": {
+        "power_consumption": 185,
+        "tank_capacity": 3.7,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "8-15坪",
+        "dimensions": "376x271x578",
+        "weight": 14.3,
+        "energy_factor": 2.7,
+        "features": ["LED觸控操作面板", "衣類乾燥模式", "自動除濕模式", "連續除濕模式", "DC直流馬達", "排水軟管出口(連續排水)", "兒童鎖", "可拆式水箱", "四向腳輪360度旋轉", "3年保固"]
+      },
+      "JP24ASCT-N": {
+        "power_consumption": 185,
+        "tank_capacity": 3.7,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "8-15坪",
+        "dimensions": "376x271x578",
+        "weight": 14.3,
+        "energy_factor": 2.7,
+        "features": ["LED觸控操作面板(淡金色)", "衣類乾燥模式", "自動除濕模式", "連續除濕模式", "DC直流馬達", "排水軟管出口(連續排水)", "兒童鎖", "可拆式水箱", "四向腳輪360度旋轉", "3年保固"]
+      }
+    },
+    "TOSHIBA": {
+      "RAD-B100T-W": {
+        "power_consumption": 173,
+        "tank_capacity": 4.2,
+        "noise_level": 39,
+        "energy_efficiency": 1,
+        "coverage_area": "13坪",
+        "dimensions": "335x265x546",
+        "weight": 12.6,
+        "energy_factor": 2.41,
+        "features": ["30分鐘下降20%濕度", "濕度調整30-80%(5%微調)", "低至39dB靜音", "獨立乾衣模式", "出風角度45-90度可調", "抑菌/去味/除醛3in1過濾", "機內乾燥功能", "預約開關1-24小時", "隱藏式提把+萬向腳輪", "R134a冷媒", "日本監製/全機3年保固"]
+      }
+    },
+    "Panasonic": {
+      "F-YV24NN": {
+        "power_consumption": 177,
+        "tank_capacity": 4.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "15坪",
+        "dimensions": "380x260x640",
+        "weight": 15.0,
+        "energy_factor": 2.83,
+        "features": ["INVERTER變頻雙轉子壓縮機", "nanoeX健康科技", "ECONAVI智慧節能", "31項安全裝置"]
+      },
+      "F-YV32NN": {
+        "power_consumption": 219,
+        "tank_capacity": 4.0,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "20坪",
+        "dimensions": "380x260x640",
+        "weight": 16.0,
+        "energy_factor": 3.05,
+        "features": ["INVERTER變頻雙轉子壓縮機", "nanoeX健康科技", "ECONAVI智慧節能", "IoT智慧家電", "31項安全裝置"]
+      },
+      "F-Y22PN": {
+        "power_consumption": null,
+        "tank_capacity": null,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "14坪",
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": 2.83,
+        "features": ["nanoeX健康科技", "ECONAVI智慧節能科技", "DC馬達", "31項安全裝置", "LCD面板"]
+      },
+      "F-Y18PN": {
+        "power_consumption": null,
+        "tank_capacity": null,
+        "noise_level": null,
+        "energy_efficiency": 1,
+        "coverage_area": "11坪",
+        "dimensions": null,
+        "weight": null,
+        "energy_factor": 2.68,
+        "features": ["nanoeX健康科技", "ECONAVI智慧節能科技", "DC馬達", "31項安全裝置"]
+      }
+    }
+  }
+}
