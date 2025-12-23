@@ -236,19 +236,32 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
   }
 
   const { url, anonKey } = getSupabaseConfig()
+  const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
 
   try {
-    const data = await fetchWithTimeout<Dehumidifier[]>(
-      `${url}/rest/v1/products?in_stock=eq.true`,
-      {
-        headers: {
-          'apikey': anonKey,
-          'Authorization': `Bearer ${anonKey}`,
-        },
+    // 分品類載入，避免 Supabase 1000 筆限制導致資料被截斷
+    const allProducts: Dehumidifier[] = []
+
+    for (const category of categories) {
+      try {
+        const data = await fetchWithTimeout<Dehumidifier[]>(
+          `${url}/rest/v1/products?in_stock=eq.true&category_slug=eq.${category}&limit=1000`,
+          {
+            headers: {
+              'apikey': anonKey,
+              'Authorization': `Bearer ${anonKey}`,
+            },
+          }
+        )
+        allProducts.push(...data)
+      } catch (e) {
+        console.warn(`Failed to fetch ${category} from Supabase:`, e)
+        // 該品類載入失敗，從本地補充
+        const localProducts = await loadLocalCategoryProducts(category)
+        allProducts.push(...localProducts)
       }
-    )
-    // 補充 Supabase 中缺少的品類資料
-    const allProducts = await supplementMissingCategories(data)
+    }
+
     globalProducts.value = allProducts
     hasLoaded = true
     return globalProducts.value
@@ -272,22 +285,35 @@ export async function useProductsSSR() {
   }
 
   const { url, anonKey } = getSupabaseConfig()
+  const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
+  const allProducts: Dehumidifier[] = []
+  let fetchError: Error | null = null
 
-  const { data, error } = await useFetch<Dehumidifier[]>(
-    `${url}/rest/v1/products?in_stock=eq.true`,
-    {
-      headers: {
-        'apikey': anonKey,
-        'Authorization': `Bearer ${anonKey}`,
-      },
-      key: 'products',
-      default: () => [] as Dehumidifier[],
+  // 分品類載入，避免 Supabase 1000 筆限制導致資料被截斷
+  for (const category of categories) {
+    const { data, error } = await useFetch<Dehumidifier[]>(
+      `${url}/rest/v1/products?in_stock=eq.true&category_slug=eq.${category}&limit=1000`,
+      {
+        headers: {
+          'apikey': anonKey,
+          'Authorization': `Bearer ${anonKey}`,
+        },
+        key: `products-${category}`,
+        default: () => [] as Dehumidifier[],
+      }
+    )
+
+    if (data.value && data.value.length > 0) {
+      allProducts.push(...data.value)
+    } else if (error.value) {
+      fetchError = error.value
+      // 該品類載入失敗，從本地補充
+      const localProducts = await loadLocalCategoryProducts(category)
+      allProducts.push(...localProducts)
     }
-  )
+  }
 
-  if (data.value && data.value.length > 0) {
-    // 補充 Supabase 中缺少的品類資料
-    const allProducts = await supplementMissingCategories(data.value)
+  if (allProducts.length > 0) {
     globalProducts.value = allProducts
     hasLoaded = true
   } else {
@@ -299,7 +325,7 @@ export async function useProductsSSR() {
     }
   }
 
-  return { data, error }
+  return { data: ref(globalProducts.value), error: ref(fetchError) }
 }
 
 export const useProducts = () => {
