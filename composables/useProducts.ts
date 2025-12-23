@@ -1,5 +1,5 @@
 import { ref, readonly } from 'vue'
-import { useFetch, useRuntimeConfig } from '#imports'
+import { useAsyncData, useRuntimeConfig } from '#imports'
 import type { Dehumidifier, FilterState, SortOption } from '~/types'
 
 // Supabase 配置 - 使用 runtimeConfig（在 composable 外部定義 fallback 值）
@@ -277,7 +277,7 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
   }
 }
 
-// SSR-friendly 資料載入（使用 Nuxt 的 useFetch）
+// SSR-friendly 資料載入（使用 Nuxt 的 useAsyncData）
 export async function useProductsSSR() {
   // 如果已經載入過，直接返回
   if (hasLoaded && globalProducts.value.length > 0) {
@@ -286,37 +286,50 @@ export async function useProductsSSR() {
 
   const { url, anonKey } = getSupabaseConfig()
   const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
-  const allProducts: Dehumidifier[] = []
-  let fetchError: Error | null = null
 
-  // 分品類載入，避免 Supabase 1000 筆限制導致資料被截斷
-  for (const category of categories) {
-    const { data, error } = await useFetch<Dehumidifier[]>(
-      `${url}/rest/v1/products?in_stock=eq.true&category_slug=eq.${category}&limit=1000`,
-      {
-        headers: {
-          'apikey': anonKey,
-          'Authorization': `Bearer ${anonKey}`,
-        },
-        key: `products-${category}`,
-        default: () => [] as Dehumidifier[],
-      }
-    )
+  // 使用 useAsyncData 一次性載入所有品類
+  const { data, error } = await useAsyncData<Dehumidifier[]>(
+    'all-products',
+    async () => {
+      const allProducts: Dehumidifier[] = []
 
-    if (data.value && data.value.length > 0) {
-      allProducts.push(...data.value)
-    } else if (error.value) {
-      fetchError = error.value
-      // 該品類載入失敗，從本地補充
-      const localProducts = await loadLocalCategoryProducts(category)
-      allProducts.push(...localProducts)
+      // 使用 $fetch 並行載入所有品類
+      const fetchPromises = categories.map(async (category) => {
+        try {
+          const products = await $fetch<Dehumidifier[]>(
+            `${url}/rest/v1/products?in_stock=eq.true&category_slug=eq.${category}&limit=1000`,
+            {
+              headers: {
+                'apikey': anonKey,
+                'Authorization': `Bearer ${anonKey}`,
+              },
+            }
+          )
+          return products || []
+        } catch {
+          // 該品類載入失敗，從本地補充
+          return await loadLocalCategoryProducts(category)
+        }
+      })
+
+      const results = await Promise.all(fetchPromises)
+      results.forEach(products => {
+        if (products.length > 0) {
+          allProducts.push(...products)
+        }
+      })
+
+      return allProducts
+    },
+    {
+      default: () => [] as Dehumidifier[],
     }
-  }
+  )
 
-  if (allProducts.length > 0) {
-    globalProducts.value = allProducts
+  if (data.value && data.value.length > 0) {
+    globalProducts.value = data.value
     hasLoaded = true
-  } else {
+  } else if (!error.value) {
     // 備用方案：從本地 JSON 載入（支援多品類）
     const localProducts = await loadLocalProducts()
     if (localProducts.length > 0) {
@@ -325,7 +338,7 @@ export async function useProductsSSR() {
     }
   }
 
-  return { data: ref(globalProducts.value), error: ref(fetchError) }
+  return { data: ref(globalProducts.value), error }
 }
 
 export const useProducts = () => {

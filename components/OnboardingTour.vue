@@ -8,34 +8,19 @@ const currentStep = ref(0)
 const steps = [
   {
     title: '歡迎使用比比看！',
-    description: '我們幫你比較各種家電的規格和價格，找到最適合你的產品。',
+    description: '快速比較家電規格與價格，輕鬆找到最適合你的產品。',
     icon: '👋',
     position: 'center'
   },
   {
-    title: '篩選功能',
-    description: '使用左側的篩選器，可以依品牌、價格、規格快速找到想要的商品。',
-    icon: '🔍',
-    target: '[data-tour="filter"]',
-    position: 'right'
-  },
-  {
-    title: '商品比較',
-    description: '點擊「加入比較」按鈕，最多可選 4 款商品進行詳細比較。',
+    title: '比較＆收藏',
+    description: '點擊「加入比較」可比較最多 4 款商品，點擊愛心可收藏喜歡的商品。',
     icon: '⚖️',
-    target: '[data-tour="compare"]',
-    position: 'bottom'
+    position: 'center'
   },
   {
-    title: '收藏商品',
-    description: '點擊愛心圖示收藏喜歡的商品，下次再來時還能看到。',
-    icon: '❤️',
-    target: '[data-tour="favorite"]',
-    position: 'left'
-  },
-  {
-    title: '開始探索吧！',
-    description: '按下鍵盤的 ? 鍵可以查看所有快捷鍵。祝你找到心儀的家電！',
+    title: '開始探索！',
+    description: '使用篩選器快速找到想要的商品，祝你找到心儀的家電！',
     icon: '🎉',
     position: 'center'
   }

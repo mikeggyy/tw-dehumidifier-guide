@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<{
   product: Dehumidifier
   showCompare?: boolean
   isInCompare?: boolean
+  isCompareAtLimit?: boolean
   isFavorite?: boolean
   searchQuery?: string
   categorySlug?: string
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   showCompare: false,
   isInCompare: false,
+  isCompareAtLimit: false,
   isFavorite: false,
   searchQuery: '',
   categorySlug: 'dehumidifier',
@@ -77,6 +79,18 @@ const emit = defineEmits<{
   toggleCompare: []
   toggleFavorite: []
 }>()
+
+// Favorite animation state
+const isAnimatingFavorite = ref(false)
+
+const handleToggleFavorite = () => {
+  isAnimatingFavorite.value = true
+  emit('toggleFavorite')
+  // Reset animation after it completes
+  setTimeout(() => {
+    isAnimatingFavorite.value = false
+  }, 300)
+}
 
 const { getProductSlug } = useProducts()
 const { getBadges } = useProductBadges()
@@ -192,11 +206,14 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
         <!-- Favorite Button - 44x44px touch target for mobile -->
         <button
           class="absolute top-2 right-2 p-2.5 rounded-full bg-white/90 shadow-sm hover:bg-white transition-all duration-200"
-          :class="isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-400'"
-          @click.prevent="emit('toggleFavorite')"
+          :class="[
+            isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-400',
+            isAnimatingFavorite ? 'animate-favorite-bounce' : ''
+          ]"
+          @click.prevent="handleToggleFavorite"
           aria-label="收藏此商品"
         >
-          <Heart :size="20" :fill="isFavorite ? 'currentColor' : 'none'" />
+          <Heart :size="20" :fill="isFavorite ? 'currentColor' : 'none'" :class="isAnimatingFavorite ? 'animate-favorite-heart' : ''" />
         </button>
         <!-- Compare Badge (when selected) -->
         <div
@@ -230,10 +247,12 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
           </div>
           <span v-if="discountPercent" class="inline-flex items-center text-[10px] sm:text-xs font-bold text-white bg-gradient-to-r from-red-500 to-orange-500 px-1.5 sm:px-2 py-0.5 rounded-full shadow-sm">-{{ discountPercent }}%</span>
         </div>
-        <!-- Price update time -->
-        <p v-if="priceUpdateTime" class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 mt-0.5 sm:mt-1">
-          {{ priceUpdateTime }}
-        </p>
+        <!-- Price update time (Client Only to avoid hydration mismatch) -->
+        <ClientOnly>
+          <p v-if="priceUpdateTime" class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 mt-0.5 sm:mt-1">
+            {{ priceUpdateTime }}
+          </p>
+        </ClientOnly>
       </div>
 
       <!-- CTA Button - 響應式大小 -->
@@ -259,12 +278,15 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
           'mt-1.5 sm:mt-2 w-full flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 px-2 sm:px-4 text-xs sm:text-sm font-medium rounded-lg border-2 transition-all duration-200',
           isInCompare
             ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-            : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-blue-300 hover:text-blue-600'
+            : isCompareAtLimit
+              ? 'border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+              : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-blue-300 hover:text-blue-600'
         ]"
+        :disabled="isCompareAtLimit && !isInCompare"
         @click="emit('toggleCompare')"
       >
         <GitCompare :size="14" class="flex-shrink-0" />
-        <span class="truncate">{{ isInCompare ? '取消比較' : '加入比較' }}</span>
+        <span class="truncate">{{ isInCompare ? '取消比較' : isCompareAtLimit ? '已達上限' : '加入比較' }}</span>
       </button>
     </div>
   </div>
@@ -284,6 +306,39 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
   50% {
     opacity: 0.95;
     transform: scale(1.02);
+  }
+}
+
+/* Favorite heart animation */
+.animate-favorite-bounce {
+  animation: favorite-bounce 0.3s ease-out;
+}
+
+.animate-favorite-heart {
+  animation: favorite-heart 0.3s ease-out;
+}
+
+@keyframes favorite-bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes favorite-heart {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.3);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 

@@ -27,6 +27,7 @@ import SiteFooter from '~/components/category/SiteFooter.vue'
 import FloatingCompareBar from '~/components/category/FloatingCompareBar.vue'
 import Pagination from '~/components/category/Pagination.vue'
 import CategoryFAQ from '~/components/CategoryFAQ.vue'
+import RecentlyViewed from '~/components/RecentlyViewed.vue'
 import { formatPrice, getDisplayBrand } from '~/utils/product'
 
 // Loading component for async components
@@ -79,6 +80,7 @@ import { useUrlFilters } from '~/composables/useUrlFilters'
 import { useStructuredData } from '~/composables/useStructuredData'
 import { useRoute, useHead, createError } from '#imports'
 import { useCookieConsent } from '~/composables/useCookieConsent'
+import { useToast } from '~/composables/useToast'
 
 const route = useRoute()
 const categorySlug = computed(() => route.params.category as string)
@@ -101,6 +103,9 @@ await useProductsSSR()
 
 // Cookie 同意橫幅狀態
 const { showBanner: showCookieBanner } = useCookieConsent()
+
+// Toast 通知
+const { success: showSuccessToast } = useToast()
 
 const { allProducts, isLoading, getAllBrands, getPriceRange, filterProducts, sortProducts, getProductSlug } = useProducts()
 
@@ -254,10 +259,13 @@ const saveFavorites = () => {
 }
 
 const toggleFavorite = (productId: string) => {
-  if (favorites.value.has(productId)) {
+  const wasInFavorites = favorites.value.has(productId)
+  if (wasInFavorites) {
     favorites.value.delete(productId)
+    showSuccessToast('已取消收藏', 1500)
   } else {
     favorites.value.add(productId)
+    showSuccessToast('已加入收藏 ❤️', 1500)
   }
   favorites.value = new Set(favorites.value)
   saveFavorites()
@@ -275,14 +283,18 @@ const showFinder = ref(false)
 // Compare list (max 4)
 const compareList = ref<any[]>([])
 
+const isCompareAtLimit = computed(() => compareList.value.length >= 4)
+
 const toggleCompare = (product: any) => {
   const index = compareList.value.findIndex(p => p.id === product.id)
   if (index === -1) {
     if (compareList.value.length < 4) {
       compareList.value.push(product)
+      showSuccessToast('已加入比較', 1500)
     }
   } else {
     compareList.value.splice(index, 1)
+    showSuccessToast('已取消比較', 1500)
   }
 }
 
@@ -486,6 +498,15 @@ const resetFilters = () => {
   activeQuickTag.value = null
   searchQuery.value = ''
   showFavoritesOnly.value = false
+}
+
+// 套用行動版篩選並顯示回饋
+const applyMobileFilters = () => {
+  showMobileFilters.value = false
+  const count = displayedProducts.value.length
+  if (count > 0) {
+    showSuccessToast(`已篩選出 ${count} 項商品`, 2000)
+  }
 }
 
 const searchBrand = (brand: string) => {
@@ -980,12 +1001,17 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
               >
                 重設篩選條件
               </button>
+
+              <!-- Recently Viewed (Client Only to avoid SSR issues with localStorage) -->
+              <ClientOnly>
+                <RecentlyViewed :limit="3" class="mt-6" />
+              </ClientOnly>
             </div>
 
             <div class="p-4 border-t border-gray-200 lg:hidden">
               <button
                 class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg"
-                @click="showMobileFilters = false"
+                @click="applyMobileFilters"
               >
                 套用篩選 ({{ displayedProducts.length }} 項結果)
               </button>
@@ -1038,6 +1064,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
               :product="product"
               :show-compare="true"
               :is-in-compare="isInCompare(product.id)"
+              :is-compare-at-limit="isCompareAtLimit"
               :is-favorite="isFavorite(product.id)"
               :search-query="searchQuery"
               :category-slug="categorySlug"
@@ -1067,23 +1094,50 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
           <!-- No Results -->
           <div
             v-if="isReady && displayedProducts.length === 0"
-            class="text-center py-16 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700"
+            class="text-center py-12 sm:py-16 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700"
           >
             <SearchX :size="48" class="mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-            <p class="text-gray-900 dark:text-white font-medium mb-2">
+            <p class="text-gray-900 dark:text-white font-medium text-lg mb-2">
               {{ showFavoritesOnly ? '您還沒有收藏任何商品' : '沒有找到符合條件的產品' }}
             </p>
-            <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">
-              {{ showFavoritesOnly ? '點擊商品卡片上的愛心即可收藏' : searchQuery ? `找不到「${searchQuery}」相關的商品` : '試試調整篩選條件' }}
+            <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 px-4">
+              {{ showFavoritesOnly ? '點擊商品卡片上的愛心即可收藏喜歡的商品' : searchQuery ? `找不到「${searchQuery}」相關的商品` : '目前的篩選條件可能太嚴格了' }}
             </p>
 
-            <div v-if="searchSuggestions.length > 0" class="mb-6">
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">試試搜尋這些品牌：</p>
+            <!-- 顯示目前的篩選條件 -->
+            <div v-if="!showFavoritesOnly && (filters.brands.length > 0 || searchQuery)" class="mb-6 px-4">
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">目前的篩選條件：</p>
+              <div class="flex flex-wrap justify-center gap-2">
+                <span
+                  v-if="searchQuery"
+                  class="inline-flex items-center gap-1 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full"
+                >
+                  搜尋：{{ searchQuery }}
+                  <button @click="searchQuery = ''" class="ml-1 hover:text-red-500">
+                    <X :size="14" />
+                  </button>
+                </span>
+                <span
+                  v-for="brand in filters.brands"
+                  :key="brand"
+                  class="inline-flex items-center gap-1 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full"
+                >
+                  {{ brand }}
+                  <button @click="toggleBrand(brand)" class="ml-1 hover:text-red-500">
+                    <X :size="14" />
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <!-- 品牌建議 -->
+            <div v-if="searchSuggestions.length > 0 && !showFavoritesOnly" class="mb-6 px-4">
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">🔍 試試搜尋這些熱門品牌：</p>
               <div class="flex flex-wrap justify-center gap-2">
                 <button
                   v-for="brand in searchSuggestions"
                   :key="brand"
-                  class="px-3 py-1.5 text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+                  class="px-4 py-2 text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors font-medium"
                   @click="searchBrand(brand)"
                 >
                   {{ brand }}
@@ -1091,12 +1145,22 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
               </div>
             </div>
 
-            <button
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
-              @click="resetFilters"
-            >
-              {{ showFavoritesOnly ? '查看全部商品' : '清除篩選條件' }}
-            </button>
+            <!-- 快速操作 -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 px-4">
+              <button
+                class="w-full sm:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
+                @click="resetFilters"
+              >
+                {{ showFavoritesOnly ? '查看全部商品' : '清除所有篩選' }}
+              </button>
+              <button
+                v-if="!showFavoritesOnly && categoryConfig?.quickTags && categoryConfig.quickTags.length > 0"
+                class="w-full sm:w-auto px-6 py-2.5 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 font-medium transition-colors"
+                @click="applyQuickTag(categoryConfig.quickTags[0])"
+              >
+                試試「{{ categoryConfig.quickTags[0].label }}」
+              </button>
+            </div>
           </div>
         </div>
       </div>
