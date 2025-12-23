@@ -14,7 +14,6 @@ import {
   Snowflake,
   Flame,
   Fan,
-  ArrowRight,
   AlertCircle,
 } from 'lucide-vue-next'
 import type { FilterState, SortOption, Dehumidifier } from '~/types'
@@ -449,23 +448,14 @@ const categories = computed(() => [
       role="main"
     >
       <!-- Page Title -->
-      <div class="mb-6 flex items-center justify-between">
-        <div>
-          <div class="flex items-center gap-2 mb-1">
-            <Sparkles :size="24" class="text-blue-600" />
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">熱門推薦</h2>
-          </div>
-          <p class="text-gray-600 dark:text-gray-300">
-            精選熱門家電商品，比較規格、價格
-          </p>
+      <div class="mb-6">
+        <div class="flex items-center gap-2 mb-1">
+          <Sparkles :size="24" class="text-blue-600" />
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">熱門推薦</h2>
         </div>
-        <NuxtLink
-          to="/dehumidifier"
-          class="hidden sm:flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium text-sm"
-        >
-          查看完整列表
-          <ArrowRight :size="16" />
-        </NuxtLink>
+        <p class="text-gray-600 dark:text-gray-300">
+          精選熱門家電商品，比較規格、價格
+        </p>
       </div>
 
       <!-- 搜尋框 - 桌面版顯示 -->
@@ -733,32 +723,36 @@ const categories = computed(() => [
     </footer>
 
     <!-- 回到頂部按鈕 -->
-    <Transition name="fade">
-      <button
-        v-if="showScrollTop"
-        :class="[
-          'fixed right-4 sm:right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110',
-          compareList.length > 0
-            ? (showCookieBanner ? 'bottom-52 sm:bottom-32' : 'bottom-36 sm:bottom-24')
-            : (showCookieBanner ? 'bottom-44 sm:bottom-20' : 'bottom-28 sm:bottom-6')
-        ]"
-        @click="scrollToTop"
-        aria-label="回到頂部"
-      >
-        <ArrowUp :size="22" />
-      </button>
-    </Transition>
+    <ClientOnly>
+      <Transition name="fade">
+        <button
+          v-if="showScrollTop"
+          :class="[
+            'fixed right-4 sm:right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110',
+            compareList.length > 0
+              ? (showCookieBanner ? 'bottom-52 sm:bottom-32' : 'bottom-36 sm:bottom-24')
+              : (showCookieBanner ? 'bottom-44 sm:bottom-20' : 'bottom-28 sm:bottom-6')
+          ]"
+          @click="scrollToTop"
+          aria-label="回到頂部"
+        >
+          <ArrowUp :size="22" />
+        </button>
+      </Transition>
+    </ClientOnly>
 
     <!-- Compare Category Warning Toast -->
-    <Transition name="toast">
-      <div
-        v-if="compareCategoryWarning"
-        class="fixed top-4 left-1/2 -translate-x-1/2 z-[60] max-w-md w-full mx-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl shadow-lg flex items-start gap-3"
-      >
-        <AlertCircle :size="20" class="text-amber-600 flex-shrink-0 mt-0.5" />
-        <p class="text-sm text-amber-800">{{ compareCategoryWarning }}</p>
-      </div>
-    </Transition>
+    <ClientOnly>
+      <Transition name="toast">
+        <div
+          v-if="compareCategoryWarning"
+          class="fixed top-4 left-1/2 -translate-x-1/2 z-[60] max-w-md w-full mx-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl shadow-lg flex items-start gap-3"
+        >
+          <AlertCircle :size="20" class="text-amber-600 flex-shrink-0 mt-0.5" />
+          <p class="text-sm text-amber-800">{{ compareCategoryWarning }}</p>
+        </div>
+      </Transition>
+    </ClientOnly>
 
     <!-- Floating Compare Bar -->
     <FloatingCompareBar
