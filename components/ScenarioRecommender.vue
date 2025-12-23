@@ -36,24 +36,58 @@ const getCategorySlug = (product: Dehumidifier): string => {
 
 <template>
   <div class="mb-8">
-    <!-- Scenario Cards -->
-    <div v-if="!showResults" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+    <!-- Scenario Cards - 始終顯示，選中時變為橫向捲動 -->
+    <div
+      :class="[
+        'gap-3 transition-all duration-300',
+        showResults
+          ? 'flex overflow-x-auto pb-3 -mx-4 px-4 scrollbar-hide'
+          : 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6'
+      ]"
+    >
       <button
         v-for="scenario in scenarios"
         :key="scenario.id"
-        class="group relative bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all text-left"
+        :class="[
+          'group relative bg-white dark:bg-gray-800 rounded-xl border transition-all text-left',
+          showResults
+            ? 'flex-shrink-0 flex items-center gap-2 px-3 py-2'
+            : 'p-4',
+          selectedScenario?.id === scenario.id
+            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500/20'
+            : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md'
+        ]"
         @click="selectScenario(scenario)"
       >
-        <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">
+        <div
+          :class="[
+            'transition-transform',
+            showResults ? 'text-xl' : 'text-3xl mb-2 group-hover:scale-110'
+          ]"
+        >
           {{ scenario.emoji }}
         </div>
-        <h3 class="font-semibold text-gray-900 dark:text-white text-sm mb-1">
+        <div v-if="!showResults">
+          <h3 class="font-semibold text-gray-900 dark:text-white text-sm mb-1">
+            {{ scenario.title }}
+          </h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+            {{ scenario.description }}
+          </p>
+        </div>
+        <span
+          v-else
+          :class="[
+            'text-sm font-medium whitespace-nowrap',
+            selectedScenario?.id === scenario.id
+              ? 'text-blue-700 dark:text-blue-300'
+              : 'text-gray-700 dark:text-gray-300'
+          ]"
+        >
           {{ scenario.title }}
-        </h3>
-        <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
-          {{ scenario.description }}
-        </p>
+        </span>
         <ArrowRight
+          v-if="!showResults"
           :size="16"
           class="absolute bottom-3 right-3 text-gray-300 dark:text-gray-600 group-hover:text-blue-500 group-hover:translate-x-1 transition-all"
         />
@@ -62,7 +96,7 @@ const getCategorySlug = (product: Dehumidifier): string => {
 
     <!-- Results View -->
     <Transition name="fade">
-      <div v-if="showResults && selectedScenario" class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div v-if="showResults && selectedScenario" class="mt-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         <!-- Results Header -->
         <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800">
           <div class="flex items-center gap-3">
@@ -79,6 +113,7 @@ const getCategorySlug = (product: Dehumidifier): string => {
           <button
             class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
             @click="closeResults"
+            aria-label="關閉推薦結果"
           >
             <X :size="20" />
           </button>
@@ -113,5 +148,14 @@ const getCategorySlug = (product: Dehumidifier): string => {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+/* 隱藏捲軸但保持捲動功能 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 </style>
