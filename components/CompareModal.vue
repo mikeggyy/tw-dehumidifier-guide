@@ -416,6 +416,9 @@ const handleRecommendation = (product: Dehumidifier) => {
     role="dialog"
     aria-modal="true"
     aria-labelledby="compare-modal-title"
+    @touchstart.stop
+    @touchmove.stop
+    @touchend.stop
   >
     <!-- Backdrop -->
     <div

@@ -643,16 +643,18 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
           幫我選
         </button>
         <button
-          v-if="favorites.size > 0"
           :class="[
             'flex items-center gap-2 px-4 py-2.5 font-medium rounded-xl transition-all whitespace-nowrap flex-shrink-0',
             showFavoritesOnly
               ? 'bg-red-500 text-white'
-              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-red-300 dark:hover:border-red-400 hover:text-red-500 dark:hover:text-red-400'
+              : favorites.size > 0
+                ? 'bg-white dark:bg-gray-800 border border-red-200 dark:border-red-700 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20'
+                : 'bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500'
           ]"
-          @click="showFavoritesOnly = !showFavoritesOnly"
+          :title="favorites.size > 0 ? '查看我的收藏' : '點擊商品卡片的愛心收藏'"
+          @click="favorites.size > 0 ? (showFavoritesOnly = !showFavoritesOnly) : null"
         >
-          <Heart :size="18" :fill="showFavoritesOnly ? 'currentColor' : 'none'" />
+          <Heart :size="18" :fill="favorites.size > 0 || showFavoritesOnly ? 'currentColor' : 'none'" />
           我的收藏 ({{ favorites.size }})
         </button>
       </div>
@@ -676,7 +678,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 
       <div class="lg:flex lg:gap-8">
         <!-- Mobile: Filter + Sort Bar (合併為一行) -->
-        <div class="lg:hidden flex items-center justify-between gap-3 mb-4 p-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div class="lg:hidden flex items-center justify-between gap-2 mb-4 p-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
           <!-- 篩選按鈕 -->
           <button
             class="flex items-center gap-2 px-3 py-2 text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -686,10 +688,28 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
             <span>篩選</span>
           </button>
 
-          <!-- 商品數量 -->
-          <span class="text-sm text-gray-500 dark:text-gray-400">
-            {{ displayedProducts.length }} 項
-          </span>
+          <!-- 商品數量 + 收藏入口 -->
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-500 dark:text-gray-400">
+              {{ displayedProducts.length }} 項
+            </span>
+            <!-- 收藏按鈕 (永遠顯示，讓用戶知道收藏在哪) -->
+            <button
+              :class="[
+                'flex items-center gap-1 px-2.5 py-1.5 rounded-full text-sm font-medium transition-all',
+                showFavoritesOnly
+                  ? 'bg-red-500 text-white ring-2 ring-red-300 dark:ring-red-700'
+                  : favorites.size > 0
+                    ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-sm'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
+              ]"
+              :title="favorites.size > 0 ? '查看我的收藏' : '點擊商品卡片的愛心收藏'"
+              @click="favorites.size > 0 ? (showFavoritesOnly = !showFavoritesOnly) : null"
+            >
+              <Heart :size="14" :fill="favorites.size > 0 ? 'currentColor' : 'none'" class="flex-shrink-0" />
+              <span>{{ favorites.size || 0 }}</span>
+            </button>
+          </div>
 
           <!-- 排序選單 -->
           <div class="flex items-center gap-1.5 px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">

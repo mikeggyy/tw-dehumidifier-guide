@@ -189,13 +189,6 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
         >
           {{ energyLabel }}
         </span>
-        <!-- Discount Badge -->
-        <span
-          v-if="discountPercent"
-          class="absolute top-3 right-14 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full"
-        >
-          -{{ discountPercent }}%
-        </span>
         <!-- Favorite Button - 44x44px touch target for mobile -->
         <button
           class="absolute top-2 right-2 p-2.5 rounded-full bg-white/90 shadow-sm hover:bg-white transition-all duration-200"
@@ -230,11 +223,12 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
           <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">市售價 </span>
           <span class="text-xs sm:text-sm text-gray-400 dark:text-gray-500 line-through">NT$ {{ formatPrice(product.original_price) }}</span>
         </div>
-        <div class="flex items-baseline gap-1 sm:gap-2">
+        <div class="flex items-baseline gap-1 sm:gap-2 flex-wrap">
           <div>
             <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">促銷價 </span>
             <span class="text-lg sm:text-2xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</span>
           </div>
+          <span v-if="discountPercent" class="inline-flex items-center text-[10px] sm:text-xs font-bold text-white bg-gradient-to-r from-red-500 to-orange-500 px-1.5 sm:px-2 py-0.5 rounded-full shadow-sm">-{{ discountPercent }}%</span>
         </div>
         <!-- Price update time -->
         <p v-if="priceUpdateTime" class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 mt-0.5 sm:mt-1">

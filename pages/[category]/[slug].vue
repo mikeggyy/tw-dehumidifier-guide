@@ -51,6 +51,8 @@ import ImageZoom from '~/components/ImageZoom.vue'
 import SimilarProducts from '~/components/SimilarProducts.vue'
 import SameBrandProducts from '~/components/SameBrandProducts.vue'
 import SiteHeader from '~/components/SiteHeader.vue'
+import FloatingCompareBar from '~/components/category/FloatingCompareBar.vue'
+import CompareModal from '~/components/CompareModal.vue'
 import { useStructuredData } from '~/composables/useStructuredData'
 import {
   formatPrice,
@@ -70,7 +72,8 @@ const router = useRouter()
 const { success } = useToast()
 
 // 比較與收藏功能
-const { toggleCompare, isInCompare, isAtLimit } = useCompare()
+const { toggleCompare, isInCompare, isAtLimit, compareList, removeFromCompare, clearCompare } = useCompare()
+const showCompareModal = ref(false)
 const { init: initFavorites, toggleFavorite, isFavorite } = useFavorites()
 
 const categorySlug = computed(() => route.params.category as string)
@@ -969,13 +972,6 @@ const productDimensions = computed(() => {
               :alt="product.name"
               aspect-ratio="aspect-square"
             />
-            <!-- 折扣標籤 -->
-            <span
-              v-if="discountPercent"
-              class="absolute top-4 right-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg z-10"
-            >
-              -{{ discountPercent }}%
-            </span>
           </div>
 
           <!-- Info -->
@@ -1049,9 +1045,10 @@ const productDimensions = computed(() => {
                 <span class="text-sm text-gray-500 dark:text-gray-400">市售價 </span>
                 <span class="text-lg text-gray-400 dark:text-gray-500 line-through">NT$ {{ formatPrice(product.original_price) }}</span>
               </div>
-              <div class="flex items-baseline gap-2">
+              <div class="flex items-baseline gap-2 flex-wrap">
                 <span class="text-sm text-gray-500 dark:text-gray-400">促銷價</span>
                 <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">NT$ {{ formatPrice(product.price) }}</span>
+                <span v-if="discountPercent" class="inline-flex items-center text-xs font-bold text-white bg-gradient-to-r from-red-500 to-orange-500 px-2.5 py-1 rounded-full shadow-sm">-{{ discountPercent }}%</span>
               </div>
               <p v-if="savingsAmount && savingsAmount >= 500" class="text-red-500 text-sm font-medium mt-1">
                 🔥 現省 NT$ {{ formatPrice(savingsAmount) }}
@@ -1918,6 +1915,23 @@ const productDimensions = computed(() => {
         </div>
       </div>
     </footer>
+
+    <!-- Floating Compare Bar -->
+    <FloatingCompareBar
+      :compare-list="compareList"
+      @remove="removeFromCompare"
+      @clear="clearCompare"
+      @compare="showCompareModal = true"
+    />
+
+    <!-- Compare Modal -->
+    <CompareModal
+      v-if="showCompareModal"
+      :products="compareList"
+      :category-slug="categorySlug"
+      @close="showCompareModal = false"
+      @remove="removeFromCompare"
+    />
   </div>
 </template>
 
