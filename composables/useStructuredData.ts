@@ -33,13 +33,19 @@ interface BreadcrumbItem {
 export function useStructuredData() {
   // Product structured data (JSON-LD) - 增強版
   const setProductStructuredData = (product: ProductData) => {
+    // 防護：確保必要欄位存在
+    if (!product.name || !product.price) {
+      console.warn('Product structured data missing required fields:', { name: product.name, price: product.price })
+      return
+    }
+
     const availability = product.inStock === false ? 'OutOfStock' : (product.availability || 'InStock')
 
     const jsonLd: Record<string, any> = {
       '@context': 'https://schema.org',
       '@type': 'Product',
       name: product.name,
-      image: product.image,
+      image: product.image || `${SITE_URL}/og-image.png`,
       description: product.description || `${product.name} - 查看詳細規格與最新優惠價格`,
       brand: product.brand ? {
         '@type': 'Brand',
@@ -191,6 +197,7 @@ export function useStructuredData() {
   }
 
   // ItemList structured data (for category pages)
+  // 使用簡化版 ListItem，避免 Google 驗證嵌套 Product 的完整性
   const setItemListStructuredData = (items: { name: string; url: string; image: string; price: number }[]) => {
     const jsonLd = {
       '@context': 'https://schema.org',
@@ -198,17 +205,8 @@ export function useStructuredData() {
       itemListElement: items.slice(0, 10).map((item, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        item: {
-          '@type': 'Product',
-          name: item.name,
-          image: item.image,
-          url: item.url,
-          offers: {
-            '@type': 'Offer',
-            priceCurrency: 'TWD',
-            price: item.price,
-          },
-        },
+        name: item.name,
+        url: item.url,
       })),
     }
 
