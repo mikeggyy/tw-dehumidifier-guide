@@ -68,9 +68,12 @@ export default defineNuxtConfig({
         { name: 'application-name', content: '比比看' }
       ],
       link: [
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        // Favicon - 多格式支援 (Google 偏好 PNG/ICO，不支援 SVG)
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon-48.png' },
+        { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' },
         { rel: 'manifest', href: '/manifest.json' },
-        { rel: 'apple-touch-icon', href: '/icon-192.png' },
+        { rel: 'apple-touch-icon', sizes: '192x192', href: '/icon-192.png' },
         // DNS Prefetch for external resources
         { rel: 'dns-prefetch', href: 'https://tqyefifafabyudtyjfam.supabase.co' },
         { rel: 'preconnect', href: 'https://tqyefifafabyudtyjfam.supabase.co' },
@@ -156,7 +159,7 @@ export default defineNuxtConfig({
         '/compare',
       ],
       // Ignore static files that are served from public folder
-      ignore: ['/manifest.json', '/favicon.svg', '/icon-192.png', '/screenshot-wide.png', '/screenshot-narrow.png'],
+      ignore: ['/manifest.json', '/favicon.svg', '/favicon.ico', '/favicon-16.png', '/favicon-32.png', '/favicon-48.png', '/icon-192.png', '/icon-512.png', '/screenshot-wide.png', '/screenshot-narrow.png'],
       failOnError: false,
     }
   },

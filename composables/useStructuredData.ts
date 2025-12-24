@@ -146,13 +146,19 @@ export function useStructuredData() {
   }
 
   // Organization structured data
+  // Google 要求 logo 使用位圖格式 (PNG/JPG)，不支援 SVG
   const setOrganizationStructuredData = () => {
     const jsonLd = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: SITE_NAME,
       url: SITE_URL,
-      logo: `${SITE_URL}/favicon.svg`,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/icon-192.png`,
+        width: 192,
+        height: 192,
+      },
       description: '台灣家電規格比較與推薦網站',
       sameAs: [],
     }
