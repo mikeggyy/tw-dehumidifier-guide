@@ -63,7 +63,9 @@ export default defineNuxtConfig({
         { property: 'og:locale', content: 'zh_TW' },
         { property: 'og:site_name', content: '比比看' },
         // Twitter Card
-        { name: 'twitter:card', content: 'summary_large_image' }
+        { name: 'twitter:card', content: 'summary_large_image' },
+        // Site Name (輔助 Google 識別網站名稱)
+        { name: 'application-name', content: '比比看' }
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
