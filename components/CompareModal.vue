@@ -75,20 +75,61 @@ const startX = ref(0)
 const currentX = ref(0)
 const dragThreshold = 50 // 最小拖動距離才會切換
 
+// 追蹤 Y 軸移動來區分水平/垂直滑動
+const startY = ref(0)
+const isHorizontalSwipe = ref(false)
+const swipeDirectionDecided = ref(false)
+
 const handleDragStart = (e: TouchEvent | MouseEvent) => {
   isDragging.value = true
-  startX.value = 'touches' in e ? e.touches[0].clientX : e.clientX
+  swipeDirectionDecided.value = false
+  isHorizontalSwipe.value = false
+
+  if ('touches' in e) {
+    startX.value = e.touches[0].clientX
+    startY.value = e.touches[0].clientY
+  } else {
+    startX.value = e.clientX
+    startY.value = e.clientY
+  }
   currentX.value = startX.value
 }
 
 const handleDragMove = (e: TouchEvent | MouseEvent) => {
   if (!isDragging.value) return
-  currentX.value = 'touches' in e ? e.touches[0].clientX : e.clientX
+
+  const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+  const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+
+  // 決定滑動方向（只判斷一次）
+  if (!swipeDirectionDecided.value) {
+    const diffX = Math.abs(clientX - startX.value)
+    const diffY = Math.abs(clientY - startY.value)
+
+    // 需要移動超過 10px 才判定方向
+    if (diffX > 10 || diffY > 10) {
+      swipeDirectionDecided.value = true
+      isHorizontalSwipe.value = diffX > diffY
+    }
+  }
+
+  // 只有水平滑動時才更新 currentX 並阻止默認行為（防止頁面滾動）
+  if (isHorizontalSwipe.value) {
+    e.preventDefault()
+    currentX.value = clientX
+  }
+  // 垂直滑動時不做任何處理，讓瀏覽器原生滾動生效
 }
 
 const handleDragEnd = () => {
   if (!isDragging.value) return
   isDragging.value = false
+
+  // 只有水平滑動時才處理卡片切換
+  if (!isHorizontalSwipe.value) {
+    swipeDirectionDecided.value = false
+    return
+  }
 
   const diff = startX.value - currentX.value
 
@@ -102,6 +143,8 @@ const handleDragEnd = () => {
       activeCardIndex.value--
     }
   }
+
+  swipeDirectionDecided.value = false
 }
 
 // 卡片容器 ref
@@ -138,6 +181,13 @@ const cardWidthStyle = computed(() => {
 onMounted(() => {
   nextTick(() => {
     updateContainerWidth()
+
+    // 手動綁定 touch 事件，設置 passive: false 以允許 preventDefault()
+    if (cardContainerRef.value) {
+      cardContainerRef.value.addEventListener('touchstart', handleDragStart, { passive: true })
+      cardContainerRef.value.addEventListener('touchmove', handleDragMove, { passive: false })
+      cardContainerRef.value.addEventListener('touchend', handleDragEnd, { passive: true })
+    }
   })
   window.addEventListener('resize', updateContainerWidth)
 
@@ -154,6 +204,13 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', updateContainerWidth)
+
+  // 清理 touch 事件
+  if (cardContainerRef.value) {
+    cardContainerRef.value.removeEventListener('touchstart', handleDragStart)
+    cardContainerRef.value.removeEventListener('touchmove', handleDragMove)
+    cardContainerRef.value.removeEventListener('touchend', handleDragEnd)
+  }
 
   // Cleanup focus trap
   if (cleanupFocusTrap) {
@@ -416,9 +473,6 @@ const handleRecommendation = (product: Dehumidifier) => {
     role="dialog"
     aria-modal="true"
     aria-labelledby="compare-modal-title"
-    @touchstart.stop
-    @touchmove.stop
-    @touchend.stop
   >
     <!-- Backdrop -->
     <div
@@ -615,10 +669,10 @@ const handleRecommendation = (product: Dehumidifier) => {
       </Transition>
 
       <!-- Content for Screenshot -->
-      <div ref="compareContentRef" class="flex-1 overflow-hidden flex flex-col bg-white dark:bg-gray-800">
+      <div ref="compareContentRef" class="flex-1 min-h-0 overflow-hidden flex flex-col bg-white dark:bg-gray-800">
         <!-- Mobile: Scrollable content area -->
-        <div class="md:hidden flex-1 overflow-y-auto flex flex-col">
-          <!-- Conclusion Panel (Mobile - inside scrollable area) -->
+        <div class="md:hidden flex-1 min-h-0 flex flex-col">
+          <!-- Conclusion Panel (Mobile - collapsible) -->
           <div v-if="conclusions.summary && products.length >= 2" class="border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
             <button
               @click="showConclusion = !showConclusion"
@@ -631,37 +685,35 @@ const handleRecommendation = (product: Dehumidifier) => {
               <component :is="showConclusion ? ChevronUp : ChevronDown" :size="18" class="text-gray-400" />
             </button>
 
-            <Transition name="slide">
-              <div v-if="showConclusion" class="p-3 bg-gradient-to-r from-amber-50/50 to-orange-50/50 dark:from-amber-900/10 dark:to-orange-900/10">
-                <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">{{ conclusions.summary }}</p>
+            <div v-if="showConclusion" class="p-3 bg-gradient-to-r from-amber-50/50 to-orange-50/50 dark:from-amber-900/10 dark:to-orange-900/10 max-h-48 overflow-y-auto">
+              <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">{{ conclusions.summary }}</p>
 
-                <div class="grid grid-cols-2 gap-2">
-                  <div v-if="conclusions.recommendations.budget" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💰 省錢首選</p>
-                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.budget.product.brand }}</p>
-                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.budget.reason }}</p>
-                  </div>
-                  <div v-if="conclusions.recommendations.powerful" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💪 最強力</p>
-                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.powerful.product.brand }}</p>
-                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.powerful.reason }}</p>
-                  </div>
-                  <div v-if="conclusions.recommendations.value" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">⭐ CP值王</p>
-                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.value.product.brand }}</p>
-                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.value.reason }}</p>
-                  </div>
-                  <div v-if="conclusions.recommendations.quiet" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">🤫 最安靜</p>
-                    <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.quiet.product.brand }}</p>
-                    <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.quiet.reason }}</p>
-                  </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div v-if="conclusions.recommendations.budget" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💰 省錢首選</p>
+                  <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.budget.product.brand }}</p>
+                  <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.budget.reason }}</p>
+                </div>
+                <div v-if="conclusions.recommendations.powerful" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">💪 最強力</p>
+                  <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.powerful.product.brand }}</p>
+                  <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.powerful.reason }}</p>
+                </div>
+                <div v-if="conclusions.recommendations.value" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">⭐ CP值王</p>
+                  <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.value.product.brand }}</p>
+                  <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.value.reason }}</p>
+                </div>
+                <div v-if="conclusions.recommendations.quiet" class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">🤫 最安靜</p>
+                  <p class="text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">{{ conclusions.recommendations.quiet.product.brand }}</p>
+                  <p class="text-xs text-green-600 dark:text-green-400">{{ conclusions.recommendations.quiet.reason }}</p>
                 </div>
               </div>
-            </Transition>
+            </div>
           </div>
           <!-- Card indicators -->
-          <div class="flex items-center justify-center gap-2 py-3 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-center gap-2 py-3 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
             <button
               v-for="(product, index) in products"
               :key="product.id"
@@ -678,27 +730,24 @@ const handleRecommendation = (product: Dehumidifier) => {
           <!-- Swipeable cards container -->
           <div
             ref="cardContainerRef"
-            class="flex-1 overflow-hidden select-none"
-            @touchstart="handleDragStart"
-            @touchmove="handleDragMove"
-            @touchend="handleDragEnd"
+            class="flex-1 min-h-0 overflow-x-hidden overflow-y-auto select-none overscroll-contain"
             @mousedown="handleDragStart"
             @mousemove="handleDragMove"
             @mouseup="handleDragEnd"
             @mouseleave="handleDragEnd"
           >
             <div
-              class="flex h-full transition-transform duration-300 ease-out"
+              class="flex transition-transform duration-300 ease-out"
               :style="{ transform: cardTransform }"
             >
               <div
                 v-for="(product, index) in products"
                 :key="product.id"
-                class="flex-shrink-0 overflow-y-auto p-4"
+                class="flex-shrink-0 p-4"
                 :style="cardWidthStyle"
               >
                 <!-- Product Card -->
-                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 pb-6">
                   <!-- Product Header -->
                   <div class="flex items-start gap-3 mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                     <img
@@ -766,7 +815,7 @@ const handleRecommendation = (product: Dehumidifier) => {
           </div>
 
           <!-- Swipe hint -->
-          <div class="py-2 text-center text-xs text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex-shrink-0 py-2 text-center text-xs text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
             <span class="flex items-center justify-center gap-2">
               <Trophy :size="12" class="text-yellow-500" />
               最佳值 · 左右滑動比較商品
