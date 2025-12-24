@@ -439,10 +439,26 @@ const categories = computed(() => [
       </div>
     </section>
 
+    <!-- Wave Transition -->
+    <div class="relative -mt-1">
+      <svg
+        viewBox="0 0 1440 60"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-full h-8 sm:h-12"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0 0L48 5C96 10 192 20 288 25C384 30 480 30 576 25C672 20 768 10 864 10C960 10 1056 20 1152 25C1248 30 1344 30 1392 30L1440 30V60H1392C1344 60 1248 60 1152 60C1056 60 960 60 864 60C768 60 672 60 576 60C480 60 384 60 288 60C192 60 96 60 48 60H0V0Z"
+          class="fill-gray-50 dark:fill-gray-900"
+        />
+      </svg>
+    </div>
+
     <main
       id="main-content"
       :class="[
-        'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8',
+        'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 -mt-4',
         showCookieBanner ? 'pb-44 sm:pb-24' : ''
       ]"
       role="main"
@@ -581,7 +597,7 @@ const categories = computed(() => [
             class="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6"
           >
             <ProductCard
-              v-for="product in paginatedProducts"
+              v-for="(product, index) in paginatedProducts"
               :key="product.id"
               :product="product"
               :show-compare="true"
@@ -589,6 +605,7 @@ const categories = computed(() => [
               :is-favorite="isFavorite(product.id)"
               :search-query="searchQuery"
               :category-slug="getProductCategorySlug(product)"
+              :priority="currentPage === 1 && index < 6"
               @toggle-compare="toggleCompare(product)"
               @toggle-favorite="toggleFavorite(product.id)"
             />

@@ -28,6 +28,9 @@ import FloatingCompareBar from '~/components/category/FloatingCompareBar.vue'
 import Pagination from '~/components/category/Pagination.vue'
 import CategoryFAQ from '~/components/CategoryFAQ.vue'
 import RecentlyViewed from '~/components/RecentlyViewed.vue'
+import MobileFinderFAB from '~/components/MobileFinderFAB.vue'
+import CompareGuide from '~/components/CompareGuide.vue'
+import InfiniteScroll from '~/components/InfiniteScroll.vue'
 import { formatPrice, getDisplayBrand } from '~/utils/product'
 
 // Loading component for async components
@@ -273,6 +276,12 @@ const toggleFavorite = (productId: string) => {
 
 const isFavorite = (productId: string): boolean => {
   return favorites.value.has(productId)
+}
+
+// 空收藏提示
+const { info: showInfoToast } = useToast()
+const handleEmptyFavoritesClick = () => {
+  showInfoToast('點擊商品卡片右上角的 ❤️ 即可收藏', 2500)
 }
 
 // Modal states
@@ -673,7 +682,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                 : 'bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-400 dark:text-gray-500'
           ]"
           :title="favorites.size > 0 ? '查看我的收藏' : '點擊商品卡片的愛心收藏'"
-          @click="favorites.size > 0 ? (showFavoritesOnly = !showFavoritesOnly) : null"
+          @click="favorites.size > 0 ? (showFavoritesOnly = !showFavoritesOnly) : handleEmptyFavoritesClick()"
         >
           <Heart :size="18" :fill="favorites.size > 0 || showFavoritesOnly ? 'currentColor' : 'none'" />
           我的收藏 ({{ favorites.size }})
@@ -725,7 +734,7 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
               ]"
               :title="favorites.size > 0 ? '查看我的收藏' : '點擊商品卡片的愛心收藏'"
-              @click="favorites.size > 0 ? (showFavoritesOnly = !showFavoritesOnly) : null"
+              @click="favorites.size > 0 ? (showFavoritesOnly = !showFavoritesOnly) : handleEmptyFavoritesClick()"
             >
               <Heart :size="14" :fill="favorites.size > 0 ? 'currentColor' : 'none'" class="flex-shrink-0" />
               <span>{{ favorites.size || 0 }}</span>
@@ -840,48 +849,17 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
                   <h3 class="font-semibold text-gray-900 dark:text-white mb-3">價格範圍</h3>
                   <div class="grid grid-cols-2 gap-2">
                     <button
+                      v-for="range in categoryConfig?.priceRanges"
+                      :key="range.label"
                       :class="[
                         'py-2.5 px-3 rounded-lg text-sm font-medium transition-all',
-                        filters.priceMax <= 5000
+                        filters.priceMin === range.min && filters.priceMax === range.max
                           ? 'bg-blue-600 text-white'
                           : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-blue-300'
                       ]"
-                      @click="filters.priceMin = 0; filters.priceMax = 5000"
+                      @click="filters.priceMin = range.min; filters.priceMax = range.max"
                     >
-                      5千以下
-                    </button>
-                    <button
-                      :class="[
-                        'py-2.5 px-3 rounded-lg text-sm font-medium transition-all',
-                        filters.priceMin >= 5000 && filters.priceMax <= 10000
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-blue-300'
-                      ]"
-                      @click="filters.priceMin = 5000; filters.priceMax = 10000"
-                    >
-                      5千-1萬
-                    </button>
-                    <button
-                      :class="[
-                        'py-2.5 px-3 rounded-lg text-sm font-medium transition-all',
-                        filters.priceMin >= 10000 && filters.priceMax <= 20000
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-blue-300'
-                      ]"
-                      @click="filters.priceMin = 10000; filters.priceMax = 20000"
-                    >
-                      1-2萬
-                    </button>
-                    <button
-                      :class="[
-                        'py-2.5 px-3 rounded-lg text-sm font-medium transition-all',
-                        filters.priceMin >= 20000
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-blue-300'
-                      ]"
-                      @click="filters.priceMin = 20000; filters.priceMax = priceRange.max"
-                    >
-                      2萬以上
+                      {{ range.label }}
                     </button>
                   </div>
                   <p class="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center">
@@ -1074,15 +1052,13 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
             />
           </div>
 
-          <!-- 手機版: 載入更多按鈕 -->
-          <div v-if="isMobile && hasMoreItems" class="mt-6">
-            <button
-              class="w-full py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-blue-600 dark:text-blue-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              @click="loadMore"
-            >
-              載入更多商品 (剩餘 {{ remainingItems }} 項)
-            </button>
-          </div>
+          <!-- 手機版: 無限滾動 -->
+          <InfiniteScroll
+            v-if="isMobile"
+            :has-more="hasMoreItems"
+            :remaining-count="remainingItems"
+            @load-more="loadMore"
+          />
 
           <!-- 桌面版: 傳統分頁 -->
           <Pagination
@@ -1262,6 +1238,24 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
       :products="categoryProducts"
       @close="showFinder = false"
     />
+
+    <!-- Mobile Finder FAB -->
+    <ClientOnly>
+      <MobileFinderFAB
+        :category-name="categoryConfig?.name"
+        :has-compare-bar="compareList.length > 0"
+        :has-cookie-banner="showCookieBanner"
+        @click="showFinder = true"
+      />
+    </ClientOnly>
+
+    <!-- Compare Guide -->
+    <ClientOnly>
+      <CompareGuide
+        :has-compare-items="compareList.length > 0"
+        :product-count="displayedProducts.length"
+      />
+    </ClientOnly>
   </div>
 </template>
 

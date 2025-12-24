@@ -18,22 +18,26 @@ export const useDarkMode = () => {
   const init = () => {
     if (typeof window === 'undefined') return
 
+    // Listen for system preference changes
+    mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+
     const stored = localStorage.getItem('dark-mode')
     if (stored !== null) {
+      // User has explicit preference
       isDark.value = stored === 'true'
     } else {
-      // Default to light mode for first-time visitors
-      isDark.value = false
+      // No stored preference: follow system preference
+      isDark.value = mediaQuery.matches
     }
 
     // Apply to document
     updateDOM()
 
-    // Listen for system preference changes
-    mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    // Listen for system preference changes (only apply if no explicit user preference)
     mediaQueryHandler = (e: MediaQueryListEvent) => {
       if (localStorage.getItem('dark-mode') === null) {
         isDark.value = e.matches
+        updateDOM()
       }
     }
     mediaQuery.addEventListener('change', mediaQueryHandler)
@@ -67,10 +71,28 @@ export const useDarkMode = () => {
     }
   })
 
+  // Reset to system preference
+  const useSystemPreference = () => {
+    if (typeof window === 'undefined') return
+
+    localStorage.removeItem('dark-mode')
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    isDark.value = systemPrefersDark
+    updateDOM()
+  }
+
+  // Check if using system preference
+  const isUsingSystemPreference = () => {
+    if (typeof window === 'undefined') return true
+    return localStorage.getItem('dark-mode') === null
+  }
+
   return {
     isDark,
     toggle,
     setDark,
     init,
+    useSystemPreference,
+    isUsingSystemPreference,
   }
 }

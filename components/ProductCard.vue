@@ -4,8 +4,10 @@ import { Check, GitCompare, Heart, Eye } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
 import { useProducts } from '~/composables/useProducts'
 import { useProductBadges } from '~/composables/useProductBadges'
+import { useCategoryConfig } from '~/composables/useCategoryConfig'
 import ProductQuickPreview from '~/components/ProductQuickPreview.vue'
 import ProductBadge from '~/components/ProductBadge.vue'
+import PriceChangeIndicator from '~/components/PriceChangeIndicator.vue'
 import {
   formatPrice,
   getDiscountPercent,
@@ -89,13 +91,42 @@ const handleToggleFavorite = () => {
   // Reset animation after it completes
   setTimeout(() => {
     isAnimatingFavorite.value = false
-  }, 300)
+  }, 500)
 }
 
 const { getProductSlug } = useProducts()
 const { getBadges } = useProductBadges()
+const { getCategoryConfig, formatSpecValue } = useCategoryConfig()
 
 const slug = computed(() => getProductSlug(props.product))
+
+// 關鍵規格顯示
+const categoryConfig = computed(() => getCategoryConfig(props.categorySlug))
+const keySpecs = computed(() => {
+  const config = categoryConfig.value
+  if (!config?.keySpecs) return []
+
+  const product = props.product as any
+  const specs = product.specs || {}
+
+  return config.keySpecs
+    .map(key => {
+      const specConfig = config.specs.find(s => s.key === key)
+      if (!specConfig) return null
+
+      // 從 product 或 specs 中取值
+      let value = product[key] ?? specs[key]
+      if (value === null || value === undefined) return null
+
+      return {
+        label: specConfig.label,
+        value: formatSpecValue(props.categorySlug, key, value),
+        unit: specConfig.unit || '',
+      }
+    })
+    .filter(Boolean)
+    .slice(0, 2) // 最多顯示 2 個規格
+})
 
 // Product badges (hot, editor-pick, best-value, flash-sale)
 const badges = computed(() => getBadges(props.product, props.categorySlug))
@@ -234,6 +265,17 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
         <h3 class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 min-h-[36px] sm:min-h-[48px]" v-html="highlightedName" />
       </NuxtLink>
 
+      <!-- Key Specs -->
+      <div v-if="keySpecs.length > 0" class="flex flex-wrap gap-1.5 mt-1.5 sm:mt-2">
+        <span
+          v-for="spec in keySpecs"
+          :key="spec.label"
+          class="inline-flex items-center text-[10px] sm:text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-1.5 sm:px-2 py-0.5 rounded"
+        >
+          {{ spec.value }}
+        </span>
+      </div>
+
       <!-- Price -->
       <div class="mt-1.5 sm:mt-2 mb-2 sm:mb-3">
         <div v-if="product.original_price && product.original_price > product.price" class="mb-0.5 sm:mb-1">
@@ -246,10 +288,17 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
             <span class="text-lg sm:text-2xl font-bold text-blue-600">NT$ {{ formatPrice(product.price) }}</span>
           </div>
           <span v-if="discountPercent" class="inline-flex items-center text-[10px] sm:text-xs font-bold text-white bg-gradient-to-r from-red-500 to-orange-500 px-1.5 sm:px-2 py-0.5 rounded-full shadow-sm">-{{ discountPercent }}%</span>
+          <!-- Price Change Indicator -->
+          <PriceChangeIndicator
+            v-if="product.original_price && product.original_price > product.price"
+            :current-price="product.price"
+            :original-price="product.original_price"
+            size="sm"
+          />
         </div>
         <!-- Price update time (Client Only to avoid hydration mismatch) -->
         <ClientOnly>
-          <p v-if="priceUpdateTime" class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 mt-0.5 sm:mt-1">
+          <p v-if="priceUpdateTime" class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-400 mt-0.5 sm:mt-1">
             {{ priceUpdateTime }}
           </p>
         </ClientOnly>
@@ -311,19 +360,28 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
 
 /* Favorite heart animation */
 .animate-favorite-bounce {
-  animation: favorite-bounce 0.3s ease-out;
+  animation: favorite-bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .animate-favorite-heart {
-  animation: favorite-heart 0.3s ease-out;
+  animation: favorite-heart 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes favorite-bounce {
-  0%, 100% {
+  0% {
     transform: scale(1);
   }
+  30% {
+    transform: scale(1.25);
+  }
   50% {
-    transform: scale(1.2);
+    transform: scale(0.95);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
@@ -331,14 +389,23 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
   0% {
     transform: scale(1);
   }
-  25% {
-    transform: scale(1.3);
+  15% {
+    transform: scale(1.4) rotate(-5deg);
   }
-  50% {
-    transform: scale(0.9);
+  30% {
+    transform: scale(0.85) rotate(5deg);
+  }
+  45% {
+    transform: scale(1.2) rotate(-3deg);
+  }
+  60% {
+    transform: scale(0.95) rotate(2deg);
+  }
+  75% {
+    transform: scale(1.1);
   }
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(0);
   }
 }
 

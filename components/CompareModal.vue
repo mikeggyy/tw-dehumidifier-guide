@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
-import { X, ExternalLink, Trophy, Lightbulb, Eye, EyeOff, SlidersHorizontal, Camera, Download, Sparkles, ChevronDown, ChevronUp } from 'lucide-vue-next'
+import { X, ExternalLink, Trophy, Lightbulb, Eye, EyeOff, SlidersHorizontal, Camera, Download, Sparkles, ChevronDown, ChevronUp, FileSpreadsheet } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
 import {
   formatPrice,
@@ -451,6 +451,38 @@ const captureScreenshot = async () => {
   }
 }
 
+// 匯出 CSV
+const exportToCSV = () => {
+  const products = props.products
+  if (products.length === 0) return
+
+  // 建立 CSV 標題行
+  const headers = ['規格項目', ...products.map(p => `${p.brand} ${p.model}`)]
+
+  // 建立資料行
+  const rows = specs.value.map(spec => {
+    return [spec.label, ...products.map(p => spec.format(p))]
+  })
+
+  // 組合 CSV 內容
+  const csvContent = [
+    headers.join(','),
+    ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+  ].join('\n')
+
+  // 加入 BOM 以支援中文
+  const BOM = '\uFEFF'
+  const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' })
+
+  // 下載
+  const link = document.createElement('a')
+  link.href = URL.createObjectURL(blob)
+  link.download = `商品比較-${new Date().toLocaleDateString('zh-TW')}.csv`
+  link.click()
+
+  URL.revokeObjectURL(link.href)
+}
+
 // 重置權重
 const resetWeights = () => {
   weights.value = { ...defaultWeights }
@@ -562,6 +594,16 @@ const handleRecommendation = (product: Dehumidifier) => {
           幫我決定
         </button>
 
+        <!-- CSV 匯出按鈕 -->
+        <button
+          @click="exportToCSV"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors whitespace-nowrap"
+        >
+          <FileSpreadsheet :size="14" />
+          <span class="hidden sm:inline">匯出 CSV</span>
+          <span class="sm:hidden">CSV</span>
+        </button>
+
         <!-- 手機截圖按鈕 -->
         <button
           @click="captureScreenshot"
@@ -569,7 +611,7 @@ const handleRecommendation = (product: Dehumidifier) => {
           class="sm:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors whitespace-nowrap disabled:opacity-50"
         >
           <Download :size="14" />
-          {{ isCapturing ? '處理中' : '下載圖片' }}
+          {{ isCapturing ? '處理中' : '圖片' }}
         </button>
       </div>
 

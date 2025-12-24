@@ -26,6 +26,12 @@ export interface FAQItem {
   answer: string
 }
 
+export interface PriceRange {
+  label: string
+  min: number
+  max: number
+}
+
 export interface CategoryConfig {
   slug: string
   name: string
@@ -41,6 +47,8 @@ export interface CategoryConfig {
   popularBrands: string[]   // 用於熱門度計算
   cpValueSpec?: string      // 用於計算 CP 值的規格 key
   faqs?: FAQItem[]          // 常見問題 (用於 SEO)
+  priceRanges?: PriceRange[] // 品類專屬價格區間
+  keySpecs?: string[]       // 卡片上顯示的關鍵規格 keys
 }
 
 // 能效等級格式化
@@ -174,6 +182,13 @@ const dehumidifierConfig: CategoryConfig = {
   ],
   popularBrands: ['Panasonic', '國際牌', 'HITACHI', '日立', 'SHARP', '夏普', 'MITSUBISHI', '三菱', 'LG'],
   cpValueSpec: 'daily_capacity',
+  keySpecs: ['daily_capacity', 'coverage_area'],
+  priceRanges: [
+    { label: '5千以下', min: 0, max: 5000 },
+    { label: '5千-1萬', min: 5000, max: 10000 },
+    { label: '1-2萬', min: 10000, max: 20000 },
+    { label: '2萬以上', min: 20000, max: 999999 },
+  ],
   faqs: [
     {
       question: '除濕機一天要開多久？',
@@ -359,6 +374,13 @@ const airPurifierConfig: CategoryConfig = {
   ],
   popularBrands: ['Dyson', 'Panasonic', 'SHARP', 'Honeywell', 'Philips', 'LG', 'Coway', '3M'],
   cpValueSpec: 'cadr',
+  keySpecs: ['cadr', 'coverage'],
+  priceRanges: [
+    { label: '3千以下', min: 0, max: 3000 },
+    { label: '3千-8千', min: 3000, max: 8000 },
+    { label: '8千-1.5萬', min: 8000, max: 15000 },
+    { label: '1.5萬以上', min: 15000, max: 999999 },
+  ],
   faqs: [
     {
       question: '空氣清淨機 CADR 值是什麼？怎麼選？',
@@ -564,6 +586,13 @@ const airConditionerConfig: CategoryConfig = {
   ],
   popularBrands: ['Panasonic', '國際牌', 'DAIKIN', '大金', 'HITACHI', '日立', 'Mitsubishi', '三菱', 'LG'],
   cpValueSpec: 'cooling_capacity',
+  keySpecs: ['coverage', 'inverter'],
+  priceRanges: [
+    { label: '2萬以下', min: 0, max: 20000 },
+    { label: '2-3萬', min: 20000, max: 30000 },
+    { label: '3-5萬', min: 30000, max: 50000 },
+    { label: '5萬以上', min: 50000, max: 999999 },
+  ],
   faqs: [
     {
       question: '冷氣噸數怎麼算？幾坪要用多大的冷氣？',
@@ -743,6 +772,13 @@ const heaterConfig: CategoryConfig = {
   ],
   popularBrands: ['Panasonic', 'NORTHERN', '北方', 'SAMPO', '聲寶', 'HERAN', '禾聯', 'AIRMATE', '艾美特'],
   cpValueSpec: 'heating_power',
+  keySpecs: ['heating_power', 'type'],
+  priceRanges: [
+    { label: '1千以下', min: 0, max: 1000 },
+    { label: '1-3千', min: 1000, max: 3000 },
+    { label: '3-5千', min: 3000, max: 5000 },
+    { label: '5千以上', min: 5000, max: 999999 },
+  ],
   faqs: [
     {
       question: '電暖器哪種類型最省電？',
@@ -915,6 +951,13 @@ const fanConfig: CategoryConfig = {
   ],
   popularBrands: ['Panasonic', 'SAMPO', '聲寶', 'HERAN', '禾聯', 'AIRMATE', '艾美特', 'CHIMEI', '奇美', 'TECO', '東元', 'IRIS'],
   cpValueSpec: 'size',  // 改為 size
+  keySpecs: ['fan_type', 'motor_type'],
+  priceRanges: [
+    { label: '1千以下', min: 0, max: 1000 },
+    { label: '1-2千', min: 1000, max: 2000 },
+    { label: '2-4千', min: 2000, max: 4000 },
+    { label: '4千以上', min: 4000, max: 999999 },
+  ],
   faqs: [
     {
       question: 'DC 變頻扇和 AC 扇差多少電費？',

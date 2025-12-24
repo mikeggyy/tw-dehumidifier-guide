@@ -28,6 +28,39 @@ const toggleZoom = () => {
   }
 }
 
+// Double-click to toggle zoom with position
+const handleDoubleClick = (e: MouseEvent) => {
+  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+  const clickX = ((e.clientX - rect.left) / rect.width) * 100
+  const clickY = ((e.clientY - rect.top) / rect.height) * 100
+
+  if (isZoomed.value && zoomLevel.value >= 2) {
+    // If already zoomed in, zoom out
+    isZoomed.value = false
+    zoomLevel.value = 1
+    position.value = { x: 50, y: 50 }
+  } else {
+    // Zoom in to 2x at the double-click position
+    isZoomed.value = true
+    zoomLevel.value = 2
+    position.value = { x: clickX, y: clickY }
+  }
+}
+
+// Track last click time for double-click detection on touch devices
+let lastClickTime = 0
+const handleClick = (e: MouseEvent) => {
+  const now = Date.now()
+  if (now - lastClickTime < 300) {
+    // Double-click detected
+    handleDoubleClick(e)
+  } else {
+    // Single click
+    toggleZoom()
+  }
+  lastClickTime = now
+}
+
 const increaseZoom = () => {
   if (zoomLevel.value < 3) {
     zoomLevel.value += 0.5
@@ -55,7 +88,8 @@ const transformStyle = computed(() => {
     <div
       class="relative overflow-hidden rounded-lg cursor-zoom-in bg-gray-100"
       :class="{ 'cursor-zoom-out': isZoomed }"
-      @click="toggleZoom"
+      @click="handleClick"
+      @dblclick.prevent="handleDoubleClick"
       @mousemove="handleMouseMove"
       @mouseleave="isZoomed && (position = { x: 50, y: 50 })"
     >
@@ -72,7 +106,7 @@ const transformStyle = computed(() => {
         class="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1"
       >
         <ZoomIn :size="14" />
-        點擊放大
+        點擊或雙擊放大
       </div>
     </div>
 

@@ -9,6 +9,31 @@ const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD
 // 請求超時設定（毫秒）
 const REQUEST_TIMEOUT = 10000 // 10 秒
 
+// 展平 Supabase 商品的 specs 到頂層欄位
+function flattenProductSpecs(product: any): any {
+  const specs = product.specs || {}
+  const category = product.category_slug
+
+  // 基本展平：所有 specs 內的欄位都提升到頂層
+  const flattened = {
+    ...product,
+    ...specs,  // 展平所有 specs 欄位
+  }
+
+  // 品類特定的欄位對應（處理 Supabase 欄位名稱和前端期望的不一致）
+  if (category === 'air-purifier') {
+    flattened.coverage = specs.coverage_area ?? specs.coverage ?? null
+  } else if (category === 'air-conditioner') {
+    flattened.coverage = specs.coverage ?? specs.coverage_area ?? null
+  } else if (category === 'heater') {
+    flattened.coverage = specs.coverage ?? specs.coverage_area ?? null
+  } else if (category === 'fan') {
+    // 電風扇的特殊處理
+  }
+
+  return flattened
+}
+
 // Helper function to get Supabase config
 function getSupabaseConfig() {
   try {
@@ -253,7 +278,9 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
             },
           }
         )
-        allProducts.push(...data)
+        // 展平 specs 到頂層欄位
+        const flattenedData = data.map(flattenProductSpecs)
+        allProducts.push(...flattenedData)
       } catch (e) {
         console.warn(`Failed to fetch ${category} from Supabase:`, e)
         // 該品類載入失敗，從本地補充
@@ -305,7 +332,8 @@ export async function useProductsSSR() {
               },
             }
           )
-          return products || []
+          // 展平 specs 到頂層欄位
+          return (products || []).map(flattenProductSpecs)
         } catch {
           // 該品類載入失敗，從本地補充
           return await loadLocalCategoryProducts(category)

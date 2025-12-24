@@ -95,8 +95,8 @@ onMounted(() => {
       :srcset="srcset"
       :sizes="sizes"
       :class="[
-        'w-full h-full object-cover transition-all duration-500 ease-out',
-        isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105',
+        'w-full h-full object-cover transition-all duration-700 ease-out',
+        isLoaded ? 'opacity-100 scale-100 blur-0' : 'opacity-0 scale-105 blur-sm',
         props.class
       ]"
       :loading="loadingStrategy"
@@ -125,11 +125,11 @@ onMounted(() => {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.4) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  animation: shimmer 1.5s ease-in-out infinite, pulse-blur 2s ease-in-out infinite;
 }
 
 @keyframes shimmer {
@@ -139,5 +139,23 @@ onMounted(() => {
   100% {
     background-position: 200% 0;
   }
+}
+
+@keyframes pulse-blur {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Blur transition utility */
+.blur-0 {
+  filter: blur(0);
+}
+
+.blur-sm {
+  filter: blur(4px);
 }
 </style>
