@@ -124,7 +124,7 @@ const keySpecs = computed(() => {
         unit: specConfig.unit || '',
       }
     })
-    .filter(Boolean)
+    .filter((item): item is NonNullable<typeof item> => item !== null)
     .slice(0, 2) // 最多顯示 2 個規格
 })
 
