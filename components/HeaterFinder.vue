@@ -209,7 +209,7 @@ const recommendedProducts = computed(() => {
 
   // 如果篩選結果太少，放寬條件
   if (filtered.length < 3) {
-    filtered = [...props.products].filter(p => getProductSpec<string>(p, 'category_slug') === 'heater')
+    filtered = [...props.products].filter(p => getProductCategorySlug(p) === 'heater')
 
     // 只按預算篩選
     if (budgetOption) {
