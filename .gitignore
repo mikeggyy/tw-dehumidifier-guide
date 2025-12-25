@@ -54,7 +54,7 @@ build.log
 
 # Claude Code
 .claude/
-
+CLAUDE
 # Build outputs
 build/
 .cache/

@@ -145,8 +145,6 @@ export default defineNuxtConfig({
       { loc: '/guide/dehumidifier-vs-air-purifier', changefreq: 'monthly', priority: 0.7 },
       // 品牌頁面
       { loc: '/brand', changefreq: 'weekly', priority: 0.8 },
-      // 比較頁面 - 動態內容，不需要被索引
-      { loc: '/compare', changefreq: 'weekly', priority: 0.5 },
     ],
   },
 

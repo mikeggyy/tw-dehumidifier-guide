@@ -10,6 +10,7 @@ Sitemap: https://www.jiadian-tw.work/sitemap.xml
 # 禁止爬取的路徑
 Disallow: /_nuxt/
 Disallow: /api/
+Disallow: /compare
 Disallow: /*?sort=
 Disallow: /*?page=
 Disallow: /*?filter=
