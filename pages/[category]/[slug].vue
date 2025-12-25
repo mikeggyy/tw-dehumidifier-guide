@@ -37,7 +37,7 @@ import {
 } from 'lucide-vue-next'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
-import { getProductSpec } from '~/types'
+import { getProductSpec, getProductCategorySlug } from '~/types'
 import { useRoute, useHead, createError, useRouter, navigateTo } from '#imports'
 import { useToast } from '~/composables/useToast'
 import { useSwipe } from '~/composables/useSwipe'
@@ -88,7 +88,7 @@ const categoryConfig = computed(() => getCategoryConfig(categorySlug.value))
 
 // 相關商品導航（同品類）
 const categoryProducts = computed(() => {
-  return allProducts.value.filter(p => getProductSpec<string>(p, 'category_slug') === categorySlug.value)
+  return allProducts.value.filter(p => getProductCategorySlug(p) === categorySlug.value)
 })
 
 const currentIndex = computed(() => {

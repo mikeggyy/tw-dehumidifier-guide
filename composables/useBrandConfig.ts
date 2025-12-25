@@ -1,5 +1,5 @@
 import type { Product, Dehumidifier } from '~/types'
-import { getProductSpec } from '~/types'
+import { getProductSpec, getProductCategorySlug } from '~/types'
 
 export interface BrandInfo {
   slug: string
@@ -124,7 +124,7 @@ export function useBrandConfig() {
       return brandInfo.aliases.some(alias => upperBrand.includes(alias.toUpperCase()))
     })
 
-    const categories = [...new Set(brandProducts.map(p => getProductSpec<string>(p, 'category_slug') || 'dehumidifier'))]
+    const categories = [...new Set(brandProducts.map(p => getProductCategorySlug(p)))]
 
     // 使用迴圈計算價格範圍，避免 Math.min/max 的 stack overflow 風險
     let minPrice = Infinity
@@ -152,7 +152,7 @@ export function useBrandConfig() {
   ): (Product | Dehumidifier)[] => {
     return [...products].filter(p => {
       const upperBrand = p.brand.toUpperCase()
-      const productCategory = getProductSpec<string>(p, 'category_slug') || 'dehumidifier'
+      const productCategory = getProductCategorySlug(p)
       return brandInfo.aliases.some(alias => upperBrand.includes(alias.toUpperCase())) &&
              productCategory === categorySlug
     })

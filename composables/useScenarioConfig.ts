@@ -1,5 +1,5 @@
 import type { Product, Dehumidifier } from '~/types'
-import { getProductSpec } from '~/types'
+import { getProductSpec, getProductCategorySlug } from '~/types'
 
 export interface Scenario {
   id: string
@@ -97,7 +97,7 @@ export function useScenarioConfig() {
     // Filter by categories
     if (scenario.filters.categories && scenario.filters.categories.length > 0) {
       filtered = filtered.filter(p => {
-        const categorySlug = getProductSpec<string>(p, 'category_slug') || 'dehumidifier'
+        const categorySlug = getProductCategorySlug(p)
         return scenario.filters.categories!.includes(categorySlug)
       })
     }

@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { X, ChevronRight, ChevronLeft, Sparkles, Flame, Zap } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
-import { getProductSpec } from '~/types'
+import { getProductSpec, getProductCategorySlug } from '~/types'
 import { formatPrice, getDisplayBrand } from '~/utils/product'
 
 // Question option type - union of all possible properties
@@ -137,7 +137,7 @@ const recommendedProducts = computed(() => {
   let filtered = [...props.products]
 
   // 確保只篩選電暖器
-  filtered = filtered.filter(p => getProductSpec<string>(p, 'category_slug') === 'heater')
+  filtered = filtered.filter(p => getProductCategorySlug(p) === 'heater')
 
   // 根據功率需求篩選
   if (wattageRecommendation.value) {
