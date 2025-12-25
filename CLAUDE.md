@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Nuxt 3 Programmatic SEO (pSEO) site for comparing home appliance specifications. It's designed as an affiliate marketing site targeting the Taiwan market with Traditional Chinese content.
 
+| 項目 | 值 |
+|------|-----|
+| 網站名稱 | 比比看 |
+| 網站 URL | https://www.jiadian-tw.work |
+| GA ID | G-P32TQ7V2SZ |
+| 目標市場 | 台灣 |
+| 語言 | 繁體中文 |
+
 **支援品類**: 除濕機、空氣清淨機、冷氣、電暖器、電風扇
 
 ## Commands
@@ -35,10 +43,20 @@ There is a Nuxt bug with Windows drive letter paths (e.g., `d:/project/test/`) t
 
 ## Environment Variables
 
-Optional - defaults are provided in `nuxt.config.ts`:
-- `NUXT_PUBLIC_SUPABASE_URL` - Supabase project URL
-- `NUXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous/public key
-- `NUXT_PUBLIC_SITE_URL` - Production site URL (for SEO)
+**必須設定（無預設值）：**
+
+```bash
+# .env（本地開發）或 Vercel 環境變數（生產環境）
+NUXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NUXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
+NUXT_PUBLIC_SITE_URL=https://www.jiadian-tw.work
+```
+
+| 變數 | 說明 |
+|------|------|
+| `NUXT_PUBLIC_SUPABASE_URL` | Supabase 專案 URL |
+| `NUXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 匿名金鑰 |
+| `NUXT_PUBLIC_SITE_URL` | 網站正式 URL（SEO 用） |
 
 ## Daily Scraper Workflow (重要!)
 
@@ -74,6 +92,9 @@ tw-dehumidifier-scraper/
 ├── scraper/
 │   ├── momo_dehumidifier.py           # 除濕機爬蟲
 │   ├── momo_air_purifier.py           # 空氣清淨機爬蟲
+│   ├── momo_air_conditioner.py        # 冷氣爬蟲
+│   ├── momo_heater.py                 # 電暖器爬蟲
+│   ├── momo_fan.py                    # 電風扇爬蟲
 │   ├── ichannels_affiliate.py         # 聯盟連結產生器
 │   └── sync_category_to_supabase.py   # 同步到 Supabase
 ```
@@ -101,16 +122,28 @@ import { useRoute, useRouter, useHead, useSeoMeta, useRuntimeConfig, useAsyncDat
 
 **Project composables:**
 ```typescript
+// 資料載入
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
+
+// 品類設定
 import { useCategoryConfig, categoryConfigs, categoryList } from '~/composables/useCategoryConfig'
+
+// 功能
 import { useCompare } from '~/composables/useCompare'
 import { useFavorites } from '~/composables/useFavorites'
+import { useDarkMode } from '~/composables/useDarkMode'
+import { useUrlFilters } from '~/composables/useUrlFilters'
+import { useStructuredData } from '~/composables/useStructuredData'
+
+// 內容設定
+import { useBrandConfig } from '~/composables/useBrandConfig'
+import { useGuideConfig } from '~/composables/useGuideConfig'
 ```
 
 **Types:**
 ```typescript
 import type { Product, Dehumidifier, Category, SortOption, FilterState } from '~/types'
-import type { SpecConfig, CategoryConfig, QuickTag } from '~/composables/useCategoryConfig'
+import type { SpecConfig, CategoryConfig, QuickTag, FAQItem } from '~/composables/useCategoryConfig'
 ```
 
 **Components (must be explicitly imported):**
@@ -131,9 +164,14 @@ import ProductFilters from '~/components/category/ProductFilters.vue'
 - 不需要手動維護 slug 列表
 
 ### URL Structure
-- 首頁: `/`
-- 品類頁: `/{category}` (如 `/dehumidifier`, `/air-purifier`)
-- 商品頁: `/{category}/{brand}-{id}` (如 `/dehumidifier/panasonic-14425700`)
+| 頁面 | URL |
+|------|-----|
+| 首頁 | `/` |
+| 品類列表 | `/{category}` (如 `/dehumidifier`, `/air-purifier`) |
+| 商品詳情 | `/{category}/{brand}-{id}` (如 `/dehumidifier/panasonic-14425700`) |
+| 購買指南 | `/guide/{category}-buying-guide` |
+| 品牌頁面 | `/brand/{brand}` |
+| 比較頁面 | `/compare` |
 
 ## Key Files
 
@@ -153,6 +191,8 @@ import ProductFilters from '~/components/category/ProductFilters.vue'
 - `composables/useDarkMode.ts` - 深色模式切換
 - `composables/useStructuredData.ts` - SEO Schema.org 結構化資料
 - `composables/useUrlFilters.ts` - URL 篩選狀態同步
+- `composables/useBrandConfig.ts` - 品牌設定
+- `composables/useGuideConfig.ts` - 購買指南設定
 
 **useProducts API:**
 ```typescript
@@ -201,6 +241,17 @@ const {
 - `AirConditionerFinder.vue` - 冷氣 Finder
 - `HeaterFinder.vue` - 電暖器 Finder
 - `FanFinder.vue` - 電風扇 Finder
+
+**Calculator Components** (計算機元件):
+- `RoomCalculator.vue` - 計算房間坪數
+- `AirPurifierCalculator.vue` - 計算所需 CADR 值
+- `AirConditionerCalculator.vue` - 計算所需冷氣噸數
+
+**Other Recommender Components**:
+- `ScenarioRecommender.vue` - 情境推薦
+- `DecisionHelper.vue` - 決策輔助
+- `SimilarProducts.vue` - 相似商品
+- `SameBrandProducts.vue` - 同品牌商品
 
 ## Affiliate Integration (聯盟行銷)
 
