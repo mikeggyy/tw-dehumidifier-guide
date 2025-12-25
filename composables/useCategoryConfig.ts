@@ -21,11 +21,6 @@ export interface QuickTag {
   sortBy?: string
 }
 
-export interface FAQItem {
-  question: string
-  answer: string
-}
-
 export interface PriceRange {
   label: string
   min: number

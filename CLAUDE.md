@@ -143,7 +143,8 @@ import { useGuideConfig } from '~/composables/useGuideConfig'
 **Types:**
 ```typescript
 import type { Product, Dehumidifier, Category, SortOption, FilterState } from '~/types'
-import type { SpecConfig, CategoryConfig, QuickTag, FAQItem } from '~/composables/useCategoryConfig'
+import type { SpecConfig, CategoryConfig, QuickTag } from '~/composables/useCategoryConfig'
+import type { FAQItem, FAQCategory } from '~/composables/useFaqConfig'
 ```
 
 **Components (must be explicitly imported):**

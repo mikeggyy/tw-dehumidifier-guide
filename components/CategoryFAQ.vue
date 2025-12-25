@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ChevronDown, HelpCircle } from 'lucide-vue-next'
-import type { FAQItem } from '~/composables/useCategoryConfig'
+import type { FAQItem } from '~/composables/useFaqConfig'
 
 defineProps<{
   faqs: FAQItem[]
