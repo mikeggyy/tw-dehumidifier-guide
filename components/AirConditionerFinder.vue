@@ -112,53 +112,80 @@ const selectOption = (value: string) => {
   }
 }
 
-// Filter and rank products
+// 使用評分制推薦商品，確保總是有結果
 const recommendedProducts = computed(() => {
-  let filtered = [...props.products]
-
-  // Budget filter
-  if (budget.value) {
-    const budgetRanges: Record<string, { min: number; max: number }> = {
-      'budget': { min: 0, max: 20000 },
-      'mid': { min: 15000, max: 35000 },
-      'premium': { min: 30000, max: 50000 },
-      'luxury': { min: 45000, max: Infinity },
-    }
-    const range = budgetRanges[budget.value]
-    if (range) {
-      filtered = filtered.filter(p => p.price >= range.min && p.price <= range.max)
-    }
-  }
-
-  // Score and sort products
-  const scored = filtered.map(product => {
+  const scored = props.products.map(product => {
     let score = 0
     const name = product.name.toLowerCase()
+    const price = product.price ?? 0
 
-    // Room type preference
-    if (roomType.value === 'inverter' || features.value === 'inverter') {
-      if (name.includes('變頻')) score += 30
+    // === 預算匹配 (權重: 35分) ===
+    if (budget.value) {
+      const budgetRanges: Record<string, { min: number; max: number; ideal: number }> = {
+        'budget': { min: 0, max: 20000, ideal: 15000 },
+        'mid': { min: 15000, max: 35000, ideal: 25000 },
+        'premium': { min: 30000, max: 50000, ideal: 40000 },
+        'luxury': { min: 45000, max: 150000, ideal: 70000 },
+      }
+      const range = budgetRanges[budget.value]
+      if (range) {
+        if (price >= range.min && price <= range.max) {
+          score += 35
+        } else {
+          const diff = price < range.min ? range.min - price : price - range.max
+          if (diff <= 5000) score += 25
+          else if (diff <= 10000) score += 15
+          else score += 5
+        }
+      }
     }
 
-    // Feature preferences
-    if (features.value === 'quiet') {
-      if (name.includes('靜音') || name.includes('安靜')) score += 20
-    }
-    if (features.value === 'smart') {
-      if (name.includes('wifi') || name.includes('智慧') || name.includes('app')) score += 20
+    // === 安裝類型匹配 (權重: 20分) ===
+    if (roomType.value && roomType.value !== 'any') {
+      const typeKeywords: Record<string, string[]> = {
+        'split': ['分離式', '分離'],
+        'window': ['窗型', '窗'],
+        'portable': ['移動式', '移動', '可攜'],
+      }
+      const keywords = typeKeywords[roomType.value] || []
+      if (keywords.some(k => name.includes(k))) {
+        score += 20
+      } else {
+        score += 5 // 沒匹配到也給基本分
+      }
     }
 
-    // Brand bonus
+    // === 功能偏好匹配 (權重: 25分) ===
+    if (features.value === 'inverter') {
+      if (name.includes('變頻')) score += 25
+      else score += 5
+    } else if (features.value === 'quiet') {
+      if (name.includes('靜音') || name.includes('安靜') || name.includes('舒眠')) score += 25
+      else score += 5
+    } else if (features.value === 'smart') {
+      if (name.includes('wifi') || name.includes('智慧') || name.includes('app') || name.includes('iot')) score += 25
+      else score += 5
+    } else if (features.value === 'cooling') {
+      // 快速冷房 - 用功率判斷
+      score += 15 // 基本分，大多數冷氣都有基本冷房效果
+    }
+
+    // === 品牌加分 (權重: 15分) ===
     const premiumBrands = ['panasonic', '國際牌', 'daikin', '大金', 'hitachi', '日立', 'mitsubishi', '三菱']
+    const midBrands = ['lg', '樂金', 'samsung', '三星', 'sharp', '夏普', 'teco', '東元', 'heran', '禾聯']
     if (premiumBrands.some(b => product.brand.toLowerCase().includes(b))) {
       score += 15
+    } else if (midBrands.some(b => product.brand.toLowerCase().includes(b))) {
+      score += 10
+    } else {
+      score += 5
     }
 
-    // Price value
+    // === 折扣加分 (額外最多 5分) ===
     const discount = product.original_price
-      ? Math.round((1 - product.price / product.original_price) * 100)
+      ? Math.round((1 - price / product.original_price) * 100)
       : 0
-    score += Math.min(discount, 20)
+    score += Math.min(discount / 4, 5)
 
     return { product, score }
   })

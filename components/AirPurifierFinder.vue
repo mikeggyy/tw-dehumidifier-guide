@@ -101,96 +101,94 @@ const resultMessage = computed(() => {
   return messages[concern.value || ''] || '根據你的需求精心挑選！'
 })
 
-// Filter and rank products
+// 使用評分制推薦商品，確保總是有結果
 const recommendedProducts = computed(() => {
-  let filtered = [...props.products]
+  const scored = props.products.map(product => {
+    let score = 0
+    const cadr = product.specs?.cadr ?? 0
+    const price = product.price ?? 0
 
-  // 根據空間大小篩選
-  const sizeMap: Record<string, string> = {
-    'cozy': 'small',
-    'family': 'medium',
-    'openspace': 'large'
-  }
-  const size = sizeMap[lifestyle.value || '']
-
-  if (size === 'small') {
-    filtered = filtered.filter(p => {
-      const cadr = p.specs?.cadr ?? 0
-      return cadr <= 250 || cadr === 0
-    })
-  } else if (size === 'medium') {
-    filtered = filtered.filter(p => {
-      const cadr = p.specs?.cadr ?? 0
-      return (cadr >= 150 && cadr <= 450) || cadr === 0
-    })
-  } else if (size === 'large') {
-    filtered = filtered.filter(p => {
-      const cadr = p.specs?.cadr ?? 0
-      return cadr >= 300 || cadr === 0
-    })
-  }
-
-  // 根據預算篩選
-  const budgetOption = budgetOptions.find(o => o.value === budget.value)
-  if (budgetOption) {
-    if ('max' in budgetOption && budgetOption.max) {
-      filtered = filtered.filter(p => p.price <= budgetOption.max)
+    // === 空間大小匹配 (權重: 30分) ===
+    if (lifestyle.value === 'cozy') {
+      // 小空間：CADR 150-250 最適合
+      if (cadr > 0 && cadr <= 250) score += 30
+      else if (cadr <= 350) score += 20
+      else if (cadr > 0) score += 10
+      else score += 15 // 無 CADR 資料給中等分數
+    } else if (lifestyle.value === 'family') {
+      // 家庭客廳：CADR 200-450 最適合
+      if (cadr >= 200 && cadr <= 450) score += 30
+      else if (cadr >= 150 && cadr <= 550) score += 20
+      else if (cadr > 0) score += 10
+      else score += 15
+    } else if (lifestyle.value === 'openspace') {
+      // 大空間：CADR 300+ 最適合
+      if (cadr >= 300) score += 30
+      else if (cadr >= 200) score += 20
+      else if (cadr > 0) score += 10
+      else score += 15
     }
-    if ('min' in budgetOption && budgetOption.min) {
-      filtered = filtered.filter(p => p.price >= budgetOption.min)
+
+    // === 預算匹配 (權重: 30分) ===
+    const budgetOption = budgetOptions.find(o => o.value === budget.value)
+    if (budgetOption) {
+      const min = 'min' in budgetOption ? budgetOption.min : 0
+      const max = 'max' in budgetOption ? budgetOption.max : Infinity
+      if (price >= min && price <= max) {
+        score += 30
+      } else {
+        const diff = price < min ? min - price : price - max
+        if (diff <= 3000) score += 20
+        else if (diff <= 6000) score += 10
+      }
     }
-  }
 
-  // 根據需求排序
-  const concernMap: Record<string, string> = {
-    'sneeze': 'allergy',
-    'smell': 'odor',
-    'pet': 'pet',
-    'pm25': 'dust'
-  }
-  const priority = concernMap[concern.value || '']
+    // === 需求匹配 (權重: 25分) ===
+    if (concern.value === 'sneeze' || concern.value === 'pm25') {
+      // 過敏/空污：HEPA + 高 CADR
+      const hasHepa = product.features?.some((f: string) => f.includes('HEPA'))
+      if (hasHepa) score += 15
+      if (cadr >= 400) score += 10
+      else if (cadr >= 250) score += 7
+      else score += 3
+    } else if (concern.value === 'smell' || concern.value === 'pet') {
+      // 除臭/寵物：活性碳 + 除臭功能
+      const hasCarbon = product.features?.some((f: string) => f.includes('活性碳'))
+      const hasDeodor = product.features?.some((f: string) => f.includes('除臭'))
+      if (hasCarbon) score += 15
+      if (hasDeodor) score += 10
+      if (!hasCarbon && !hasDeodor) score += 5
+    }
 
-  if (priority === 'allergy' || priority === 'dust') {
-    // 優先推薦有 HEPA 或高 CADR 的
-    filtered.sort((a, b) => {
-      const aHasHepa = a.features?.some((f: string) => f.includes('HEPA')) ? 1 : 0
-      const bHasHepa = b.features?.some((f: string) => f.includes('HEPA')) ? 1 : 0
-      if (bHasHepa !== aHasHepa) return bHasHepa - aHasHepa
-      return (b.specs?.cadr ?? 0) - (a.specs?.cadr ?? 0)
-    })
-  } else if (priority === 'odor' || priority === 'pet') {
-    // 優先推薦有除臭功能的
-    filtered.sort((a, b) => {
-      const aScore = (a.features?.some((f: string) => f.includes('活性碳')) ? 2 : 0) +
-                     (a.features?.some((f: string) => f.includes('除臭')) ? 1 : 0)
-      const bScore = (b.features?.some((f: string) => f.includes('活性碳')) ? 2 : 0) +
-                     (b.features?.some((f: string) => f.includes('除臭')) ? 1 : 0)
-      if (bScore !== aScore) return bScore - aScore
-      return (b.specs?.cadr ?? 0) - (a.specs?.cadr ?? 0)
-    })
-  }
+    // === 個性匹配 (權重: 15分) ===
+    if (personality.value === 'sleeper') {
+      const noise = product.specs?.noise_level ?? 50
+      if (noise <= 30) score += 15
+      else if (noise <= 40) score += 10
+      else if (noise <= 50) score += 5
+    } else if (personality.value === 'techy') {
+      const hasSmart = product.features?.some((f: string) =>
+        f.includes('APP') || f.includes('WiFi') || f.includes('智慧')
+      )
+      score += hasSmart ? 15 : 5
+    } else if (personality.value === 'lazy') {
+      // 濾網壽命長、自動功能
+      const hasAuto = product.features?.some((f: string) => f.includes('自動'))
+      score += hasAuto ? 15 : 5
+    } else if (personality.value === 'practical') {
+      // CP 值
+      const cpValue = cadr / (price / 1000)
+      if (cpValue >= 50) score += 15
+      else if (cpValue >= 30) score += 10
+      else score += 5
+    }
 
-  // 根據個性微調
-  if (personality.value === 'sleeper') {
-    // 安靜款優先
-    filtered.sort((a, b) => (a.specs?.noise_level ?? 99) - (b.specs?.noise_level ?? 99))
-  } else if (personality.value === 'techy') {
-    // 智慧款優先
-    filtered.sort((a, b) => {
-      const aHasApp = a.features?.some((f: string) => f.includes('APP') || f.includes('WiFi')) ? 1 : 0
-      const bHasApp = b.features?.some((f: string) => f.includes('APP') || f.includes('WiFi')) ? 1 : 0
-      return bHasApp - aHasApp
-    })
-  } else if (personality.value === 'practical') {
-    // CP值優先（CADR/價格比）
-    filtered.sort((a, b) => {
-      const aValue = (a.specs?.cadr ?? 0) / (a.price || 1)
-      const bValue = (b.specs?.cadr ?? 0) / (b.price || 1)
-      return bValue - aValue
-    })
-  }
+    return { product, score }
+  })
 
-  return filtered.slice(0, 3)
+  // 按分數排序，取前 3 名
+  scored.sort((a, b) => b.score - a.score)
+  return scored.slice(0, 3).map(s => s.product)
 })
 
 const selectAnswer = (value: string) => {

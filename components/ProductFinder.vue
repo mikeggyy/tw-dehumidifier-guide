@@ -102,82 +102,91 @@ const resultMessage = computed(() => {
   return messages[concern.value || ''] || '根據你的需求精心挑選！'
 })
 
-// Filter and rank products based on answers
+// 使用評分制推薦商品，確保總是有結果
 const recommendedProducts = computed(() => {
-  let filtered = [...props.products]
+  // 計算每個商品的匹配分數
+  const scored = props.products.map(product => {
+    let score = 0
+    const cap = product.daily_capacity ?? 0
+    const price = product.price ?? 0
 
-  // 根據空間大小篩選
-  if (lifestyle.value === 'cozy') {
-    filtered = filtered.filter(p => (p.daily_capacity ?? 0) <= 10)
-  } else if (lifestyle.value === 'family') {
-    filtered = filtered.filter(p => {
-      const cap = p.daily_capacity ?? 0
-      return cap >= 8 && cap <= 16
-    })
-  } else if (lifestyle.value === 'spacious') {
-    filtered = filtered.filter(p => (p.daily_capacity ?? 0) >= 14)
-  }
-
-  // 根據預算篩選
-  const budgetOption = budgetOptions.find(o => o.value === budget.value)
-  if (budgetOption) {
-    if ('max' in budgetOption && budgetOption.max) {
-      filtered = filtered.filter(p => p.price <= budgetOption.max)
+    // === 空間大小匹配 (權重: 30分) ===
+    if (lifestyle.value === 'cozy') {
+      if (cap <= 10) score += 30
+      else if (cap <= 12) score += 20
+      else if (cap <= 14) score += 10
+    } else if (lifestyle.value === 'family') {
+      if (cap >= 8 && cap <= 16) score += 30
+      else if (cap >= 6 && cap <= 18) score += 20
+      else score += 10
+    } else if (lifestyle.value === 'spacious') {
+      if (cap >= 14) score += 30
+      else if (cap >= 12) score += 20
+      else if (cap >= 10) score += 10
     }
-    if ('min' in budgetOption && budgetOption.min) {
-      filtered = filtered.filter(p => p.price >= budgetOption.min)
+
+    // === 預算匹配 (權重: 30分) ===
+    const budgetOption = budgetOptions.find(o => o.value === budget.value)
+    if (budgetOption) {
+      const min = 'min' in budgetOption ? budgetOption.min : 0
+      const max = 'max' in budgetOption ? budgetOption.max : Infinity
+      if (price >= min && price <= max) {
+        score += 30
+      } else {
+        // 預算外但接近的也給部分分數
+        const diff = price < min ? min - price : price - max
+        if (diff <= 2000) score += 20
+        else if (diff <= 5000) score += 10
+      }
     }
-  }
 
-  // 根據需求排序
-  if (concern.value === 'sleepy') {
-    // 靜音優先
-    filtered.sort((a, b) => (a.noise_level ?? 99) - (b.noise_level ?? 99))
-  } else if (concern.value === 'moldy' || concern.value === 'sticky') {
-    // 除濕力優先
-    filtered.sort((a, b) => (b.daily_capacity ?? 0) - (a.daily_capacity ?? 0))
-  } else if (concern.value === 'laundry') {
-    // 有乾衣功能優先，然後除濕力
-    filtered.sort((a, b) => {
-      const aHasDry = a.features?.some((f: string) => f.includes('乾衣')) ? 1 : 0
-      const bHasDry = b.features?.some((f: string) => f.includes('乾衣')) ? 1 : 0
-      if (bHasDry !== aHasDry) return bHasDry - aHasDry
-      return (b.daily_capacity ?? 0) - (a.daily_capacity ?? 0)
-    })
-  }
+    // === 需求匹配 (權重: 25分) ===
+    if (concern.value === 'sleepy') {
+      const noise = product.noise_level ?? 50
+      if (noise <= 35) score += 25
+      else if (noise <= 40) score += 20
+      else if (noise <= 45) score += 15
+      else score += 5
+    } else if (concern.value === 'moldy' || concern.value === 'sticky') {
+      // 除濕力越強越好
+      if (cap >= 16) score += 25
+      else if (cap >= 12) score += 20
+      else if (cap >= 8) score += 15
+      else score += 10
+    } else if (concern.value === 'laundry') {
+      const hasDry = product.features?.some((f: string) => f.includes('乾衣'))
+      if (hasDry) score += 25
+      else score += 10
+    }
 
-  // 根據個性微調
-  if (personality.value === 'lazy') {
-    // 自動功能優先
-    filtered.sort((a, b) => {
-      const aAuto = a.features?.some((f: string) => f.includes('自動')) ? 1 : 0
-      const bAuto = b.features?.some((f: string) => f.includes('自動')) ? 1 : 0
-      return bAuto - aAuto
-    })
-  } else if (personality.value === 'saver') {
-    // 能效優先（假設有 energy_factor 或用價格/容量比）
-    filtered.sort((a, b) => {
-      const aEff = (a.daily_capacity ?? 0) / (a.power_consumption || 1)
-      const bEff = (b.daily_capacity ?? 0) / (b.power_consumption || 1)
-      return bEff - aEff
-    })
-  } else if (personality.value === 'techy') {
-    // 智慧功能優先
-    filtered.sort((a, b) => {
-      const aHasApp = a.features?.some((f: string) => f.includes('APP') || f.includes('WiFi') || f.includes('智慧')) ? 1 : 0
-      const bHasApp = b.features?.some((f: string) => f.includes('APP') || f.includes('WiFi') || f.includes('智慧')) ? 1 : 0
-      return bHasApp - aHasApp
-    })
-  } else if (personality.value === 'practical') {
-    // CP值優先（容量/價格比）
-    filtered.sort((a, b) => {
-      const aValue = (a.daily_capacity ?? 0) / (a.price || 1)
-      const bValue = (b.daily_capacity ?? 0) / (b.price || 1)
-      return bValue - aValue
-    })
-  }
+    // === 個性匹配 (權重: 15分) ===
+    if (personality.value === 'lazy') {
+      const hasAuto = product.features?.some((f: string) => f.includes('自動'))
+      score += hasAuto ? 15 : 5
+    } else if (personality.value === 'saver') {
+      const efficiency = cap / (product.power_consumption || 200)
+      if (efficiency >= 0.06) score += 15
+      else if (efficiency >= 0.04) score += 10
+      else score += 5
+    } else if (personality.value === 'techy') {
+      const hasSmart = product.features?.some((f: string) =>
+        f.includes('APP') || f.includes('WiFi') || f.includes('智慧')
+      )
+      score += hasSmart ? 15 : 5
+    } else if (personality.value === 'practical') {
+      // CP 值
+      const cpValue = cap / (price / 1000)
+      if (cpValue >= 1.5) score += 15
+      else if (cpValue >= 1) score += 10
+      else score += 5
+    }
 
-  return filtered.slice(0, 3)
+    return { product, score }
+  })
+
+  // 按分數排序，取前 3 名
+  scored.sort((a, b) => b.score - a.score)
+  return scored.slice(0, 3).map(s => s.product)
 })
 
 const selectAnswer = (value: string) => {

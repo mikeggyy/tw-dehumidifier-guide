@@ -132,100 +132,108 @@ const resultMessage = computed(() => {
   return messages[scenario.value || ''] || '根據你的需求精心挑選！'
 })
 
-// Filter and rank products based on answers
+// 使用評分制推薦商品，確保總是有結果
 const recommendedProducts = computed(() => {
-  let filtered = [...props.products]
+  // 只針對電暖器評分
+  const heaterProducts = props.products.filter(p => getProductCategorySlug(p) === 'heater')
 
-  // 確保只篩選電暖器
-  filtered = filtered.filter(p => getProductCategorySlug(p) === 'heater')
+  const scored = heaterProducts.map(product => {
+    let score = 0
+    const power = getProductSpec<number>(product, 'heating_power') || 0
+    const type = getProductSpec<string>(product, 'type') || ''
+    const price = product.price ?? 0
 
-  // 根據功率需求篩選
-  if (wattageRecommendation.value) {
-    const { min, max } = wattageRecommendation.value
-    filtered = filtered.filter(p => {
-      const power = getProductSpec<number>(p, 'heating_power') || 0
-      // 允許 ±30% 的彈性
-      return power >= min * 0.7 && power <= max * 1.3
-    })
-  }
-
-  // 根據電暖器類型篩選
-  if (heaterType.value && heaterType.value !== 'any') {
-    filtered = filtered.filter(p => {
-      const type = getProductSpec<string>(p, 'type') || ''
-      return type === heaterType.value
-    })
-  }
-
-  // 根據預算篩選
-  const budgetOption = questions[3].options.find(o => o.value === budget.value)
-  if (budgetOption) {
-    if (budgetOption.max) {
-      filtered = filtered.filter(p => p.price <= budgetOption.max!)
+    // === 功率匹配 (權重: 25分) ===
+    if (wattageRecommendation.value) {
+      const { min, max } = wattageRecommendation.value
+      if (power >= min && power <= max) {
+        score += 25
+      } else if (power >= min * 0.7 && power <= max * 1.3) {
+        score += 18
+      } else if (power > 0) {
+        score += 8
+      } else {
+        score += 12 // 無功率資料給中等分
+      }
     }
-    if (budgetOption.min) {
-      filtered = filtered.filter(p => p.price >= budgetOption.min!)
+
+    // === 電暖器類型匹配 (權重: 20分) ===
+    if (heaterType.value && heaterType.value !== 'any') {
+      if (type === heaterType.value) {
+        score += 20
+      } else if (type) {
+        score += 5
+      } else {
+        // 從名稱判斷
+        const name = product.name.toLowerCase()
+        const typeKeywords: Record<string, string[]> = {
+          'ceramic': ['陶瓷', 'ptc'],
+          'oil': ['葉片', '油汀', '恆溫'],
+          'halogen': ['鹵素', '碳素', '石英'],
+        }
+        const keywords = typeKeywords[heaterType.value] || []
+        if (keywords.some(k => name.includes(k))) {
+          score += 15
+        } else {
+          score += 5
+        }
+      }
     }
-  }
 
-  // 根據使用場景排序
-  if (scenario.value === 'bedroom') {
-    // 靜音優先，葉片式加分
-    filtered.sort((a, b) => {
-      const aType = getProductSpec<string>(a, 'type') || ''
-      const bType = getProductSpec<string>(b, 'type') || ''
-      // 葉片式最安靜
-      if (aType === 'oil' && bType !== 'oil') return -1
-      if (bType === 'oil' && aType !== 'oil') return 1
-      return 0
-    })
-  } else if (scenario.value === 'living') {
-    // 功率優先
-    filtered.sort((a, b) => {
-      const aPower = getProductSpec<number>(a, 'heating_power') || 0
-      const bPower = getProductSpec<number>(b, 'heating_power') || 0
-      return bPower - aPower
-    })
-  } else if (scenario.value === 'bathroom') {
-    // 浴室適用、防水功能優先
-    filtered.sort((a, b) => {
-      const aHasBath = a.features?.some((f: string) =>
-        f.includes('浴室') || f.includes('防水') || f.includes('IP')
-      ) ? 1 : 0
-      const bHasBath = b.features?.some((f: string) =>
-        f.includes('浴室') || f.includes('防水') || f.includes('IP')
-      ) ? 1 : 0
-      return bHasBath - aHasBath
-    })
-  } else if (scenario.value === 'office') {
-    // 體積小、功率低優先
-    filtered.sort((a, b) => {
-      const aPower = getProductSpec<number>(a, 'heating_power') || 0
-      const bPower = getProductSpec<number>(b, 'heating_power') || 0
-      // 辦公室用，功率較低但足夠的優先
-      return aPower - bPower
-    })
-  }
-
-  // 如果篩選結果太少，放寬條件
-  if (filtered.length < 3) {
-    filtered = [...props.products].filter(p => getProductCategorySlug(p) === 'heater')
-
-    // 只按預算篩選
+    // === 預算匹配 (權重: 25分) ===
+    const budgetOption = questions[3].options.find(o => o.value === budget.value)
     if (budgetOption) {
-      if (budgetOption.max) {
-        filtered = filtered.filter(p => p.price <= budgetOption.max! * 1.2)
-      }
-      if (budgetOption.min) {
-        filtered = filtered.filter(p => p.price >= budgetOption.min! * 0.8)
+      const min = budgetOption.min || 0
+      const max = budgetOption.max || Infinity
+      if (price >= min && price <= max) {
+        score += 25
+      } else {
+        const diff = price < min ? min - price : price - max
+        if (diff <= 500) score += 18
+        else if (diff <= 1000) score += 12
+        else score += 5
       }
     }
 
-    // 按價格排序
-    filtered.sort((a, b) => a.price - b.price)
-  }
+    // === 使用場景匹配 (權重: 20分) ===
+    if (scenario.value === 'bedroom') {
+      // 臥室：葉片式最安靜
+      if (type === 'oil') score += 20
+      else if (type === 'ceramic') score += 12
+      else score += 8
+    } else if (scenario.value === 'living') {
+      // 客廳：高功率優先
+      if (power >= 1200) score += 20
+      else if (power >= 800) score += 15
+      else if (power >= 500) score += 10
+      else score += 5
+    } else if (scenario.value === 'bathroom') {
+      // 浴室：防水功能
+      const hasBath = product.features?.some((f: string) =>
+        f.includes('浴室') || f.includes('防水') || f.includes('IP')
+      )
+      if (hasBath) score += 20
+      else if (type === 'ceramic') score += 10 // 陶瓷式較適合浴室
+      else score += 5
+    } else if (scenario.value === 'office') {
+      // 辦公室：小功率、陶瓷式
+      if (power > 0 && power <= 600) score += 15
+      else if (power <= 800) score += 10
+      if (type === 'ceramic') score += 5
+    }
 
-  return filtered.slice(0, 3)
+    // === 折扣加分 (額外最多 10分) ===
+    const discount = product.original_price
+      ? Math.round((1 - price / product.original_price) * 100)
+      : 0
+    score += Math.min(discount / 3, 10)
+
+    return { product, score }
+  })
+
+  // 按分數排序，取前 3 名
+  scored.sort((a, b) => b.score - a.score)
+  return scored.slice(0, 3).map(s => s.product)
 })
 
 const getHeaterTypeLabel = (product: Dehumidifier): string => {
