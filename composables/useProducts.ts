@@ -10,6 +10,41 @@ import { productsLogger as logger } from '~/utils/logger'
 // 請求超時設定（毫秒）
 const REQUEST_TIMEOUT = 10000 // 10 秒
 
+// 除濕機品類的排除關鍵字（這些商品不應該出現在除濕機列表中）
+const DEHUMIDIFIER_EXCLUSION_KEYWORDS = [
+  '香薰', '香氛',           // 香薰機
+  '水氧機', '水氣機',       // 水氧機
+  '加濕器', '加濕機',       // 加濕器（與除濕機相反）
+  '電暖器', '暖爐',         // 電暖器
+  '循環扇', '電風扇', '風扇', '涼風扇', // 電風扇
+  '冷氣機', '冷暖氣',       // 冷氣
+]
+
+// 除濕機品類的必須包含關鍵字（商品名必須包含其中之一才算除濕機）
+const DEHUMIDIFIER_REQUIRED_KEYWORDS = [
+  '除濕',
+]
+
+// 檢查商品是否應該被排除（用於除濕機品類）
+function shouldExcludeDehumidifierProduct(product: any): boolean {
+  const name = product.name || ''
+
+  // 如果名稱包含排除關鍵字，排除該商品
+  for (const keyword of DEHUMIDIFIER_EXCLUSION_KEYWORDS) {
+    if (name.includes(keyword)) {
+      return true
+    }
+  }
+
+  // 如果名稱不包含「除濕」，也排除（可能是誤分類的商品）
+  const hasRequiredKeyword = DEHUMIDIFIER_REQUIRED_KEYWORDS.some(keyword => name.includes(keyword))
+  if (!hasRequiredKeyword) {
+    return true
+  }
+
+  return false
+}
+
 // 展平 Supabase 商品的 specs 到頂層欄位
 function flattenProductSpecs(product: any): any {
   const specs = product.specs || {}
@@ -318,7 +353,18 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
           }
         )
         // 展平 specs 到頂層欄位
-        const flattenedData = data.map(flattenProductSpecs)
+        let flattenedData = data.map(flattenProductSpecs)
+
+        // 除濕機品類需要額外過濾，排除誤分類的商品
+        if (category === 'dehumidifier') {
+          const beforeCount = flattenedData.length
+          flattenedData = flattenedData.filter(p => !shouldExcludeDehumidifierProduct(p))
+          const filteredCount = beforeCount - flattenedData.length
+          if (filteredCount > 0) {
+            logger.log(`Filtered out ${filteredCount} non-dehumidifier products from Supabase data`)
+          }
+        }
+
         allProducts.push(...flattenedData)
       } catch (e) {
         logger.warn(`Failed to fetch ${category} from Supabase:`, e)
@@ -384,7 +430,14 @@ export async function useProductsSSR() {
             }
           )
           // 展平 specs 到頂層欄位
-          return (products || []).map(flattenProductSpecs)
+          let flattenedProducts = (products || []).map(flattenProductSpecs)
+
+          // 除濕機品類需要額外過濾，排除誤分類的商品
+          if (category === 'dehumidifier') {
+            flattenedProducts = flattenedProducts.filter(p => !shouldExcludeDehumidifierProduct(p))
+          }
+
+          return flattenedProducts
         } catch {
           // 該品類載入失敗，從本地補充
           return await loadLocalCategoryProducts(category)

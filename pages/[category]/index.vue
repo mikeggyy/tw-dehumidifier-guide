@@ -19,7 +19,7 @@ import {
   Fan,
 } from 'lucide-vue-next'
 import type { GenericFilterState, SortOption, Product } from '~/types'
-import { getProductSpec } from '~/types'
+import { getProductCategorySlug } from '~/types'
 import ProductCard from '~/components/ProductCard.vue'
 import ProductCardSkeleton from '~/components/ProductCardSkeleton.vue'
 import CompareModal from '~/components/CompareModal.vue'
@@ -125,8 +125,7 @@ const { allProducts, isLoading, getAllBrands, getPriceRange, filterProducts, sor
 // 只顯示當前品類的商品
 const categoryProducts = computed(() => {
   return allProducts.value.filter(p => {
-    const productCategory = getProductSpec<string>(p, 'category_slug') || 'dehumidifier'
-    return productCategory === categorySlug.value
+    return getProductCategorySlug(p) === categorySlug.value
   })
 })
 
@@ -458,8 +457,7 @@ const displayedProducts = computed(() => {
 
   // 只顯示當前品類
   filtered = filtered.filter(p => {
-    const productCategory = getProductSpec<string>(p, 'category_slug') || 'dehumidifier'
-    return productCategory === categorySlug.value
+    return getProductCategorySlug(p) === categorySlug.value
   })
 
   // 搜尋過濾
