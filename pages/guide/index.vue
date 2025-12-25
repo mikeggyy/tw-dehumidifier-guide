@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { useHead } from '#imports'
-import { Book } from 'lucide-vue-next'
+import { Book, HelpCircle, ArrowRight } from 'lucide-vue-next'
 import { useGuideConfig } from '~/composables/useGuideConfig'
+import { useFaqConfig } from '~/composables/useFaqConfig'
 import { useStructuredData } from '~/composables/useStructuredData'
 import GuideCard from '~/components/GuideCard.vue'
 import SiteHeader from '~/components/SiteHeader.vue'
 
 const { getAllGuides } = useGuideConfig()
+const { getAllFaqs } = useFaqConfig()
 const { SITE_URL, SITE_NAME, setBreadcrumbStructuredData } = useStructuredData()
 
 const guides = getAllGuides()
+const faqCount = getAllFaqs().length
 
 // OG Image
 const ogImage = `${SITE_URL}/og-image.png`
@@ -74,6 +77,32 @@ setBreadcrumbStructuredData([
           :key="guide.slug"
           :guide="guide"
         />
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="mt-12 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl border border-blue-100 dark:border-blue-800">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center">
+              <HelpCircle :size="24" class="text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                常見問題 FAQ
+              </h2>
+              <p class="text-gray-600 dark:text-gray-400">
+                收錄 {{ faqCount }} 個家電選購常見問題，快速找到答案
+              </p>
+            </div>
+          </div>
+          <NuxtLink
+            to="/guide/faq"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors"
+          >
+            瀏覽 FAQ
+            <ArrowRight :size="18" />
+          </NuxtLink>
+        </div>
       </div>
 
       <!-- Back to Home -->

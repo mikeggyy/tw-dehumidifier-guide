@@ -143,6 +143,7 @@ export default defineNuxtConfig({
       { loc: '/guide/heater-buying-guide', changefreq: 'monthly', priority: 0.7 },
       { loc: '/guide/fan-buying-guide', changefreq: 'monthly', priority: 0.7 },
       { loc: '/guide/dehumidifier-vs-air-purifier', changefreq: 'monthly', priority: 0.7 },
+      { loc: '/guide/faq', changefreq: 'weekly', priority: 0.8 },
       // 品牌頁面
       { loc: '/brand', changefreq: 'weekly', priority: 0.8 },
     ],
@@ -163,6 +164,7 @@ export default defineNuxtConfig({
         '/guide/heater-buying-guide',
         '/guide/fan-buying-guide',
         '/guide/dehumidifier-vs-air-purifier',
+        '/guide/faq',
         // Brand pages
         '/brand',
         // Compare page
