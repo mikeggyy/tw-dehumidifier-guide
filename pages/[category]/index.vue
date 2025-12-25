@@ -19,6 +19,7 @@ import {
   Fan,
 } from 'lucide-vue-next'
 import type { GenericFilterState, SortOption, Product } from '~/types'
+import { getProductSpec } from '~/types'
 import ProductCard from '~/components/ProductCard.vue'
 import ProductCardSkeleton from '~/components/ProductCardSkeleton.vue'
 import CompareModal from '~/components/CompareModal.vue'
@@ -33,48 +34,57 @@ import CompareGuide from '~/components/CompareGuide.vue'
 import InfiniteScroll from '~/components/InfiniteScroll.vue'
 import { formatPrice, getDisplayBrand } from '~/utils/product'
 
-// Loading component for async components
+// Loading and error components for async components
 import LoadingModal from '~/components/LoadingModal.vue'
+import AsyncLoadError from '~/components/AsyncLoadError.vue'
 
 // Lazy load Calculator and Finder components (only loaded when modal opens)
 const RoomCalculator = defineAsyncComponent({
   loader: () => import('~/components/RoomCalculator.vue'),
   loadingComponent: LoadingModal,
+  errorComponent: AsyncLoadError,
   delay: 0,
 })
 const ProductFinder = defineAsyncComponent({
   loader: () => import('~/components/ProductFinder.vue'),
   loadingComponent: LoadingModal,
+  errorComponent: AsyncLoadError,
   delay: 0,
 })
 const AirPurifierCalculator = defineAsyncComponent({
   loader: () => import('~/components/AirPurifierCalculator.vue'),
   loadingComponent: LoadingModal,
+  errorComponent: AsyncLoadError,
   delay: 0,
 })
 const AirPurifierFinder = defineAsyncComponent({
   loader: () => import('~/components/AirPurifierFinder.vue'),
   loadingComponent: LoadingModal,
+  errorComponent: AsyncLoadError,
   delay: 0,
 })
 const AirConditionerCalculator = defineAsyncComponent({
   loader: () => import('~/components/AirConditionerCalculator.vue'),
   loadingComponent: LoadingModal,
+  errorComponent: AsyncLoadError,
   delay: 0,
 })
 const AirConditionerFinder = defineAsyncComponent({
   loader: () => import('~/components/AirConditionerFinder.vue'),
   loadingComponent: LoadingModal,
+  errorComponent: AsyncLoadError,
   delay: 0,
 })
 const HeaterFinder = defineAsyncComponent({
   loader: () => import('~/components/HeaterFinder.vue'),
   loadingComponent: LoadingModal,
+  errorComponent: AsyncLoadError,
   delay: 0,
 })
 const FanFinder = defineAsyncComponent({
   loader: () => import('~/components/FanFinder.vue'),
   loadingComponent: LoadingModal,
+  errorComponent: AsyncLoadError,
   delay: 0,
 })
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
@@ -115,7 +125,7 @@ const { allProducts, isLoading, getAllBrands, getPriceRange, filterProducts, sor
 // 只顯示當前品類的商品
 const categoryProducts = computed(() => {
   return allProducts.value.filter(p => {
-    const productCategory = (p as any).category_slug || 'dehumidifier'
+    const productCategory = getProductSpec<string>(p, 'category_slug') || 'dehumidifier'
     return productCategory === categorySlug.value
   })
 })
@@ -146,6 +156,8 @@ useHead({
     { property: 'og:url', content: pageUrl.value },
     { property: 'og:image', content: ogImage.value },
     { property: 'og:image:alt', content: `${categoryConfig.value?.name}規格比較` },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:site', content: '@jiadian_tw' },
@@ -324,7 +336,10 @@ const applyQuickTag = (tag: { label: string; filterKey?: string; filterValue?: a
     activeQuickTag.value = tag.label
     // Apply filter based on tag configuration
     if (tag.filterKey && tag.filterValue !== undefined) {
-      (filters as any)[tag.filterKey] = tag.filterValue
+      const key = tag.filterKey as keyof GenericFilterState
+      if (key in filters) {
+        (filters[key] as typeof tag.filterValue) = tag.filterValue
+      }
     }
     // Apply sort if specified
     if (tag.sortBy) {
@@ -438,11 +453,12 @@ const showMobileFilters = ref(false)
 
 // Computed filtered and sorted products
 const displayedProducts = computed(() => {
+  // Note: GenericFilterState → FilterState cast needed due to dynamic filter keys
   let filtered = filterProducts(filters as any)
 
   // 只顯示當前品類
   filtered = filtered.filter(p => {
-    const productCategory = (p as any).category_slug || 'dehumidifier'
+    const productCategory = getProductSpec<string>(p, 'category_slug') || 'dehumidifier'
     return productCategory === categorySlug.value
   })
 

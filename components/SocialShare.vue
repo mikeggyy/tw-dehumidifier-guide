@@ -2,6 +2,7 @@
 import { computed, ref, onMounted } from 'vue'
 import { Share2, MessageCircle, Facebook, Link2, Check, Send } from 'lucide-vue-next'
 import { useToast } from '~/composables/useToast'
+import { logger } from '~/utils/logger'
 
 const props = defineProps<{
   url?: string
@@ -56,7 +57,7 @@ const copyLink = async () => {
       copied.value = false
     }, 2000)
   } catch (e) {
-    console.error('Failed to copy:', e)
+    logger.error('Failed to copy:', e)
   }
 }
 

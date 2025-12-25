@@ -1,12 +1,17 @@
 import { ref, computed } from 'vue'
 import { STORAGE_KEYS } from '~/utils/constants'
+import { useSafeStorage } from '~/composables/useSafeStorage'
 
 // 全域狀態（跨組件共享）
 const favorites = ref<Set<string>>(new Set())
 let isInitialized = false
 
+// 使用安全的 localStorage 操作
+const storage = useSafeStorage()
+
 /**
  * 收藏功能 composable
+ * 使用 useSafeStorage 進行安全的 localStorage 操作
  *
  * @example
  * ```ts
@@ -20,15 +25,11 @@ export function useFavorites() {
   const init = () => {
     if (isInitialized || typeof window === 'undefined') return
 
-    try {
-      const saved = localStorage.getItem(STORAGE_KEYS.FAVORITES)
-      if (saved) {
-        favorites.value = new Set(JSON.parse(saved))
-      }
-      isInitialized = true
-    } catch (e) {
-      console.error('Failed to load favorites:', e)
+    const saved = storage.getItem<string[]>(STORAGE_KEYS.FAVORITES, [])
+    if (saved.length > 0) {
+      favorites.value = new Set(saved)
     }
+    isInitialized = true
   }
 
   /**
@@ -36,15 +37,7 @@ export function useFavorites() {
    */
   const save = () => {
     if (typeof window === 'undefined') return
-
-    try {
-      localStorage.setItem(
-        STORAGE_KEYS.FAVORITES,
-        JSON.stringify([...favorites.value])
-      )
-    } catch (e) {
-      console.error('Failed to save favorites:', e)
-    }
+    storage.setItem(STORAGE_KEYS.FAVORITES, [...favorites.value])
   }
 
   /**

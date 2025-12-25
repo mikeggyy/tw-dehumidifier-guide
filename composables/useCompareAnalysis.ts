@@ -1,14 +1,15 @@
 import { computed } from 'vue'
-import type { Dehumidifier } from '~/types'
+import type { ComparableProduct } from '~/types'
+import { getProductSpec } from '~/types'
 
 export interface CompareConclusion {
-  winner: Dehumidifier | null
+  winner: ComparableProduct | null
   recommendations: {
-    budget: { product: Dehumidifier; reason: string } | null
-    quiet: { product: Dehumidifier; reason: string } | null
-    powerful: { product: Dehumidifier; reason: string } | null
-    value: { product: Dehumidifier; reason: string } | null
-    overall: { product: Dehumidifier; reason: string } | null
+    budget: { product: ComparableProduct; reason: string } | null
+    quiet: { product: ComparableProduct; reason: string } | null
+    powerful: { product: ComparableProduct; reason: string } | null
+    value: { product: ComparableProduct; reason: string } | null
+    overall: { product: ComparableProduct; reason: string } | null
   }
   summary: string
 }
@@ -27,37 +28,86 @@ export const defaultWeights: WeightConfig = {
   efficiency: 25
 }
 
-export function useCompareAnalysis(products: () => Dehumidifier[], weights: () => WeightConfig = () => defaultWeights) {
+// 輔助函數：取得商品規格值
+const getSpec = (product: ComparableProduct, key: string): number | null => {
+  return getProductSpec<number>(product, key)
+}
 
-  // 計算加權評分
-  const calculateWeightedScore = (product: Dehumidifier, allProducts: Dehumidifier[], w: WeightConfig): number => {
+export function useCompareAnalysis(products: () => ComparableProduct[], weights: () => WeightConfig = () => defaultWeights) {
+
+  // 預先計算商品統計資料（快取 min/max 值，避免 O(n²)）
+  const productStats = computed(() => {
+    const prods = products()
+    if (prods.length === 0) {
+      return {
+        minPrice: 0, maxPrice: 0,
+        maxCapacity: 1,
+        minNoise: 30, maxNoise: 60
+      }
+    }
+
+    // 使用 reduce 避免 Math.min/max 的 stack overflow 風險
+    let minPrice = Infinity, maxPrice = -Infinity
+    let maxCapacity = 0
+    let minNoise = Infinity, maxNoise = -Infinity
+    let hasValidNoise = false
+
+    for (const p of prods) {
+      // Price
+      if (p.price < minPrice) minPrice = p.price
+      if (p.price > maxPrice) maxPrice = p.price
+
+      // Capacity
+      const capacity = getSpec(p, 'daily_capacity') ?? 0
+      if (capacity > maxCapacity) maxCapacity = capacity
+
+      // Noise
+      const noise = getSpec(p, 'noise_level')
+      if (noise !== null && noise < 99) {
+        hasValidNoise = true
+        if (noise < minNoise) minNoise = noise
+        if (noise > maxNoise) maxNoise = noise
+      }
+    }
+
+    return {
+      minPrice: minPrice === Infinity ? 0 : minPrice,
+      maxPrice: maxPrice === -Infinity ? 0 : maxPrice,
+      maxCapacity: maxCapacity || 1,
+      minNoise: hasValidNoise ? minNoise : 30,
+      maxNoise: hasValidNoise ? maxNoise : 60
+    }
+  })
+
+  // 計算加權評分（使用快取的統計資料，O(1)）
+  const calculateWeightedScore = (
+    product: ComparableProduct,
+    stats: typeof productStats.value,
+    w: WeightConfig
+  ): number => {
     const total = w.price + w.capacity + w.noise + w.efficiency
     if (total === 0) return 0
 
+    const { minPrice, maxPrice, maxCapacity, minNoise, maxNoise } = stats
+
     // 正規化各項指標 (0-100)
-    const prices = allProducts.map(p => p.price)
-    const minPrice = Math.min(...prices)
-    const maxPrice = Math.max(...prices)
     const priceScore = maxPrice > minPrice
       ? 100 - ((product.price - minPrice) / (maxPrice - minPrice) * 100)
       : 100
 
-    const capacities = allProducts.map(p => p.daily_capacity ?? 0).filter(c => c > 0)
-    const maxCapacity = capacities.length > 0 ? Math.max(...capacities) : 1
-    const capacityScore = product.daily_capacity
-      ? (product.daily_capacity / maxCapacity) * 100
+    const dailyCapacity = getSpec(product, 'daily_capacity')
+    const capacityScore = dailyCapacity
+      ? (dailyCapacity / maxCapacity) * 100
       : 0
 
-    const noises = allProducts.map(p => p.noise_level ?? 99).filter(n => n < 99)
-    const minNoise = noises.length > 0 ? Math.min(...noises) : 30
-    const maxNoise = noises.length > 0 ? Math.max(...noises) : 60
-    const noiseScore = product.noise_level && maxNoise > minNoise
-      ? 100 - ((product.noise_level - minNoise) / (maxNoise - minNoise) * 100)
+    const noiseLevel = getSpec(product, 'noise_level')
+    const noiseScore = noiseLevel && maxNoise > minNoise
+      ? 100 - ((noiseLevel - minNoise) / (maxNoise - minNoise) * 100)
       : 50
 
-    const efficiencies = allProducts.map(p => p.energy_efficiency ?? 5)
-    const efficiencyScore = product.energy_efficiency
-      ? (6 - product.energy_efficiency) * 20  // 1級=100, 5級=20
+    const energyEfficiency = getSpec(product, 'energy_efficiency')
+    const efficiencyScore = energyEfficiency
+      ? (6 - energyEfficiency) * 20  // 1級=100, 5級=20
       : 50
 
     return (
@@ -68,15 +118,16 @@ export function useCompareAnalysis(products: () => Dehumidifier[], weights: () =
     )
   }
 
-  // 計算商品排名
+  // 計算商品排名（O(n) 複雜度）
   const rankedProducts = computed(() => {
     const prods = products()
     const w = weights()
+    const stats = productStats.value
 
     return prods
       .map(p => ({
         product: p,
-        score: calculateWeightedScore(p, prods, w)
+        score: calculateWeightedScore(p, stats, w)
       }))
       .sort((a, b) => b.score - a.score)
   })
@@ -96,15 +147,17 @@ export function useCompareAnalysis(products: () => Dehumidifier[], weights: () =
     const sortedByPrice = [...prods].sort((a, b) => a.price - b.price)
     const budgetPick = sortedByPrice[0]
 
-    const sortedByNoise = [...prods].sort((a, b) => (a.noise_level ?? 99) - (b.noise_level ?? 99))
+    const sortedByNoise = [...prods].sort((a, b) => (getSpec(a, 'noise_level') ?? 99) - (getSpec(b, 'noise_level') ?? 99))
     const quietPick = sortedByNoise[0]
 
-    const sortedByCapacity = [...prods].sort((a, b) => (b.daily_capacity ?? 0) - (a.daily_capacity ?? 0))
+    const sortedByCapacity = [...prods].sort((a, b) => (getSpec(b, 'daily_capacity') ?? 0) - (getSpec(a, 'daily_capacity') ?? 0))
     const powerfulPick = sortedByCapacity[0]
 
     const sortedByValue = [...prods].sort((a, b) => {
-      const aVal = a.daily_capacity ? a.price / a.daily_capacity : Infinity
-      const bVal = b.daily_capacity ? b.price / b.daily_capacity : Infinity
+      const aCapacity = getSpec(a, 'daily_capacity')
+      const bCapacity = getSpec(b, 'daily_capacity')
+      const aVal = aCapacity ? a.price / aCapacity : Infinity
+      const bVal = bCapacity ? b.price / bCapacity : Infinity
       return aVal - bVal
     })
     const valuePick = sortedByValue[0]
@@ -116,22 +169,26 @@ export function useCompareAnalysis(products: () => Dehumidifier[], weights: () =
     // 生成推薦理由
     const formatPrice = (p: number) => p.toLocaleString()
 
+    const quietNoise = getSpec(quietPick, 'noise_level')
+    const powerfulCapacity = getSpec(powerfulPick, 'daily_capacity')
+    const valueCapacity = getSpec(valuePick, 'daily_capacity')
+
     const recommendations = {
       budget: budgetPick ? {
         product: budgetPick,
         reason: `價格最低 NT$${formatPrice(budgetPick.price)}`
       } : null,
-      quiet: quietPick?.noise_level ? {
+      quiet: quietNoise ? {
         product: quietPick,
-        reason: `最安靜 ${quietPick.noise_level}dB`
+        reason: `最安靜 ${quietNoise}dB`
       } : null,
-      powerful: powerfulPick?.daily_capacity ? {
+      powerful: powerfulCapacity ? {
         product: powerfulPick,
-        reason: `除濕力最強 ${powerfulPick.daily_capacity}L/日`
+        reason: `除濕力最強 ${powerfulCapacity}L/日`
       } : null,
-      value: valuePick?.daily_capacity ? {
+      value: valueCapacity ? {
         product: valuePick,
-        reason: `CP值最高 $${Math.round(valuePick.price / valuePick.daily_capacity)}/L`
+        reason: `CP值最高 $${Math.round(valuePick.price / valueCapacity)}/L`
       } : null,
       overall: overallPick ? {
         product: overallPick,
@@ -161,11 +218,15 @@ export function useCompareAnalysis(products: () => Dehumidifier[], weights: () =
       if (p1.price < p2.price) p1Wins.push('價格')
       else if (p2.price < p1.price) p2Wins.push('價格')
 
-      if ((p1.daily_capacity ?? 0) > (p2.daily_capacity ?? 0)) p1Wins.push('除濕力')
-      else if ((p2.daily_capacity ?? 0) > (p1.daily_capacity ?? 0)) p2Wins.push('除濕力')
+      const p1Capacity = getSpec(p1, 'daily_capacity') ?? 0
+      const p2Capacity = getSpec(p2, 'daily_capacity') ?? 0
+      if (p1Capacity > p2Capacity) p1Wins.push('除濕力')
+      else if (p2Capacity > p1Capacity) p2Wins.push('除濕力')
 
-      if ((p1.noise_level ?? 99) < (p2.noise_level ?? 99)) p1Wins.push('安靜度')
-      else if ((p2.noise_level ?? 99) < (p1.noise_level ?? 99)) p2Wins.push('安靜度')
+      const p1Noise = getSpec(p1, 'noise_level') ?? 99
+      const p2Noise = getSpec(p2, 'noise_level') ?? 99
+      if (p1Noise < p2Noise) p1Wins.push('安靜度')
+      else if (p2Noise < p1Noise) p2Wins.push('安靜度')
 
       if (p1Wins.length > p2Wins.length) {
         summary = `📊 ${p1.brand} ${p1.model} 在${p1Wins.join('、')}方面勝出`
@@ -201,7 +262,7 @@ export function useCompareAnalysis(products: () => Dehumidifier[], weights: () =
     ]
 
     specKeys.forEach(spec => {
-      const values = prods.map(p => (p as any)[spec.key]).filter(v => v != null)
+      const values = prods.map(p => getSpec(p, spec.key)).filter(v => v != null)
       if (values.length > 1) {
         const uniqueValues = new Set(values)
         spec.hasDiff = uniqueValues.size > 1

@@ -1,4 +1,5 @@
 import type { Product, Dehumidifier } from '~/types'
+import { getProductSpec } from '~/types'
 import { getDiscountPercent, getValueScore } from '~/utils/product'
 
 export type BadgeType = 'hot' | 'editor-pick' | 'best-value' | 'flash-sale'
@@ -11,17 +12,29 @@ export interface ProductBadge {
   animate: boolean
 }
 
+// 預處理品牌名稱為 Set（O(1) 查詢）
 const POPULAR_BRANDS = ['Panasonic', 'HITACHI', 'SHARP', 'LG', 'Dyson', 'DAIKIN', '三菱', 'MITSUBISHI']
+const POPULAR_BRANDS_UPPER = new Set(POPULAR_BRANDS.map(b => b.toUpperCase()))
+
+// 檢查品牌是否為知名品牌（O(1) 查詢）
+function checkPopularBrand(brand: string): boolean {
+  const brandUpper = brand.toUpperCase()
+  // 精確匹配優先
+  if (POPULAR_BRANDS_UPPER.has(brandUpper)) return true
+  // 包含匹配（例如 "Panasonic Taiwan"）
+  for (const popularBrand of POPULAR_BRANDS_UPPER) {
+    if (brandUpper.includes(popularBrand)) return true
+  }
+  return false
+}
 
 export function useProductBadges() {
   const getBadges = (product: Product | Dehumidifier, categorySlug: string = 'dehumidifier'): ProductBadge[] => {
     const badges: ProductBadge[] = []
     const discount = getDiscountPercent(product)
 
-    // Check if popular brand
-    const isPopularBrand = POPULAR_BRANDS.some(b =>
-      product.brand.toUpperCase().includes(b.toUpperCase())
-    )
+    // Check if popular brand (使用預處理的 Set)
+    const isPopularBrand = checkPopularBrand(product.brand)
 
     // Flash Sale badge: discount >= 20%
     if (discount && discount >= 20) {
@@ -47,17 +60,18 @@ export function useProductBadges() {
     }
 
     // Editor's Pick: energy efficiency 1 + good capacity
-    const efficiency = (product as Dehumidifier).energy_efficiency
-    const capacity = (product as Dehumidifier).daily_capacity
-    const specs = (product as any).specs || {}
+    const efficiency = getProductSpec<number>(product, 'energy_efficiency')
+    const capacity = getProductSpec<number>(product, 'daily_capacity')
+    const cadr = getProductSpec<number>(product, 'cadr')
+    const cspf = getProductSpec<number>(product, 'cspf')
 
     // Check for editor pick conditions based on category
     let isEditorPick = false
     if (categorySlug === 'dehumidifier' && efficiency === 1 && capacity && capacity >= 10) {
       isEditorPick = true
-    } else if (categorySlug === 'air-purifier' && specs.cadr && specs.cadr >= 400) {
+    } else if (categorySlug === 'air-purifier' && cadr && cadr >= 400) {
       isEditorPick = true
-    } else if (categorySlug === 'air-conditioner' && specs.cspf && specs.cspf >= 6) {
+    } else if (categorySlug === 'air-conditioner' && cspf && cspf >= 6) {
       isEditorPick = true
     }
 

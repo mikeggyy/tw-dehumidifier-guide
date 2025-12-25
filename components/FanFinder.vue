@@ -102,8 +102,9 @@ const recommendedProducts = computed(() => {
   // 使用評分系統而非嚴格篩選
   const scored = props.products.map(product => {
     let score = 0
-    const specs = (product as any).specs || {}
-    const productFeatures = (product as any).features || []
+    const specs = product.specs || {}
+    // features 存在於 Product 類型，但 Dehumidifier 沒有此屬性
+    const productFeatures = (product as unknown as { features?: readonly string[] }).features || []
     const name = product.name.toLowerCase()
 
     // 風扇類型偏好評分 (不排除，只加分)

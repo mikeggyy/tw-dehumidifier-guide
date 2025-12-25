@@ -5,6 +5,7 @@ import { useScenarioConfig, type Scenario } from '~/composables/useScenarioConfi
 import { useProducts } from '~/composables/useProducts'
 import ProductCard from '~/components/ProductCard.vue'
 import type { Dehumidifier } from '~/types'
+import { getProductCategorySlug } from '~/types'
 
 const { getAllScenarios, getRecommendedProducts } = useScenarioConfig()
 const { allProducts } = useProducts()
@@ -26,11 +27,6 @@ const selectScenario = (scenario: Scenario) => {
 const closeResults = () => {
   showResults.value = false
   selectedScenario.value = null
-}
-
-// Get category slug for product card
-const getCategorySlug = (product: Dehumidifier): string => {
-  return (product as any).category_slug || 'dehumidifier'
 }
 </script>
 
@@ -126,7 +122,7 @@ const getCategorySlug = (product: Dehumidifier): string => {
               v-for="product in recommendedProducts"
               :key="product.id"
               :product="product"
-              :category-slug="getCategorySlug(product)"
+              :category-slug="getProductCategorySlug(product)"
               :show-compare="false"
             />
           </div>

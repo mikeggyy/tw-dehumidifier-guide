@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 import { Search, X, TrendingUp, Clock } from 'lucide-vue-next'
 import { useProducts } from '~/composables/useProducts'
 import { formatPrice } from '~/utils/product'
+import { getProductCategorySlug } from '~/types'
 
 const props = withDefaults(defineProps<{
   modelValue: string
@@ -23,6 +24,7 @@ const { allProducts } = useProducts()
 const isOpen = ref(false)
 const inputRef = ref<HTMLInputElement | null>(null)
 const selectedIndex = ref(-1)
+let blurTimeoutId: ReturnType<typeof setTimeout> | null = null
 
 // Recent searches from localStorage
 const recentSearches = ref<string[]>([])
@@ -53,7 +55,7 @@ const suggestions = computed(() => {
 
   return allProducts.value
     .filter(p => {
-      if (props.categorySlug && (p as any).category_slug !== props.categorySlug) {
+      if (props.categorySlug && getProductCategorySlug(p) !== props.categorySlug) {
         return false
       }
       const name = p.name.toLowerCase()
@@ -97,10 +99,15 @@ const handleFocus = () => {
 
 const handleBlur = () => {
   // Delay to allow click on suggestions
-  setTimeout(() => {
+  if (blurTimeoutId) clearTimeout(blurTimeoutId)
+  blurTimeoutId = setTimeout(() => {
     isOpen.value = false
   }, 200)
 }
+
+onUnmounted(() => {
+  if (blurTimeoutId) clearTimeout(blurTimeoutId)
+})
 
 const handleKeydown = (e: KeyboardEvent) => {
   const items = suggestions.value.length > 0 ? suggestions.value : []

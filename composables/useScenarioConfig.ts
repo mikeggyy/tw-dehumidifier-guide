@@ -1,4 +1,5 @@
 import type { Product, Dehumidifier } from '~/types'
+import { getProductSpec } from '~/types'
 
 export interface Scenario {
   id: string
@@ -96,7 +97,7 @@ export function useScenarioConfig() {
     // Filter by categories
     if (scenario.filters.categories && scenario.filters.categories.length > 0) {
       filtered = filtered.filter(p => {
-        const categorySlug = (p as any).category_slug || 'dehumidifier'
+        const categorySlug = getProductSpec<string>(p, 'category_slug') || 'dehumidifier'
         return scenario.filters.categories!.includes(categorySlug)
       })
     }
@@ -147,13 +148,13 @@ export function useScenarioConfig() {
           return aVal - bVal
         }
         if (primarySort === 'cadr_desc') {
-          const aVal = (aProduct as any).specs?.cadr ?? 0
-          const bVal = (bProduct as any).specs?.cadr ?? 0
+          const aVal = getProductSpec<number>(aProduct, 'cadr') ?? 0
+          const bVal = getProductSpec<number>(bProduct, 'cadr') ?? 0
           return bVal - aVal
         }
         if (primarySort === 'cspf_desc') {
-          const aVal = (aProduct as any).specs?.cspf ?? 0
-          const bVal = (bProduct as any).specs?.cspf ?? 0
+          const aVal = getProductSpec<number>(aProduct, 'cspf') ?? 0
+          const bVal = getProductSpec<number>(bProduct, 'cspf') ?? 0
           return bVal - aVal
         }
         if (primarySort === 'power_desc') {

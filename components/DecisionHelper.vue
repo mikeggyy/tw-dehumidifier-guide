@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { HelpCircle, ChevronRight, RotateCcw, Sparkles } from 'lucide-vue-next'
-import type { Dehumidifier } from '~/types'
+import type { ComparableProduct } from '~/types'
+import { getProductSpec } from '~/types'
 
 const props = defineProps<{
-  products: Dehumidifier[]
+  products: ComparableProduct[]
 }>()
 
 const emit = defineEmits<{
-  recommend: [product: Dehumidifier]
+  recommend: [product: ComparableProduct]
 }>()
 
 interface Question {
@@ -73,6 +74,50 @@ const reset = () => {
   showResult.value = false
 }
 
+// 預先計算商品統計資料（快取，避免 O(n²)）
+const productStats = computed(() => {
+  const prods = props.products
+  if (prods.length === 0) {
+    return {
+      minPrice: 0, maxPrice: 0,
+      maxCapacity: 0,
+      minNoise: 30, maxNoise: 60,
+      minEfficiency: 5
+    }
+  }
+
+  let minPrice = Infinity, maxPrice = -Infinity
+  let maxCapacity = 0
+  let minNoise = Infinity, maxNoise = -Infinity
+  let minEfficiency = 5
+
+  for (const p of prods) {
+    if (p.price < minPrice) minPrice = p.price
+    if (p.price > maxPrice) maxPrice = p.price
+
+    const capacity = getProductSpec<number>(p, 'daily_capacity') ?? 0
+    if (capacity > maxCapacity) maxCapacity = capacity
+
+    const noise = getProductSpec<number>(p, 'noise_level')
+    if (noise !== null) {
+      if (noise < minNoise) minNoise = noise
+      if (noise > maxNoise) maxNoise = noise
+    }
+
+    const eff = getProductSpec<number>(p, 'energy_efficiency')
+    if (eff !== null && eff < minEfficiency) minEfficiency = eff
+  }
+
+  return {
+    minPrice: minPrice === Infinity ? 0 : minPrice,
+    maxPrice: maxPrice === -Infinity ? 0 : maxPrice,
+    maxCapacity,
+    minNoise: minNoise === Infinity ? 30 : minNoise,
+    maxNoise: maxNoise === -Infinity ? 60 : maxNoise,
+    minEfficiency
+  }
+})
+
 // 計算加權後的最佳推薦
 const recommendation = computed(() => {
   if (!showResult.value || answers.value.length !== questions.length) return null
@@ -96,40 +141,39 @@ const recommendation = computed(() => {
     efficiency: totalWeight.efficiency / sum * 100
   }
 
-  // 計算每個商品的分數
+  // 使用預計算的統計資料
+  const stats = productStats.value
+  const { minPrice, maxPrice, maxCapacity, minNoise, maxNoise, minEfficiency } = stats
+
+  // 計算每個商品的分數（O(n)）
   const prods = props.products
   const scores = prods.map(p => {
     let score = 0
 
     // 價格分數 (越低越好)
-    const prices = prods.map(x => x.price)
-    const minPrice = Math.min(...prices)
-    const maxPrice = Math.max(...prices)
     const priceScore = maxPrice > minPrice
       ? 100 - ((p.price - minPrice) / (maxPrice - minPrice) * 100)
       : 100
     score += priceScore * normalizedWeight.price / 100
 
     // 除濕力分數 (越高越好)
-    const capacities = prods.map(x => x.daily_capacity ?? 0)
-    const maxCap = Math.max(...capacities)
-    const capScore = maxCap > 0 && p.daily_capacity
-      ? (p.daily_capacity / maxCap) * 100
+    const pCapacity = getProductSpec<number>(p, 'daily_capacity')
+    const capScore = maxCapacity > 0 && pCapacity
+      ? (pCapacity / maxCapacity) * 100
       : 50
     score += capScore * normalizedWeight.capacity / 100
 
     // 安靜度分數 (越低越好)
-    const noises = prods.map(x => x.noise_level ?? 50)
-    const minNoise = Math.min(...noises)
-    const maxNoise = Math.max(...noises)
-    const noiseScore = maxNoise > minNoise && p.noise_level
-      ? 100 - ((p.noise_level - minNoise) / (maxNoise - minNoise) * 100)
+    const pNoise = getProductSpec<number>(p, 'noise_level')
+    const noiseScore = maxNoise > minNoise && pNoise
+      ? 100 - ((pNoise - minNoise) / (maxNoise - minNoise) * 100)
       : 50
     score += noiseScore * normalizedWeight.noise / 100
 
     // 能效分數 (越低級數越好)
-    const effScore = p.energy_efficiency
-      ? (6 - p.energy_efficiency) * 20
+    const pEff = getProductSpec<number>(p, 'energy_efficiency')
+    const effScore = pEff
+      ? (6 - pEff) * 20
       : 50
     score += effScore * normalizedWeight.efficiency / 100
 
@@ -138,18 +182,22 @@ const recommendation = computed(() => {
 
   const best = scores.sort((a, b) => b.score - a.score)[0]
 
-  // 生成推薦理由
+  // 生成推薦理由（使用預計算的統計資料）
   const reasons: string[] = []
-  if (normalizedWeight.price > 30 && best.product.price === Math.min(...prods.map(p => p.price))) {
+  const bestCapacity = getProductSpec<number>(best.product, 'daily_capacity')
+  const bestNoise = getProductSpec<number>(best.product, 'noise_level')
+  const bestEff = getProductSpec<number>(best.product, 'energy_efficiency')
+
+  if (normalizedWeight.price > 30 && best.product.price === minPrice) {
     reasons.push('價格最實惠')
   }
-  if (normalizedWeight.capacity > 30 && best.product.daily_capacity === Math.max(...prods.map(p => p.daily_capacity ?? 0))) {
+  if (normalizedWeight.capacity > 30 && bestCapacity === maxCapacity) {
     reasons.push('除濕力最強')
   }
-  if (normalizedWeight.noise > 30 && best.product.noise_level === Math.min(...prods.map(p => p.noise_level ?? 99))) {
+  if (normalizedWeight.noise > 30 && bestNoise === minNoise) {
     reasons.push('運轉最安靜')
   }
-  if (normalizedWeight.efficiency > 30 && best.product.energy_efficiency === Math.min(...prods.map(p => p.energy_efficiency ?? 5))) {
+  if (normalizedWeight.efficiency > 30 && bestEff === minEfficiency) {
     reasons.push('能效等級最佳')
   }
 

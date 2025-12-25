@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { Sparkles, ArrowRight } from 'lucide-vue-next'
 import { useProducts } from '~/composables/useProducts'
 import { formatPrice } from '~/utils/product'
+import { getProductCategorySlug } from '~/types'
 
 const props = defineProps<{
   categorySlug: string
@@ -14,7 +15,7 @@ const { allProducts, getProductSlug } = useProducts()
 // 取得該品類的熱門商品（依價格排序，取中間價位的商品）
 const recommendedProducts = computed(() => {
   const categoryProducts = allProducts.value
-    .filter(p => (p as any).category_slug === props.categorySlug)
+    .filter(p => getProductCategorySlug(p) === props.categorySlug)
     .sort((a, b) => a.price - b.price)
 
   if (categoryProducts.length === 0) return []

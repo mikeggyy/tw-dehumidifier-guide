@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { ChevronRight, Building2 } from 'lucide-vue-next'
 import { useProducts } from '~/composables/useProducts'
 import { formatPrice, getDisplayBrand } from '~/utils/product'
+import { getProductCategorySlug } from '~/types'
 
 const props = defineProps<{
   currentProduct: any
@@ -21,7 +22,7 @@ const sameBrandProducts = computed(() => {
   return allProducts.value
     .filter(p => {
       // Same category
-      if ((p as any).category_slug !== props.categorySlug) return false
+      if (getProductCategorySlug(p) !== props.categorySlug) return false
       // Same brand
       if (p.brand !== currentBrand) return false
       // Not the same product

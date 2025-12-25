@@ -1,4 +1,5 @@
 import { useHead } from '#imports'
+import { structuredDataLogger as logger } from '~/utils/logger'
 
 // 網站基本設定
 const SITE_URL = 'https://www.jiadian-tw.work'
@@ -35,7 +36,7 @@ export function useStructuredData() {
   const setProductStructuredData = (product: ProductData) => {
     // 防護：確保必要欄位存在
     if (!product.name || !product.price) {
-      console.warn('Product structured data missing required fields:', { name: product.name, price: product.price })
+      logger.warn('Product structured data missing required fields:', { name: product.name, price: product.price })
       return
     }
 
@@ -203,16 +204,19 @@ export function useStructuredData() {
   }
 
   // ItemList structured data (for category pages)
-  // 使用簡化版 ListItem，避免 Google 驗證嵌套 Product 的完整性
+  // 擴展版本：包含更多商品資訊以提高 Rich Snippet 機率
   const setItemListStructuredData = (items: { name: string; url: string; image: string; price: number }[]) => {
+    // 增加到前 20 個商品以提升 SEO 效果
     const jsonLd = {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      itemListElement: items.slice(0, 10).map((item, index) => ({
+      numberOfItems: items.length,
+      itemListElement: items.slice(0, 20).map((item, index) => ({
         '@type': 'ListItem',
         position: index + 1,
         name: item.name,
         url: item.url,
+        image: item.image,
       })),
     }
 
@@ -227,13 +231,114 @@ export function useStructuredData() {
     })
   }
 
+  // AggregateOffer structured data (for category pages - 價格範圍)
+  const setAggregateOfferStructuredData = (categoryName: string, items: { price: number }[]) => {
+    if (items.length === 0) return
+
+    // 使用迴圈計算價格範圍，避免 Math.min/max 的 stack overflow 風險
+    let minPrice = Infinity
+    let maxPrice = -Infinity
+    for (const item of items) {
+      if (item.price < minPrice) minPrice = item.price
+      if (item.price > maxPrice) maxPrice = item.price
+    }
+
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'AggregateOffer',
+      priceCurrency: 'TWD',
+      lowPrice: minPrice,
+      highPrice: maxPrice,
+      offerCount: items.length,
+      itemCondition: 'https://schema.org/NewCondition',
+    }
+
+    useHead({
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(jsonLd),
+          key: 'aggregate-offer-jsonld',
+        },
+      ],
+    })
+  }
+
+  // Brand structured data (for brand pages)
+  interface BrandData {
+    name: string
+    slug: string
+    description?: string
+    country?: string
+    officialUrl?: string
+    productCount: number
+    categories: string[]
+  }
+
+  const setBrandStructuredData = (brand: BrandData) => {
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'Brand',
+      name: brand.name,
+      url: `${SITE_URL}/brand/${brand.slug}`,
+      description: brand.description || `${brand.name} 家電商品比較`,
+      logo: brand.officialUrl ? undefined : `${SITE_URL}/icon-192.png`,
+      sameAs: brand.officialUrl ? [brand.officialUrl] : [],
+    }
+
+    useHead({
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(jsonLd),
+          key: 'brand-jsonld',
+        },
+      ],
+    })
+  }
+
+  // CollectionPage structured data (for brand pages - 商品集合頁)
+  interface CollectionPageData {
+    name: string
+    description: string
+    url: string
+    numberOfItems: number
+  }
+
+  const setCollectionPageStructuredData = (data: CollectionPageData) => {
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: data.name,
+      description: data.description,
+      url: data.url,
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: data.numberOfItems,
+      },
+    }
+
+    useHead({
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(jsonLd),
+          key: 'collection-page-jsonld',
+        },
+      ],
+    })
+  }
+
   return {
     setProductStructuredData,
     setBreadcrumbStructuredData,
     setWebsiteStructuredData,
     setOrganizationStructuredData,
     setItemListStructuredData,
+    setAggregateOfferStructuredData,
     setFAQStructuredData,
+    setBrandStructuredData,
+    setCollectionPageStructuredData,
     SITE_URL,
     SITE_NAME,
   }

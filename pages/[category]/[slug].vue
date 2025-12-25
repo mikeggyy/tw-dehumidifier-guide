@@ -37,6 +37,7 @@ import {
 } from 'lucide-vue-next'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
+import { getProductSpec } from '~/types'
 import { useRoute, useHead, createError, useRouter, navigateTo } from '#imports'
 import { useToast } from '~/composables/useToast'
 import { useSwipe } from '~/composables/useSwipe'
@@ -87,7 +88,7 @@ const categoryConfig = computed(() => getCategoryConfig(categorySlug.value))
 
 // 相關商品導航（同品類）
 const categoryProducts = computed(() => {
-  return allProducts.value.filter(p => (p as any).category_slug === categorySlug.value)
+  return allProducts.value.filter(p => getProductSpec<string>(p, 'category_slug') === categorySlug.value)
 })
 
 const currentIndex = computed(() => {
@@ -175,8 +176,9 @@ const ctaInfo = computed(() => getOptimizedCtaText(discountPercent.value, saving
 
 // Price update time
 const priceUpdateTime = computed(() => {
-  const p = product.value as any
-  return formatRelativeTime(p?.updated_at)
+  if (!product.value) return null
+  const updatedAt = getProductSpec<string>(product.value, 'updated_at')
+  return formatRelativeTime(updatedAt ?? undefined)
 })
 
 // 庫存狀態指示器
@@ -286,7 +288,7 @@ const displaySpecs = computed(() => {
   return categoryConfig.value.specs
     .filter(spec => spec.showInDetail)
     .map(spec => {
-      const value = (product.value as any).specs?.[spec.key] ?? (product.value as any)[spec.key]
+      const value = getProductSpec(product.value!, spec.key)
       return {
         ...spec,
         value,
@@ -345,17 +347,24 @@ const productFeatures = computed(() => {
 
   // 否則根據規格自動生成亮點
   const features: string[] = []
-  const p = product.value as any
+  const p = product.value
 
   if (categorySlug.value === 'dehumidifier') {
-    if (p.daily_capacity >= 16) features.push('大除濕量設計')
-    if (p.noise_level && p.noise_level <= 40) features.push('超靜音運轉')
-    if (p.energy_efficiency === 1) features.push('一級能效省電')
-    if (p.tank_capacity >= 4) features.push('大容量水箱')
+    const dailyCap = getProductSpec<number>(p, 'daily_capacity')
+    const noiseVal = getProductSpec<number>(p, 'noise_level')
+    const energyEff = getProductSpec<number>(p, 'energy_efficiency')
+    const tankCap = getProductSpec<number>(p, 'tank_capacity')
+    if (dailyCap && dailyCap >= 16) features.push('大除濕量設計')
+    if (noiseVal && noiseVal <= 40) features.push('超靜音運轉')
+    if (energyEff === 1) features.push('一級能效省電')
+    if (tankCap && tankCap >= 4) features.push('大容量水箱')
   } else if (categorySlug.value === 'air-purifier') {
-    if (p.specs?.cadr >= 400) features.push('高效淨化')
-    if (p.specs?.coverage >= 15) features.push('大坪數適用')
-    if (p.specs?.filter_type?.includes('HEPA')) features.push('HEPA 濾網')
+    const cadr = getProductSpec<number>(p, 'cadr')
+    const coverage = getProductSpec<number>(p, 'coverage')
+    const filterType = getProductSpec<string>(p, 'filter_type')
+    if (cadr && cadr >= 400) features.push('高效淨化')
+    if (coverage && coverage >= 15) features.push('大坪數適用')
+    if (filterType?.includes('HEPA')) features.push('HEPA 濾網')
   }
 
   if (discountPercent.value && discountPercent.value >= 20) {
@@ -420,7 +429,7 @@ if (product.value) {
     originalPrice: product.value.original_price || undefined,
     url: pageUrl,
     category: categoryConfig.value?.name,
-    inStock: (product.value as any).in_stock !== false,
+    inStock: getProductSpec<boolean>(product.value, 'in_stock') !== false,
   })
 
   // Breadcrumb Schema
@@ -446,16 +455,16 @@ const CategoryIcon = computed(() => categoryIcons[categorySlug.value] || Droplet
 
 // 除濕量視覺化 (500ml 礦泉水瓶數)
 const waterBottles = computed(() => {
-  const p = product.value as any
-  const capacity = p?.daily_capacity ?? p?.specs?.daily_capacity
+  if (!product.value) return 0
+  const capacity = getProductSpec<number>(product.value, 'daily_capacity')
   if (!capacity) return 0
   return Math.round(capacity * 2) // 1L = 2 瓶 500ml
 })
 
 // 噪音比較參考
 const noiseComparison = computed(() => {
-  const p = product.value as any
-  const level = p?.noise_level ?? p?.specs?.noise_level
+  if (!product.value) return null
+  const level = getProductSpec<number>(product.value, 'noise_level')
   if (!level) return null
   if (level <= 30) return { text: '比圖書館還安靜', icon: '📚', color: 'text-green-600' }
   if (level <= 40) return { text: '如同輕聲細語', icon: '🤫', color: 'text-green-500' }
@@ -469,8 +478,8 @@ const dailyHours = ref(8)
 const electricityRate = 4.5 // 台電平均電價 (2024年調整後約 4.5 元/度)
 
 const monthlyElectricity = computed(() => {
-  const p = product.value as any
-  const watts = p?.power_consumption ?? p?.specs?.power_consumption
+  if (!product.value) return null
+  const watts = getProductSpec<number>(product.value, 'power_consumption')
   if (!watts) return null
   const dailyKwh = (watts * dailyHours.value) / 1000 // 每天耗電度數
   const monthlyKwh = dailyKwh * 30
@@ -480,9 +489,9 @@ const monthlyElectricity = computed(() => {
 
 // 適用空間情境
 const roomSuitability = computed(() => {
-  const p = product.value as any
-  const capacity = p?.daily_capacity ?? p?.specs?.daily_capacity ?? 0
-  const noise = p?.noise_level ?? p?.specs?.noise_level ?? 50
+  if (!product.value) return []
+  const capacity = getProductSpec<number>(product.value, 'daily_capacity') ?? 0
+  const noise = getProductSpec<number>(product.value, 'noise_level') ?? 50
   return [
     {
       name: '臥室',
@@ -507,14 +516,14 @@ const roomSuitability = computed(() => {
 
 // 取得除濕量數值
 const dailyCapacity = computed(() => {
-  const p = product.value as any
-  return p?.daily_capacity ?? p?.specs?.daily_capacity ?? null
+  if (!product.value) return null
+  return getProductSpec<number>(product.value, 'daily_capacity')
 })
 
 // 取得噪音數值
 const noiseLevel = computed(() => {
-  const p = product.value as any
-  return p?.noise_level ?? p?.specs?.noise_level ?? null
+  if (!product.value) return null
+  return getProductSpec<number>(product.value, 'noise_level')
 })
 
 // 品類主題色
@@ -581,20 +590,20 @@ const priceAlternatives = computed(() => {
 
 // 適用坪數
 const coverageArea = computed(() => {
-  const p = product.value as any
-  return p?.specs?.coverage_area ?? p?.coverage_area ?? null
+  if (!product.value) return null
+  return getProductSpec<number>(product.value, 'coverage_area')
 })
 
 // CADR 值
 const cadrValue = computed(() => {
-  const p = product.value as any
-  return p?.specs?.cadr ?? p?.cadr ?? null
+  if (!product.value) return null
+  return getProductSpec<number>(product.value, 'cadr')
 })
 
 // 濾網類型
 const filterType = computed(() => {
-  const p = product.value as any
-  return p?.specs?.filter_type ?? p?.filter_type ?? null
+  if (!product.value) return null
+  return getProductSpec<string>(product.value, 'filter_type')
 })
 
 // CADR 等級評估
@@ -663,35 +672,41 @@ const airChangeRate = computed(() => {
 const prosAndCons = computed(() => {
   if (!product.value) return { pros: [], cons: [] }
 
-  const p = product.value as any
+  const p = product.value
   const pros: string[] = []
   const cons: string[] = []
 
+  // 取得通用規格值
+  const energyEff = getProductSpec<number>(p, 'energy_efficiency')
+  const dailyCap = getProductSpec<number>(p, 'daily_capacity')
+  const noiseVal = getProductSpec<number>(p, 'noise_level')
+  const tankCap = getProductSpec<number>(p, 'tank_capacity')
+
   if (categorySlug.value === 'dehumidifier') {
     // 優點分析
-    if (p.energy_efficiency === 1) pros.push('一級能效，省電環保')
-    else if (p.energy_efficiency === 2) pros.push('二級能效，節能表現佳')
+    if (energyEff === 1) pros.push('一級能效，省電環保')
+    else if (energyEff === 2) pros.push('二級能效，節能表現佳')
 
-    if (p.daily_capacity >= 16) pros.push('大除濕量，適合大坪數')
-    else if (p.daily_capacity >= 12) pros.push('中大除濕量，多數空間適用')
+    if (dailyCap && dailyCap >= 16) pros.push('大除濕量，適合大坪數')
+    else if (dailyCap && dailyCap >= 12) pros.push('中大除濕量，多數空間適用')
 
-    if (p.noise_level && p.noise_level <= 38) pros.push('超靜音設計，適合臥室')
-    else if (p.noise_level && p.noise_level <= 42) pros.push('低噪音運轉')
+    if (noiseVal && noiseVal <= 38) pros.push('超靜音設計，適合臥室')
+    else if (noiseVal && noiseVal <= 42) pros.push('低噪音運轉')
 
-    if (p.tank_capacity >= 5) pros.push('大容量水箱，減少倒水次數')
-    else if (p.tank_capacity >= 4) pros.push('水箱容量適中')
+    if (tankCap && tankCap >= 5) pros.push('大容量水箱，減少倒水次數')
+    else if (tankCap && tankCap >= 4) pros.push('水箱容量適中')
 
     if (discountPercent.value && discountPercent.value >= 15) pros.push('目前折扣優惠大')
 
     // 缺點/注意事項
-    if (p.energy_efficiency && p.energy_efficiency >= 4) cons.push('能源效率較低，長期電費較高')
+    if (energyEff && energyEff >= 4) cons.push('能源效率較低，長期電費較高')
 
-    if (p.noise_level && p.noise_level >= 50) cons.push('運轉聲音較大')
-    else if (p.noise_level && p.noise_level >= 45) cons.push('噪音值中等，睡眠時可能受影響')
+    if (noiseVal && noiseVal >= 50) cons.push('運轉聲音較大')
+    else if (noiseVal && noiseVal >= 45) cons.push('噪音值中等，睡眠時可能受影響')
 
-    if (p.daily_capacity && p.daily_capacity < 8) cons.push('除濕量較小，適合小空間')
+    if (dailyCap && dailyCap < 8) cons.push('除濕量較小，適合小空間')
 
-    if (p.tank_capacity && p.tank_capacity < 3) cons.push('水箱較小，需頻繁倒水')
+    if (tankCap && tankCap < 3) cons.push('水箱較小，需頻繁倒水')
 
     if (!p.features || p.features.length === 0) cons.push('功能較基本')
 
@@ -713,21 +728,24 @@ const prosAndCons = computed(() => {
 
   } else if (categorySlug.value === 'air-conditioner') {
     // 冷氣優缺點
-    const cspf = p.specs?.cspf ?? p.cspf
-    const btu = p.specs?.cooling_capacity ?? p.cooling_capacity
+    const cspf = getProductSpec<number>(p, 'cspf')
+    const btu = getProductSpec<number>(p, 'cooling_capacity')
 
     if (cspf && cspf >= 6) pros.push('高能效比，省電效果佳')
     if (btu && btu >= 10000) pros.push('大冷房能力，快速降溫')
-    if (p.energy_efficiency === 1) pros.push('一級能效，最省電')
+    if (energyEff === 1) pros.push('一級能效，最省電')
 
     if (cspf && cspf < 4.5) cons.push('能效比較低，長期電費較高')
 
   } else if (categorySlug.value === 'fan') {
     // 電風扇優缺點
-    const dcMotor = p.specs?.motor_type === 'DC' || p.name?.includes('DC')
+    const motorType = getProductSpec<string>(p, 'motor_type')
+    const windModes = getProductSpec<number>(p, 'wind_modes')
+    const remoteControl = getProductSpec<boolean>(p, 'remote_control')
+    const dcMotor = motorType === 'DC' || p.name?.includes('DC')
     if (dcMotor) pros.push('DC 直流馬達，省電靜音')
-    if (p.specs?.wind_modes >= 10) pros.push('多段風速調節')
-    if (p.specs?.remote_control) pros.push('附遙控器，操作方便')
+    if (windModes && windModes >= 10) pros.push('多段風速調節')
+    if (remoteControl) pros.push('附遙控器，操作方便')
 
     if (!dcMotor) cons.push('AC 馬達，耗電量較高')
   }
@@ -745,45 +763,51 @@ const expandedFaq = ref<number | null>(null)
 const productFAQ = computed(() => {
   if (!product.value) return []
 
-  const p = product.value as any
+  const p = product.value
   const faqs: { question: string; answer: string }[] = []
+
+  // 取得規格值
+  const dailyCap = getProductSpec<number>(p, 'daily_capacity')
+  const tankCap = getProductSpec<number>(p, 'tank_capacity')
+  const noiseVal = getProductSpec<number>(p, 'noise_level')
+  const energyEff = getProductSpec<number>(p, 'energy_efficiency')
 
   if (categorySlug.value === 'dehumidifier') {
     faqs.push({
       question: '這款除濕機適合幾坪的空間？',
-      answer: p.daily_capacity >= 16
-        ? `日除濕量 ${p.daily_capacity}L，建議適用於 12-20 坪的空間，如客廳或整層住家。`
-        : p.daily_capacity >= 10
-        ? `日除濕量 ${p.daily_capacity}L，建議適用於 6-12 坪的空間，如臥室或小客廳。`
-        : `日除濕量 ${p.daily_capacity}L，建議適用於 6 坪以下的小空間，如衣帽間或浴室。`
+      answer: dailyCap && dailyCap >= 16
+        ? `日除濕量 ${dailyCap}L，建議適用於 12-20 坪的空間，如客廳或整層住家。`
+        : dailyCap && dailyCap >= 10
+        ? `日除濕量 ${dailyCap}L，建議適用於 6-12 坪的空間，如臥室或小客廳。`
+        : `日除濕量 ${dailyCap || 0}L，建議適用於 6 坪以下的小空間，如衣帽間或浴室。`
     })
 
     faqs.push({
       question: '水箱多久需要倒一次？',
-      answer: p.tank_capacity
-        ? `水箱容量 ${p.tank_capacity}L，以日除濕量 ${p.daily_capacity || 10}L 計算，約 ${Math.round((p.tank_capacity / (p.daily_capacity || 10)) * 24)} 小時需要倒一次。建議連接排水管可 24 小時連續除濕。`
+      answer: tankCap
+        ? `水箱容量 ${tankCap}L，以日除濕量 ${dailyCap || 10}L 計算，約 ${Math.round((tankCap / (dailyCap || 10)) * 24)} 小時需要倒一次。建議連接排水管可 24 小時連續除濕。`
         : '建議連接排水管以實現 24 小時連續除濕，免去倒水麻煩。'
     })
 
     faqs.push({
       question: '運轉時會很吵嗎？可以放臥室嗎？',
-      answer: p.noise_level
-        ? p.noise_level <= 38
-          ? `噪音值 ${p.noise_level}dB，非常安靜，適合放在臥室使用。`
-          : p.noise_level <= 45
-          ? `噪音值 ${p.noise_level}dB，運轉聲音適中，建議睡眠時使用靜音模式。`
-          : `噪音值 ${p.noise_level}dB，運轉聲較明顯，建議放在客廳等開放空間。`
+      answer: noiseVal
+        ? noiseVal <= 38
+          ? `噪音值 ${noiseVal}dB，非常安靜，適合放在臥室使用。`
+          : noiseVal <= 45
+          ? `噪音值 ${noiseVal}dB，運轉聲音適中，建議睡眠時使用靜音模式。`
+          : `噪音值 ${noiseVal}dB，運轉聲較明顯，建議放在客廳等開放空間。`
         : '建議選購有靜音模式的機型，夜間使用更舒適。'
     })
 
     faqs.push({
       question: '這款除濕機省電嗎？',
-      answer: p.energy_efficiency === 1
+      answer: energyEff === 1
         ? '一級能效認證，是市面上最省電的等級，長期使用電費更經濟。'
-        : p.energy_efficiency === 2
+        : energyEff === 2
         ? '二級能效，節能表現不錯，日常使用電費合理。'
-        : p.energy_efficiency
-        ? `${p.energy_efficiency} 級能效，建議選購一、二級能效機型更省電。`
+        : energyEff
+        ? `${energyEff} 級能效，建議選購一、二級能效機型更省電。`
         : '購買前請確認能效等級，一、二級能效最省電。'
     })
 
@@ -860,11 +884,11 @@ if (product.value && productFAQ.value.length > 0) {
 const productDimensions = computed(() => {
   if (!product.value) return null
 
-  const p = product.value as any
+  const p = product.value
 
   // 嘗試從不同欄位取得尺寸資訊
-  const dimensions = p.specs?.dimensions || p.dimensions
-  const weight = p.specs?.weight || p.weight
+  const dimensions = getProductSpec<string>(p, 'dimensions')
+  const weight = getProductSpec<number>(p, 'weight')
 
   // 根據品類給予預估尺寸（如果沒有實際資料）
   let width = 0, height = 0, depth = 0, productWeight = 0
@@ -1191,7 +1215,7 @@ const productDimensions = computed(() => {
               <div class="h-3 bg-gradient-to-r from-green-300 via-yellow-300 to-red-300 rounded-full relative shadow-inner">
                 <div
                   class="absolute w-4 h-4 bg-white border-2 border-gray-700 rounded-full -top-0.5 transform -translate-x-1/2 shadow-lg transition-all duration-1000 ease-out animate-slide-in"
-                  :style="{ left: `${Math.min(Math.max((noiseLevel - 20) / 40 * 100, 0), 100)}%` }"
+                  :style="{ left: `${Math.min(Math.max(((noiseLevel ?? 0) - 20) / 40 * 100, 0), 100)}%` }"
                 >
                   <div class="absolute inset-0.5 bg-gray-700 rounded-full"></div>
                 </div>

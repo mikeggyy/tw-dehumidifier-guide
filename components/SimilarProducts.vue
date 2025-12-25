@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { ChevronRight, Sparkles } from 'lucide-vue-next'
 import { useProducts } from '~/composables/useProducts'
 import { formatPrice } from '~/utils/product'
+import { getProductCategorySlug } from '~/types'
 
 const props = defineProps<{
   currentProduct: any
@@ -22,7 +23,7 @@ const similarProducts = computed(() => {
   return allProducts.value
     .filter(p => {
       // Same category
-      if ((p as any).category_slug !== props.categorySlug) return false
+      if (getProductCategorySlug(p) !== props.categorySlug) return false
       // Not the same product
       if (p.id === props.currentProduct.id) return false
       // Similar price range

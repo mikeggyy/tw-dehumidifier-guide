@@ -17,6 +17,7 @@ import {
   AlertCircle,
 } from 'lucide-vue-next'
 import type { FilterState, SortOption, Dehumidifier } from '~/types'
+import { getProductCategorySlug } from '~/types'
 import ProductCard from '~/components/ProductCard.vue'
 import ProductCardSkeleton from '~/components/ProductCardSkeleton.vue'
 import OnboardingTour from '~/components/OnboardingTour.vue'
@@ -25,6 +26,7 @@ import ScenarioRecommender from '~/components/ScenarioRecommender.vue'
 import FloatingCompareBar from '~/components/category/FloatingCompareBar.vue'
 import { useProducts, useProductsSSR } from '~/composables/useProducts'
 import { useStructuredData } from '~/composables/useStructuredData'
+import { useFavorites } from '~/composables/useFavorites'
 import SiteHeader from '~/components/SiteHeader.vue'
 import { useHead } from '#imports'
 import { useCookieConsent } from '~/composables/useCookieConsent'
@@ -83,17 +85,23 @@ const searchQuery = ref('')
 const showScrollTop = ref(false)
 
 const handleScroll = () => {
-  showScrollTop.value = window.scrollY > 500
+  if (typeof window !== 'undefined') {
+    showScrollTop.value = window.scrollY > 500
+  }
 }
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+// 收藏功能 - 使用統一的 composable
+const { favorites, init: initFavorites, toggleFavorite, isFavorite } = useFavorites()
+const showFavoritesOnly = ref(false)
+
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  // 載入收藏清單
-  loadFavorites()
+  // 初始化收藏清單
+  initFavorites()
 })
 
 // 同品類比較提示訊息 (需要在 onUnmounted 前宣告)
@@ -106,39 +114,6 @@ onUnmounted(() => {
     clearTimeout(compareCategoryWarningTimer.value)
   }
 })
-
-// 收藏功能
-const favorites = ref<Set<string>>(new Set())
-const showFavoritesOnly = ref(false)
-
-const loadFavorites = () => {
-  if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('dehumidifier-favorites')
-    if (saved) {
-      favorites.value = new Set(JSON.parse(saved))
-    }
-  }
-}
-
-const saveFavorites = () => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('dehumidifier-favorites', JSON.stringify([...favorites.value]))
-  }
-}
-
-const toggleFavorite = (productId: string) => {
-  if (favorites.value.has(productId)) {
-    favorites.value.delete(productId)
-  } else {
-    favorites.value.add(productId)
-  }
-  favorites.value = new Set(favorites.value) // 觸發響應式更新
-  saveFavorites()
-}
-
-const isFavorite = (productId: string): boolean => {
-  return favorites.value.has(productId)
-}
 
 // Modal states
 const showCompareModal = ref(false)
@@ -189,7 +164,7 @@ const removeFromCompare = (id: string) => {
 // 取得比較清單的品類 (以第一個商品為準)
 const compareCategorySlug = computed(() => {
   if (compareList.value.length === 0) return 'dehumidifier'
-  return (compareList.value[0] as any).category_slug || 'dehumidifier'
+  return getProductCategorySlug(compareList.value[0])
 })
 
 // 資料已經在 SSR 階段載入完成
@@ -222,7 +197,7 @@ const displayedProducts = computed(() => {
 
   // 只顯示收藏
   if (showFavoritesOnly.value) {
-    filtered = filtered.filter(p => favorites.value.has(p.id))
+    filtered = filtered.filter(p => isFavorite(p.id))
   }
 
   return sortProducts(filtered, sortBy.value)
@@ -230,7 +205,7 @@ const displayedProducts = computed(() => {
 
 // 實際存在的收藏數量（排除已下架商品）
 const validFavoritesCount = computed(() => {
-  return allProducts.value.filter(p => favorites.value.has(p.id)).length
+  return allProducts.value.filter(p => isFavorite(p.id)).length
 })
 
 // 搜尋建議（當無結果時）
@@ -304,20 +279,15 @@ const sortOptions = [
   { value: 'price_desc', label: '價格：高到低' },
 ]
 
-// 取得商品的分類 slug
-const getProductCategorySlug = (product: Dehumidifier): string => {
-  return (product as any).category_slug || 'dehumidifier'
-}
-
 // 根據品類計算商品數量
 const getCategoryCount = (slug: string): number => {
   if (slug === 'dehumidifier') {
     // 除濕機：category_slug 為 dehumidifier 或沒有 category_slug 的舊資料
     return allProducts.value.filter(p =>
-      (p as any).category_slug === 'dehumidifier' || !(p as any).category_slug
+      getProductCategorySlug(p) === 'dehumidifier'
     ).length
   }
-  return allProducts.value.filter(p => (p as any).category_slug === slug).length
+  return allProducts.value.filter(p => getProductCategorySlug(p) === slug).length
 }
 
 // 品類導覽資料

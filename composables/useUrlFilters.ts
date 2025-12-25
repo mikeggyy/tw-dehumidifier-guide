@@ -16,18 +16,41 @@ export function useUrlFilters(defaultPriceRange: { min: number; max: number }) {
   const route = useRoute()
   const router = useRouter()
 
-  // Parse URL query params
+  // 輔助函數：安全解析數字（處理 NaN 和無效值）
+  const parseNumber = (value: unknown, defaultValue: number, min = 0): number => {
+    const num = Number(value)
+    if (Number.isNaN(num) || !Number.isFinite(num)) return defaultValue
+    return Math.max(min, num)
+  }
+
+  // 驗證排序選項
+  const validSortOptions: SortOption[] = ['popularity', 'price_asc', 'price_desc', 'noise_asc', 'capacity_desc', 'discount_desc', 'value_asc']
+  const parseSort = (value: unknown): SortOption => {
+    if (validSortOptions.includes(value as SortOption)) {
+      return value as SortOption
+    }
+    return 'popularity'
+  }
+
+  // Parse URL query params（含輸入驗證）
   const parseUrlFilters = (): Partial<UrlFilterState> => {
     const query = route.query
+
+    // 安全解析價格範圍
+    const priceMin = parseNumber(query.priceMin, defaultPriceRange.min, 0)
+    const priceMax = parseNumber(query.priceMax, defaultPriceRange.max, 0)
 
     return {
       brands: query.brands ? String(query.brands).split(',').filter(Boolean) : [],
       capacityRange: String(query.capacity || 'all'),
-      priceMin: query.priceMin ? Number(query.priceMin) : defaultPriceRange.min,
-      priceMax: query.priceMax ? Number(query.priceMax) : defaultPriceRange.max,
-      sort: (query.sort as SortOption) || 'popularity',
-      q: String(query.q || ''),
-      page: query.page ? Number(query.page) : 1,
+      // 確保 priceMin <= priceMax
+      priceMin: Math.min(priceMin, priceMax),
+      priceMax: Math.max(priceMin, priceMax),
+      sort: parseSort(query.sort),
+      // 限制搜尋字串長度防止 DoS
+      q: String(query.q || '').slice(0, 200),
+      // 頁碼至少為 1
+      page: Math.max(1, Math.floor(parseNumber(query.page, 1, 1))),
     }
   }
 

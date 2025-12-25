@@ -1,4 +1,5 @@
 import { ref, onMounted, onUnmounted } from 'vue'
+import { pwaLogger as logger } from '~/utils/logger'
 
 export function usePWA() {
   const isInstallable = ref(false)
@@ -16,9 +17,9 @@ export function usePWA() {
     if ('serviceWorker' in navigator) {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js')
-        console.log('SW registered:', registration.scope)
+        logger.log('SW registered:', registration.scope)
       } catch (error) {
-        console.error('SW registration failed:', error)
+        logger.error('SW registration failed:', error)
       }
     }
   }

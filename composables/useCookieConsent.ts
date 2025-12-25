@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 export type ConsentStatus = 'pending' | 'accepted' | 'declined'
 
@@ -10,6 +10,8 @@ const consentStatus = ref<ConsentStatus>('pending')
 const showBanner = ref(false)
 
 export function useCookieConsent() {
+  let bannerTimeoutId: ReturnType<typeof setTimeout> | null = null
+
   onMounted(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
@@ -26,9 +28,17 @@ export function useCookieConsent() {
       }
     }
     // Delay showing banner to avoid affecting initial page load
-    setTimeout(() => {
+    bannerTimeoutId = setTimeout(() => {
       showBanner.value = true
     }, 2000)
+  })
+
+  // 清理 timeout 防止記憶體洩漏
+  onUnmounted(() => {
+    if (bannerTimeoutId !== null) {
+      clearTimeout(bannerTimeoutId)
+      bannerTimeoutId = null
+    }
   })
 
   const saveConsent = (status: ConsentStatus) => {

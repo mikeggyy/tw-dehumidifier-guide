@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
-import { X, ExternalLink, Trophy, Lightbulb, Eye, EyeOff, SlidersHorizontal, Camera, Download, Sparkles, ChevronDown, ChevronUp, FileSpreadsheet } from 'lucide-vue-next'
-import type { Dehumidifier } from '~/types'
+import { X, ExternalLink, Trophy, Camera, Eye, EyeOff, ChevronUp, ChevronDown } from 'lucide-vue-next'
+import type { ComparableProduct } from '~/types'
+import { getProductSpec } from '~/types'
 import {
   formatPrice,
   getDiscountPercent as getDiscount,
-  getValueScore as getValueScoreUtil,
   getTrackedAffiliateUrl,
   getOptimizedCtaText,
   getSavingsAmount,
@@ -13,11 +13,16 @@ import {
 import { useAccessibility } from '~/composables/useAccessibility'
 import { useCompareAnalysis, defaultWeights, type WeightConfig } from '~/composables/useCompareAnalysis'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
+import { useProductImage } from '~/composables/useProductImage'
+import { logger } from '~/utils/logger'
 import ShareCompareButton from '~/components/ShareCompareButton.vue'
 import DecisionHelper from '~/components/DecisionHelper.vue'
+import CompareToolbar from '~/components/compare/CompareToolbar.vue'
+import CompareWeightPanel from '~/components/compare/CompareWeightPanel.vue'
+import CompareConclusionPanel from '~/components/compare/CompareConclusionPanel.vue'
 
 const props = defineProps<{
-  products: Dehumidifier[]
+  products: ComparableProduct[]
   categorySlug?: string
 }>()
 
@@ -238,17 +243,17 @@ const emit = defineEmits<{
   remove: [id: string]
 }>()
 
-const getDiscountPercent = (product: Dehumidifier): number | null => getDiscount(product)
+const getDiscountPercent = (product: ComparableProduct): number | null => getDiscount(product)
 
-const getValueScoreNum = (product: Dehumidifier): number | null => {
+const getValueScoreNum = (product: ComparableProduct): number | null => {
   const cpKey = categoryConfig.value?.cpValueSpec
   if (!cpKey) return null
-  const cpValue = (product as any)[cpKey] ?? 0
+  const cpValue = getProductSpec<number>(product, cpKey) ?? 0
   if (cpValue === 0) return null
   return Math.round(product.price / cpValue)
 }
 
-const getValueScore = (product: Dehumidifier): string => {
+const getValueScore = (product: ComparableProduct): string => {
   const score = getValueScoreNum(product)
   if (score === null) return '-'
   const cpKey = categoryConfig.value?.cpValueSpec
@@ -282,8 +287,8 @@ const bestValues = computed(() => {
       if (!spec.showInCompare) continue
 
       const values = products
-        .map(p => (p as any)[spec.key])
-        .filter(v => v !== null && v !== undefined && typeof v === 'number') as number[]
+        .map(p => getProductSpec<number>(p, spec.key))
+        .filter((v): v is number => v !== null && v !== undefined && typeof v === 'number')
 
       if (values.length === 0) continue
 
@@ -311,12 +316,12 @@ const hasAnyData = (key: string): boolean => {
     if (key === 'value') {
       const cpKey = categoryConfig.value?.cpValueSpec
       if (!cpKey) return false
-      const cpValue = (p as any)[cpKey]
+      const cpValue = getProductSpec<number>(p, cpKey)
       return cpValue !== null && cpValue !== undefined && cpValue !== 0
     }
 
     // 通用處理：檢查該 key 是否有值
-    const value = (p as any)[key]
+    const value = getProductSpec(p, key)
     return value !== null && value !== undefined && value !== ''
   })
 }
@@ -328,7 +333,7 @@ const allSpecs = computed(() => {
 
   // 基本規格 (所有品類共用)
   const baseSpecs = [
-    { key: 'price', label: '促銷價', format: (p: Dehumidifier) => `NT$ ${formatPrice(p.price)}` },
+    { key: 'price', label: '促銷價', format: (p: ComparableProduct) => `NT$ ${formatPrice(p.price)}` },
   ]
 
   // 從品類設定取得比較規格
@@ -337,8 +342,8 @@ const allSpecs = computed(() => {
     .map(spec => ({
       key: spec.key,
       label: spec.label,
-      format: (p: Dehumidifier) => {
-        const value = (p as any)[spec.key]
+      format: (p: ComparableProduct) => {
+        const value = getProductSpec(p, spec.key)
         if (value === null || value === undefined) return '-'
 
         // 特殊格式化
@@ -364,9 +369,9 @@ const allSpecs = computed(() => {
   const cpValueSpecs = config?.cpValueSpec ? [{
     key: 'value',
     label: 'CP值（越低越划算）',
-    format: (p: Dehumidifier) => {
+    format: (p: ComparableProduct) => {
       const cpKey = config.cpValueSpec!
-      const cpValue = (p as any)[cpKey]
+      const cpValue = getProductSpec<number>(p, cpKey)
       if (!cpValue || cpValue === 0) return '-'
       const score = Math.round(p.price / cpValue)
       const cpLabel = config.specs.find(s => s.key === cpKey)?.label || cpKey
@@ -390,7 +395,7 @@ const specs = computed(() => {
   return filtered
 })
 
-const isBestValue = (product: Dehumidifier, key: string): boolean => {
+const isBestValue = (product: ComparableProduct, key: string): boolean => {
   const bv = bestValues.value as Record<string, number | null>
 
   // 價格: 越低越好
@@ -405,7 +410,7 @@ const isBestValue = (product: Dehumidifier, key: string): boolean => {
   // 動態規格: 檢查 best_${key}
   const bestKey = `best_${key}`
   if (bv[bestKey] !== null && bv[bestKey] !== undefined) {
-    const productValue = (product as any)[key]
+    const productValue = getProductSpec<number>(product, key)
     return productValue === bv[bestKey]
   }
 
@@ -413,7 +418,7 @@ const isBestValue = (product: Dehumidifier, key: string): boolean => {
 }
 
 // Display brand - hide "Other", try to extract from name
-const getDisplayBrand = (product: Dehumidifier): string => {
+const getDisplayBrand = (product: ComparableProduct): string => {
   const brand = product.brand
   if (brand && brand !== 'Other') return brand
   const match = product.name.match(/【([^】]+)】/)
@@ -444,7 +449,7 @@ const captureScreenshot = async () => {
     link.href = canvas.toDataURL('image/png')
     link.click()
   } catch (error) {
-    console.error('Screenshot failed:', error)
+    logger.error('Screenshot failed:', error)
     alert('截圖失敗，請稍後再試')
   } finally {
     isCapturing.value = false
@@ -489,7 +494,7 @@ const resetWeights = () => {
 }
 
 // 處理決策助手推薦
-const handleRecommendation = (product: Dehumidifier) => {
+const handleRecommendation = (product: ComparableProduct) => {
   // 滾動到該商品
   const index = props.products.findIndex(p => p.id === product.id)
   if (index !== -1) {

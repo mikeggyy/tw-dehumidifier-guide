@@ -65,6 +65,26 @@ useHead({
 </template>
 
 <style>
+/* ========================================
+   Dark Mode Transitions (Smooth Switching)
+   ======================================== */
+
+/* Global transition for dark mode switching */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+
+/* Disable transitions on page load to prevent flash */
+.no-transitions *,
+.no-transitions *::before,
+.no-transitions *::after {
+  transition: none !important;
+}
+
 /* Dark mode base styles */
 .dark {
   color-scheme: dark;

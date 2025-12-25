@@ -97,8 +97,7 @@ export const useProductListShortcuts = (options: {
       key: '?',
       shift: true,
       handler: () => {
-        // Show shortcuts help
-        console.log('Keyboard shortcuts available')
+        // Show shortcuts help - 可在此處添加 modal 顯示快捷鍵說明
       },
       description: '顯示快捷鍵說明'
     }

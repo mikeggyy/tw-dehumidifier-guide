@@ -72,8 +72,12 @@ export const useScrollPosition = () => {
   const clearPosition = (path: string) => {
     if (typeof window === 'undefined') return
 
-    const positions = getStoredPositions().filter(p => p.path !== path)
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(positions))
+    try {
+      const positions = getStoredPositions().filter(p => p.path !== path)
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(positions))
+    } catch {
+      // Storage operation failed, ignore silently
+    }
   }
 
   return {
@@ -106,7 +110,9 @@ export const useAutoSaveScroll = (path?: string) => {
     if (currentPath) {
       savePosition(currentPath)
     }
-    window.removeEventListener('beforeunload', handleBeforeUnload)
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
   })
 
   return { savePosition }

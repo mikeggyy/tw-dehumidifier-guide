@@ -5,13 +5,16 @@ const announcements = ref<string[]>([])
 
 export const useAccessibility = () => {
   // Announce a message to screen readers
-  const announce = (message: string, priority: 'polite' | 'assertive' = 'polite') => {
-    const id = Date.now().toString()
+  // priority 參數保留供未來 ARIA live region 使用
+  const announce = (message: string, _priority: 'polite' | 'assertive' = 'polite') => {
     announcements.value.push(message)
 
-    // Clean up after announcement
+    // Clean up after announcement (短時間 timeout 不需要追蹤清理)
     setTimeout(() => {
-      announcements.value = announcements.value.filter(m => m !== message)
+      const idx = announcements.value.indexOf(message)
+      if (idx > -1) {
+        announcements.value.splice(idx, 1)
+      }
     }, 1000)
   }
 
@@ -29,6 +32,12 @@ export const useAccessibility = () => {
     const focusable = container.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     )
+
+    // 如果沒有可聚焦元素，直接返回空清理函數
+    if (focusable.length === 0) {
+      return () => {}
+    }
+
     const first = focusable[0] as HTMLElement
     const last = focusable[focusable.length - 1] as HTMLElement
 

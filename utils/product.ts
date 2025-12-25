@@ -1,21 +1,43 @@
 import type { Dehumidifier, Product } from '~/types'
+import { productUtilsLogger as logger } from '~/utils/logger'
 
 // ============================================================
 // 聯盟連結追蹤
 // ============================================================
 
+// 有效的追蹤來源類型
+const VALID_TRACKING_SOURCES = [
+  'product_card',
+  'comparison',
+  'detail_page',
+  'shared_compare',
+  'finder',
+  'calculator',
+  'recently_viewed',
+  'quick_preview',
+  'test', // 用於測試
+] as const
+
+export type TrackingSource = typeof VALID_TRACKING_SOURCES[number]
+
 /**
  * 產生帶有追蹤參數的聯盟連結
  * @param url 原始聯盟連結
- * @param source 點擊來源 (product_card, comparison, detail_page 等)
+ * @param source 點擊來源 (必須是有效的 TrackingSource)
  * @param productId 商品 ID (用於追蹤)
  */
 export function getTrackedAffiliateUrl(
   url: string,
-  source: string = 'product_card',
+  source: TrackingSource = 'product_card',
   productId?: string
 ): string {
   if (!url) return ''
+
+  // 驗證 source 是否有效
+  if (!VALID_TRACKING_SOURCES.includes(source)) {
+    logger.warn(`Invalid source: ${source}, using 'product_card'`)
+    source = 'product_card'
+  }
 
   const params = new URLSearchParams({
     utm_source: 'jiadian-tw',

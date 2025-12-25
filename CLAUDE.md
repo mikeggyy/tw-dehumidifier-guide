@@ -11,11 +11,22 @@ This is a Nuxt 3 Programmatic SEO (pSEO) site for comparing home appliance speci
 ## Commands
 
 ```bash
+# Development
 npm run dev       # Start development server (port 3000, kills existing process first)
 npm run dev:fast  # Start dev server without killing existing process
+
+# Build
 npm run build     # Build for production (SSR)
 npm run generate  # Generate static site for deployment
 npm run preview   # Preview production build locally
+
+# Testing
+npm run test           # Run tests in watch mode
+npm run test:run       # Run tests once
+npm run test:coverage  # Run tests with coverage report
+
+# Single test file
+npx vitest run tests/useProducts.test.ts
 ```
 
 ## Known Windows Issue
@@ -76,12 +87,36 @@ tw-dehumidifier-scraper/
 - **No State Management**: All filtering/sorting lives in composables, no Vuex/Pinia
 
 ### Auto-Imports Disabled
-Due to Windows path bugs, Nuxt auto-imports are disabled in `nuxt.config.ts`. All Vue/Nuxt imports must be explicit:
+Due to Windows path bugs, Nuxt auto-imports are disabled in `nuxt.config.ts`. All imports must be explicit.
+
+**Vue core:**
 ```typescript
-import { ref, computed } from 'vue'
-import { useRoute, useHead, createError } from '#imports'
-import { useProducts } from '~/composables/useProducts'
+import { ref, computed, watch, watchEffect, onMounted, onUnmounted, nextTick } from 'vue'
+```
+
+**Nuxt functions:**
+```typescript
+import { useRoute, useRouter, useHead, useSeoMeta, useRuntimeConfig, useAsyncData, createError, navigateTo } from '#imports'
+```
+
+**Project composables:**
+```typescript
+import { useProducts, useProductsSSR } from '~/composables/useProducts'
+import { useCategoryConfig, categoryConfigs, categoryList } from '~/composables/useCategoryConfig'
+import { useCompare } from '~/composables/useCompare'
+import { useFavorites } from '~/composables/useFavorites'
+```
+
+**Types:**
+```typescript
+import type { Product, Dehumidifier, Category, SortOption, FilterState } from '~/types'
+import type { SpecConfig, CategoryConfig, QuickTag } from '~/composables/useCategoryConfig'
+```
+
+**Components (must be explicitly imported):**
+```typescript
 import ProductCard from '~/components/ProductCard.vue'
+import ProductFilters from '~/components/category/ProductFilters.vue'
 ```
 
 ### Multi-Category System
@@ -116,6 +151,23 @@ import ProductCard from '~/components/ProductCard.vue'
 - `composables/useCompare.ts` - 商品比較功能 (localStorage 持久化)
 - `composables/useFavorites.ts` - 收藏功能
 - `composables/useDarkMode.ts` - 深色模式切換
+- `composables/useStructuredData.ts` - SEO Schema.org 結構化資料
+- `composables/useUrlFilters.ts` - URL 篩選狀態同步
+
+**useProducts API:**
+```typescript
+const {
+  allProducts,       // Ref<Product[]> - 所有商品
+  isLoading,         // Ref<boolean> - 載入狀態
+  loadProducts,      // () => Promise<Product[]>
+  getAllBrands,      // () => string[]
+  getPriceRange,     // () => { min, max }
+  filterProducts,    // (filters: FilterState) => Product[]
+  sortProducts,      // (products, option) => Product[]
+  getProductBySlug,  // (slug: string) => Product | undefined
+  getProductSlug,    // (product: Product) => string
+} = useProducts()
+```
 
 **Data**
 - `data/*.json` - 各品類商品資料 (Supabase 備援用)
@@ -126,6 +178,29 @@ import ProductCard from '~/components/ProductCard.vue'
 - **Icons**: 使用 `lucide-vue-next` (e.g., `<Droplets />`, `<Wind />`)
 - **Styling**: Tailwind CSS with dark mode support
 - **Component imports**: 必須明確 import，沒有 auto-import
+
+**Category icons:**
+- 除濕機: `Droplets`
+- 空氣清淨機: `Wind`
+- 冷氣: `Snowflake`
+- 電暖器: `Flame`
+- 電風扇: `Fan`
+
+**Compare Components** (`components/compare/`):
+- `CompareDesktopTable.vue` - 桌面版比較表
+- `CompareMobileCard.vue` - 手機版比較卡片
+- `CompareProductCard.vue` - 商品卡片
+- `CompareSpecRow.vue` - 規格行
+- `CompareToolbar.vue` - 工具列
+- `CompareWeightPanel.vue` - 權重設定面板
+- `CompareConclusionPanel.vue` - 結論面板
+
+**Finder Components** (各品類專屬推薦器):
+- `ProductFinder.vue` - 除濕機 Finder
+- `AirPurifierFinder.vue` - 空氣清淨機 Finder
+- `AirConditionerFinder.vue` - 冷氣 Finder
+- `HeaterFinder.vue` - 電暖器 Finder
+- `FanFinder.vue` - 電風扇 Finder
 
 ## Affiliate Integration (聯盟行銷)
 

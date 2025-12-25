@@ -1,4 +1,5 @@
 import { ref, onMounted } from 'vue'
+import { recentlyViewedLogger as logger } from '~/utils/logger'
 
 export interface RecentProduct {
   id: string
@@ -25,7 +26,7 @@ export const useRecentlyViewed = () => {
         recentlyViewed.value = JSON.parse(stored)
       }
     } catch (e) {
-      console.error('Failed to load recently viewed:', e)
+      logger.error('Failed to load recently viewed:', e)
     }
   }
 
@@ -34,7 +35,7 @@ export const useRecentlyViewed = () => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(recentlyViewed.value))
     } catch (e) {
-      console.error('Failed to save recently viewed:', e)
+      logger.error('Failed to save recently viewed:', e)
     }
   }
 

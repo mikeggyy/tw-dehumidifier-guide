@@ -5,6 +5,7 @@ import type { Dehumidifier } from '~/types'
 import { useProducts } from '~/composables/useProducts'
 import { useProductBadges } from '~/composables/useProductBadges'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
+import { useProductImage } from '~/composables/useProductImage'
 import ProductQuickPreview from '~/components/ProductQuickPreview.vue'
 import ProductBadge from '~/components/ProductBadge.vue'
 import PriceChangeIndicator from '~/components/PriceChangeIndicator.vue'
@@ -45,16 +46,8 @@ const props = withDefaults(defineProps<{
 const showPreview = ref(false)
 const previewTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
-// Image fallback
-const imageError = ref(false)
-const handleImageError = () => {
-  imageError.value = true
-}
-const fallbackImage = computed(() => {
-  // 使用品牌名稱生成 placeholder
-  const brandName = props.product.brand || 'Product'
-  return `https://placehold.co/300x300/e2e8f0/64748b?text=${encodeURIComponent(brandName)}`
-})
+// 使用 useProductImage 處理圖片載入和 fallback
+const { imageError, handleImageError, fallbackImage } = useProductImage(props.product.brand)
 
 const handleMouseEnter = () => {
   previewTimer.value = setTimeout(() => {
@@ -106,16 +99,17 @@ const keySpecs = computed(() => {
   const config = categoryConfig.value
   if (!config?.keySpecs) return []
 
-  const product = props.product as any
-  const specs = product.specs || {}
+  const product = props.product
+  const specs = (product as { specs?: Record<string, unknown> }).specs || {}
 
   return config.keySpecs
     .map(key => {
       const specConfig = config.specs.find(s => s.key === key)
       if (!specConfig) return null
 
-      // 從 product 或 specs 中取值
-      let value = product[key] ?? specs[key]
+      // 從 product 或 specs 中取值（使用類型安全的方式）
+      const productRecord = product as unknown as Record<string, unknown>
+      const value = productRecord[key] ?? specs[key]
       if (value === null || value === undefined) return null
 
       return {
@@ -150,7 +144,7 @@ const trackedAffiliateUrl = computed(() =>
 
 // Price update time
 const priceUpdateTime = computed(() => {
-  const product = props.product as any
+  const product = props.product as { updated_at?: string }
   return formatRelativeTime(product.updated_at)
 })
 
@@ -172,15 +166,19 @@ const escapeHtml = (text: string): string => {
   return text.replace(/[&<>"']/g, (char) => map[char])
 }
 
-// Search highlighting with XSS protection
-const highlightText = (text: string): string => {
-  if (!props.searchQuery || props.searchQuery.length < 2) return escapeHtml(text)
-  // Escape HTML first, then apply highlighting
-  const escapedText = escapeHtml(text)
+// Pre-compiled regex pattern for search highlighting (避免重複編譯)
+const highlightRegex = computed(() => {
+  if (!props.searchQuery || props.searchQuery.length < 2) return null
   const escapedQuery = escapeHtml(props.searchQuery)
   const queryForRegex = escapedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const regex = new RegExp(`(${queryForRegex})`, 'gi')
-  return escapedText.replace(regex, '<mark class="bg-yellow-200 text-gray-900 px-0.5 rounded">$1</mark>')
+  return new RegExp(`(${queryForRegex})`, 'gi')
+})
+
+// Search highlighting with XSS protection
+const highlightText = (text: string): string => {
+  const escapedText = escapeHtml(text)
+  if (!highlightRegex.value) return escapedText
+  return escapedText.replace(highlightRegex.value, '<mark class="bg-yellow-200 text-gray-900 px-0.5 rounded">$1</mark>')
 }
 
 const highlightedName = computed(() => highlightText(props.product.name))
@@ -259,10 +257,12 @@ const highlightedBrand = computed(() => highlightText(displayBrand.value))
 
     <!-- Content - 響應式間距 -->
     <div class="p-2.5 sm:p-4">
-      <!-- Brand & Name -->
-      <NuxtLink :to="productUrl" class="block group">
-        <p v-if="displayBrand" class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1 truncate" v-html="highlightedBrand" />
-        <h3 class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 min-h-[36px] sm:min-h-[48px]" v-html="highlightedName" />
+      <!-- Brand & Name (使用 aria-label 確保螢幕閱讀器可正確讀取) -->
+      <NuxtLink :to="productUrl" class="block group" :aria-label="`${displayBrand} ${product.name}`">
+        <p v-if="displayBrand" class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1 truncate" v-html="highlightedBrand" aria-hidden="true" />
+        <h3 class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 min-h-[36px] sm:min-h-[48px]" v-html="highlightedName" aria-hidden="true" />
+        <!-- 螢幕閱讀器專用文字 -->
+        <span class="sr-only">{{ displayBrand }} {{ product.name }}</span>
       </NuxtLink>
 
       <!-- Key Specs -->

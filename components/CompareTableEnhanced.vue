@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import { Check, X, Minus, Crown, ExternalLink } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
-import { formatPrice } from '~/utils/product'
+import { getProductSpec } from '~/types'
+import { formatPrice, getDisplayBrand } from '~/utils/product'
 import { useCategoryConfig } from '~/composables/useCategoryConfig'
 
 const props = defineProps<{
@@ -90,14 +91,12 @@ const bestPrice = computed(() => {
 })
 
 const getSpecValue = (product: Dehumidifier, key: string): number | null => {
-  const p = product as any
-  const value = p[key] ?? p.specs?.[key]
+  const value = getProductSpec<number>(product, key)
   return typeof value === 'number' ? value : null
 }
 
 const getSpecDisplay = (product: Dehumidifier, spec: typeof specs.value[0]): string => {
-  const p = product as any
-  const value = p[spec.key] ?? p.specs?.[spec.key]
+  const value = getProductSpec(product, spec.key)
 
   if (value === null || value === undefined) return '-'
   if (typeof value === 'string') return value
@@ -106,12 +105,6 @@ const getSpecDisplay = (product: Dehumidifier, spec: typeof specs.value[0]): str
 
 const isBest = (product: Dehumidifier, key: string): boolean => {
   return bestValues.value[key]?.productId === product.id
-}
-
-const getDisplayBrand = (product: Dehumidifier): string => {
-  if (product.brand && product.brand !== 'Other') return product.brand
-  const match = product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
 }
 </script>
 

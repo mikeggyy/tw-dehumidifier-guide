@@ -2,10 +2,14 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { Loader2 } from 'lucide-vue-next'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   hasMore: boolean
   remainingCount?: number
-}>()
+  /** 載入完成後的防抖延遲（毫秒），設為 0 可由父組件控制 */
+  debounceMs?: number
+}>(), {
+  debounceMs: 300
+})
 
 const emit = defineEmits<{
   loadMore: []
@@ -15,17 +19,26 @@ const sentinel = ref<HTMLElement | null>(null)
 const isLoading = ref(false)
 let observer: IntersectionObserver | null = null
 
+// 暴露方法讓父組件通知載入完成
+const setLoaded = () => {
+  isLoading.value = false
+}
+
 const handleIntersection = (entries: IntersectionObserverEntry[]) => {
   const entry = entries[0]
   if (entry.isIntersecting && props.hasMore && !isLoading.value) {
     isLoading.value = true
     emit('loadMore')
-    // 短暫延遲避免快速連續載入
-    setTimeout(() => {
-      isLoading.value = false
-    }, 300)
+    // 可設定的防抖延遲，設為 0 時由父組件控制
+    if (props.debounceMs > 0) {
+      setTimeout(() => {
+        isLoading.value = false
+      }, props.debounceMs)
+    }
   }
 }
+
+defineExpose({ setLoaded })
 
 onMounted(() => {
   if (sentinel.value) {

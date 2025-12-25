@@ -2,7 +2,21 @@
 import { ref, computed } from 'vue'
 import { X, ChevronRight, ChevronLeft, Sparkles, Flame, Zap } from 'lucide-vue-next'
 import type { Dehumidifier } from '~/types'
+import { getProductSpec } from '~/types'
 import { formatPrice, getDisplayBrand } from '~/utils/product'
+
+// Question option type - union of all possible properties
+interface QuestionOption {
+  value: string
+  label: string
+  desc: string
+  emoji: string
+  watt?: string       // Step 1 - room size
+  priority?: string   // Step 2 - scenario
+  type?: string       // Step 3 - heater type
+  min?: number        // Step 4 - budget
+  max?: number        // Step 4 - budget
+}
 
 const props = defineProps<{
   products: readonly Dehumidifier[]
@@ -32,7 +46,13 @@ const wattageRecommendation = computed(() => {
   return recommendations[roomSize.value || ''] || null
 })
 
-const questions = [
+const questions: Array<{
+  step: number
+  title: string
+  subtitle: string
+  options: QuestionOption[]
+  answer: typeof roomSize | typeof scenario | typeof heaterType | typeof budget
+}> = [
   {
     step: 1,
     title: '你的空間有多大？ 📐',
@@ -117,13 +137,13 @@ const recommendedProducts = computed(() => {
   let filtered = [...props.products]
 
   // 確保只篩選電暖器
-  filtered = filtered.filter(p => (p as any).category_slug === 'heater')
+  filtered = filtered.filter(p => getProductSpec<string>(p, 'category_slug') === 'heater')
 
   // 根據功率需求篩選
   if (wattageRecommendation.value) {
     const { min, max } = wattageRecommendation.value
     filtered = filtered.filter(p => {
-      const power = (p as any).specs?.heating_power || 0
+      const power = getProductSpec<number>(p, 'heating_power') || 0
       // 允許 ±30% 的彈性
       return power >= min * 0.7 && power <= max * 1.3
     })
@@ -132,7 +152,7 @@ const recommendedProducts = computed(() => {
   // 根據電暖器類型篩選
   if (heaterType.value && heaterType.value !== 'any') {
     filtered = filtered.filter(p => {
-      const type = (p as any).specs?.type || ''
+      const type = getProductSpec<string>(p, 'type') || ''
       return type === heaterType.value
     })
   }
@@ -140,11 +160,11 @@ const recommendedProducts = computed(() => {
   // 根據預算篩選
   const budgetOption = questions[3].options.find(o => o.value === budget.value)
   if (budgetOption) {
-    if ((budgetOption as any).max) {
-      filtered = filtered.filter(p => p.price <= (budgetOption as any).max)
+    if (budgetOption.max) {
+      filtered = filtered.filter(p => p.price <= budgetOption.max!)
     }
-    if ((budgetOption as any).min) {
-      filtered = filtered.filter(p => p.price >= (budgetOption as any).min)
+    if (budgetOption.min) {
+      filtered = filtered.filter(p => p.price >= budgetOption.min!)
     }
   }
 
@@ -152,8 +172,8 @@ const recommendedProducts = computed(() => {
   if (scenario.value === 'bedroom') {
     // 靜音優先，葉片式加分
     filtered.sort((a, b) => {
-      const aType = (a as any).specs?.type || ''
-      const bType = (b as any).specs?.type || ''
+      const aType = getProductSpec<string>(a, 'type') || ''
+      const bType = getProductSpec<string>(b, 'type') || ''
       // 葉片式最安靜
       if (aType === 'oil' && bType !== 'oil') return -1
       if (bType === 'oil' && aType !== 'oil') return 1
@@ -162,8 +182,8 @@ const recommendedProducts = computed(() => {
   } else if (scenario.value === 'living') {
     // 功率優先
     filtered.sort((a, b) => {
-      const aPower = (a as any).specs?.heating_power || 0
-      const bPower = (b as any).specs?.heating_power || 0
+      const aPower = getProductSpec<number>(a, 'heating_power') || 0
+      const bPower = getProductSpec<number>(b, 'heating_power') || 0
       return bPower - aPower
     })
   } else if (scenario.value === 'bathroom') {
@@ -180,8 +200,8 @@ const recommendedProducts = computed(() => {
   } else if (scenario.value === 'office') {
     // 體積小、功率低優先
     filtered.sort((a, b) => {
-      const aPower = (a as any).specs?.heating_power || 0
-      const bPower = (b as any).specs?.heating_power || 0
+      const aPower = getProductSpec<number>(a, 'heating_power') || 0
+      const bPower = getProductSpec<number>(b, 'heating_power') || 0
       // 辦公室用，功率較低但足夠的優先
       return aPower - bPower
     })
@@ -189,15 +209,15 @@ const recommendedProducts = computed(() => {
 
   // 如果篩選結果太少，放寬條件
   if (filtered.length < 3) {
-    filtered = [...props.products].filter(p => (p as any).category_slug === 'heater')
+    filtered = [...props.products].filter(p => getProductSpec<string>(p, 'category_slug') === 'heater')
 
     // 只按預算篩選
     if (budgetOption) {
-      if ((budgetOption as any).max) {
-        filtered = filtered.filter(p => p.price <= (budgetOption as any).max * 1.2)
+      if (budgetOption.max) {
+        filtered = filtered.filter(p => p.price <= budgetOption.max! * 1.2)
       }
-      if ((budgetOption as any).min) {
-        filtered = filtered.filter(p => p.price >= (budgetOption as any).min * 0.8)
+      if (budgetOption.min) {
+        filtered = filtered.filter(p => p.price >= budgetOption.min! * 0.8)
       }
     }
 
@@ -209,7 +229,7 @@ const recommendedProducts = computed(() => {
 })
 
 const getHeaterTypeLabel = (product: Dehumidifier): string => {
-  const type = (product as any).specs?.type || ''
+  const type = getProductSpec<string>(product, 'type') || ''
   const labels: Record<string, string> = {
     'ceramic': '陶瓷式',
     'oil': '葉片式',
@@ -220,11 +240,11 @@ const getHeaterTypeLabel = (product: Dehumidifier): string => {
 }
 
 const getHeaterPower = (product: Dehumidifier): number => {
-  return (product as any).specs?.heating_power || 0
+  return getProductSpec<number>(product, 'heating_power') || 0
 }
 
 const selectAnswer = (value: string) => {
-  currentQuestion.value.answer.value = value as any
+  currentQuestion.value.answer.value = value
   if (step.value < totalSteps) {
     setTimeout(() => step.value++, 300)
   } else {
@@ -321,8 +341,8 @@ const medals = ['🥇', '🥈', '🥉']
             <div class="flex-1">
               <p class="font-bold text-gray-900 dark:text-white">{{ option.label }}</p>
               <p class="text-sm text-gray-500 dark:text-gray-400">{{ option.desc }}</p>
-              <p v-if="(option as any).watt" class="text-xs text-orange-600 dark:text-orange-400 mt-1 font-medium">
-                建議 {{ (option as any).watt }}
+              <p v-if="option.watt" class="text-xs text-orange-600 dark:text-orange-400 mt-1 font-medium">
+                建議 {{ option.watt }}
               </p>
             </div>
             <ChevronRight
@@ -392,7 +412,7 @@ const medals = ['🥇', '🥈', '🥉']
           <a
             v-for="(product, index) in recommendedProducts"
             :key="product.id"
-            :href="product.affiliate_url || (product as any).momo_url"
+            :href="product.affiliate_url || getProductSpec<string>(product, 'momo_url') || '#'"
             target="_blank"
             rel="noopener noreferrer nofollow"
             :class="[

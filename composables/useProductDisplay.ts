@@ -1,5 +1,6 @@
 import { computed } from 'vue'
 import type { Dehumidifier } from '~/types'
+import { getProductSpec } from '~/types'
 import {
   formatPrice,
   getDiscountPercent,
@@ -11,6 +12,7 @@ import {
   getTrackedAffiliateUrl,
   getOptimizedCtaText,
   formatRelativeTime,
+  type TrackingSource,
 } from '~/utils/product'
 
 /**
@@ -18,10 +20,10 @@ import {
  * Extracts common computed properties used across ProductCard and product detail pages
  */
 export function useProductDisplay(product: () => Dehumidifier | null | undefined, options?: {
-  source?: string
+  source?: TrackingSource
   categorySlug?: string
 }) {
-  const source = options?.source || 'unknown'
+  const source: TrackingSource = options?.source || 'product_card'
 
   // Display brand - hide "Other", try to extract from name
   const displayBrand = computed(() => {
@@ -78,8 +80,10 @@ export function useProductDisplay(product: () => Dehumidifier | null | undefined
 
   // Price update time (relative)
   const priceUpdateTime = computed(() => {
-    const p = product() as any
-    return formatRelativeTime(p?.updated_at)
+    const p = product()
+    if (!p) return ''
+    const updatedAt = getProductSpec<string>(p, 'updated_at')
+    return formatRelativeTime(updatedAt ?? undefined)
   })
 
   // Formatted price

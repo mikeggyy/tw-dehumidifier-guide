@@ -8,14 +8,17 @@ import { useCompareAnalysis, defaultWeights, type WeightConfig } from '~/composa
 import { Trophy, ExternalLink, ArrowLeft, Eye, EyeOff, SlidersHorizontal, Camera, Download, Sparkles, Lightbulb, ChevronDown, ChevronUp } from 'lucide-vue-next'
 import ShareCompareButton from '~/components/ShareCompareButton.vue'
 import DecisionHelper from '~/components/DecisionHelper.vue'
-import type { Dehumidifier, Product } from '~/types'
+import type { ComparableProduct } from '~/types'
+import { getProductSpec } from '~/types'
 import {
   formatPrice,
   getDiscountPercent,
   getTrackedAffiliateUrl,
   getOptimizedCtaText,
   getSavingsAmount,
+  getDisplayBrand,
 } from '~/utils/product'
+import { logger } from '~/utils/logger'
 
 // SSR data loading
 await useProductsSSR()
@@ -23,7 +26,7 @@ await useProductsSSR()
 const { loadSharedCompare, categoryFromUrl } = useShareableCompare()
 const { getCategoryConfig } = useCategoryConfig()
 
-const compareProducts = ref<Dehumidifier[]>([])
+const compareProducts = ref<ComparableProduct[]>([])
 const categorySlug = ref('dehumidifier')
 
 // New feature states
@@ -36,7 +39,7 @@ const weights = ref<WeightConfig>({ ...defaultWeights })
 const compareContentRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
-  compareProducts.value = loadSharedCompare() as Dehumidifier[]
+  compareProducts.value = loadSharedCompare() as ComparableProduct[]
   categorySlug.value = categoryFromUrl.value
 })
 
@@ -57,29 +60,21 @@ useHead({
   ]
 })
 
-// Get display brand
-const getDisplayBrand = (product: Dehumidifier | Product): string => {
-  const brand = product.brand
-  if (brand && brand !== 'Other') return brand
-  const match = product.name.match(/【([^】]+)】/)
-  return match ? match[1] : ''
-}
-
 // Value score calculation (dynamic based on category)
-const getValueScoreNum = (product: Dehumidifier | Product): number | null => {
+const getValueScoreNum = (product: ComparableProduct): number | null => {
   const cpKey = categoryConfig.value?.cpValueSpec
   if (!cpKey) return null
-  const value = (product as any)[cpKey]
+  const value = getProductSpec<number>(product, cpKey)
   if (!value || value === 0) return null
   return Math.round(product.price / value)
 }
 
-const getValueScore = (product: Dehumidifier | Product): string => {
+const getValueScore = (product: ComparableProduct): string => {
   const config = categoryConfig.value
   const cpKey = config?.cpValueSpec
   if (!cpKey) return '-'
 
-  const cpValue = (product as any)[cpKey]
+  const cpValue = getProductSpec<number>(product, cpKey)
   if (!cpValue || cpValue === 0) return '-'
 
   const score = Math.round(product.price / cpValue)
@@ -103,7 +98,7 @@ const bestValues = computed(() => {
   const cpKey = config?.cpValueSpec
   if (cpKey) {
     const cpValues = products.map(p => {
-      const value = (p as any)[cpKey]
+      const value = getProductSpec<number>(p, cpKey)
       if (!value || value === 0) return null
       return Math.round(p.price / value)
     }).filter(v => v !== null) as number[]
@@ -116,7 +111,7 @@ const bestValues = computed(() => {
       if (!spec.showInCompare) continue
 
       const values = products
-        .map(p => (p as any)[spec.key])
+        .map(p => getProductSpec<number>(p, spec.key))
         .filter(v => v !== null && v !== undefined && typeof v === 'number') as number[]
 
       if (values.length === 0) continue
@@ -145,11 +140,11 @@ const hasAnyData = (key: string): boolean => {
   if (key === 'value') {
     const cpKey = categoryConfig.value?.cpValueSpec
     if (!cpKey) return false
-    return compareProducts.value.some(p => (p as any)[cpKey] !== null && (p as any)[cpKey] !== undefined)
+    return compareProducts.value.some(p => getProductSpec(p, cpKey) !== null)
   }
   // Check if any product has the spec key with a value
   return compareProducts.value.some(p => {
-    const value = (p as any)[key]
+    const value = getProductSpec(p, key)
     return value !== null && value !== undefined
   })
 }
@@ -161,7 +156,7 @@ const allSpecs = computed(() => {
 
   // 基本規格 (所有品類共用)
   const baseSpecs = [
-    { key: 'price', label: '促銷價', format: (p: Dehumidifier) => `NT$ ${formatPrice(p.price)}` },
+    { key: 'price', label: '促銷價', format: (p: ComparableProduct) => `NT$ ${formatPrice(p.price)}` },
   ]
 
   // 從品類設定取得比較規格
@@ -170,8 +165,8 @@ const allSpecs = computed(() => {
     .map(spec => ({
       key: spec.key,
       label: spec.label,
-      format: (p: Dehumidifier) => {
-        const value = (p as any)[spec.key]
+      format: (p: ComparableProduct) => {
+        const value = getProductSpec(p, spec.key)
         if (value === null || value === undefined) return '-'
 
         // 特殊格式化
@@ -197,9 +192,9 @@ const allSpecs = computed(() => {
   const cpValueSpecs = config?.cpValueSpec ? [{
     key: 'value',
     label: 'CP值（越低越划算）',
-    format: (p: Dehumidifier) => {
+    format: (p: ComparableProduct) => {
       const cpKey = config.cpValueSpec!
-      const cpValue = (p as any)[cpKey]
+      const cpValue = getProductSpec<number>(p, cpKey)
       if (!cpValue || cpValue === 0) return '-'
       const score = Math.round(p.price / cpValue)
       const cpLabel = config.specs.find(s => s.key === cpKey)?.label || cpKey
@@ -221,7 +216,7 @@ const specs = computed(() => {
   return filtered
 })
 
-const isBestValue = (product: Dehumidifier | Product, key: string): boolean => {
+const isBestValue = (product: ComparableProduct, key: string): boolean => {
   const bv = bestValues.value as Record<string, number | null>
 
   // 價格: 越低越好
@@ -231,7 +226,7 @@ const isBestValue = (product: Dehumidifier | Product, key: string): boolean => {
   if (key === 'value') {
     const cpKey = categoryConfig.value?.cpValueSpec
     if (!cpKey) return false
-    const cpValue = (product as any)[cpKey]
+    const cpValue = getProductSpec<number>(product, cpKey)
     if (!cpValue || cpValue === 0) return false
     const score = Math.round(product.price / cpValue)
     return bv.lowestCpValue !== null && score === bv.lowestCpValue
@@ -240,7 +235,7 @@ const isBestValue = (product: Dehumidifier | Product, key: string): boolean => {
   // 動態規格: 檢查 best_${key}
   const bestKey = `best_${key}`
   if (bestKey in bv) {
-    const value = (product as any)[key]
+    const value = getProductSpec(product, key)
     return bv[bestKey] !== null && value === bv[bestKey]
   }
 
@@ -271,7 +266,7 @@ const captureScreenshot = async () => {
     link.href = canvas.toDataURL('image/png')
     link.click()
   } catch (error) {
-    console.error('Screenshot failed:', error)
+    logger.error('Screenshot failed:', error)
     alert('截圖失敗，請稍後再試')
   } finally {
     isCapturing.value = false
@@ -282,7 +277,7 @@ const resetWeights = () => {
   weights.value = { ...defaultWeights }
 }
 
-const handleRecommendation = (product: Dehumidifier) => {
+const handleRecommendation = (product: ComparableProduct) => {
   showDecisionHelper.value = false
   // Scroll to the product in the table
   const element = document.getElementById(`product-${product.id}`)
@@ -582,7 +577,7 @@ const handleRecommendation = (product: Dehumidifier) => {
                       ]"
                     >
                       <Trophy v-if="isBestValue(product, spec.key)" :size="14" class="text-yellow-500" />
-                      {{ spec.format(product as Dehumidifier) }}
+                      {{ spec.format(product) }}
                     </span>
                   </td>
                 </tr>

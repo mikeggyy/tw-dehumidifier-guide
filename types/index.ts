@@ -111,6 +111,60 @@ export function productToDehumidifier(p: Product): Dehumidifier {
 }
 
 // ============================================================
+// 類型守衛函數
+// ============================================================
+
+/**
+ * 檢查是否為 Dehumidifier 類型
+ */
+export function isDehumidifier(p: Product | Dehumidifier): p is Dehumidifier {
+  return 'daily_capacity' in p && !('specs' in p && p.specs?.daily_capacity !== undefined)
+}
+
+/**
+ * 檢查是否為 Product 類型
+ */
+export function isProduct(p: Product | Dehumidifier): p is Product {
+  return 'specs' in p && typeof p.specs === 'object'
+}
+
+/**
+ * 統一取得商品的規格值（支援 Product 和 Dehumidifier）
+ */
+export function getProductSpec<T = unknown>(
+  product: Product | Dehumidifier,
+  key: string
+): T | null {
+  // 如果是 Product，從 specs 取值
+  if ('specs' in product && product.specs) {
+    return (product.specs[key] as T) ?? null
+  }
+  // 如果是 Dehumidifier，直接取值
+  const productAny = product as unknown as Record<string, unknown>
+  return (productAny[key] as T) ?? null
+}
+
+/**
+ * 統一商品類型 - 確保可用於比較
+ * 支援 Product 和 Dehumidifier 混合使用
+ */
+export type ComparableProduct = Product | Dehumidifier
+
+/**
+ * 取得商品 ID（統一介面）
+ */
+export function getProductId(p: ComparableProduct): string {
+  return p.id
+}
+
+/**
+ * 取得商品品類 slug
+ */
+export function getProductCategorySlug(p: ComparableProduct): string {
+  return p.category_slug || 'dehumidifier'
+}
+
+// ============================================================
 // 篩選與排序
 // ============================================================
 

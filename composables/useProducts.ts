@@ -1,10 +1,11 @@
-import { ref, readonly } from 'vue'
+import { ref, readonly, computed } from 'vue'
 import { useAsyncData, useRuntimeConfig } from '#imports'
 import type { Dehumidifier, FilterState, SortOption } from '~/types'
+import { productsLogger as logger } from '~/utils/logger'
 
-// Supabase 配置 - 使用 runtimeConfig（在 composable 外部定義 fallback 值）
-const DEFAULT_SUPABASE_URL = 'https://tqyefifafabyudtyjfam.supabase.co'
-const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD5'
+// Supabase 配置 - 使用 runtimeConfig
+// 注意：必須設定 NUXT_PUBLIC_SUPABASE_URL 和 NUXT_PUBLIC_SUPABASE_ANON_KEY 環境變數
+// 開發環境可使用 .env 檔案設定
 
 // 請求超時設定（毫秒）
 const REQUEST_TIMEOUT = 10000 // 10 秒
@@ -35,19 +36,22 @@ function flattenProductSpecs(product: any): any {
 }
 
 // Helper function to get Supabase config
-function getSupabaseConfig() {
+function getSupabaseConfig(): { url: string; anonKey: string } | null {
   try {
     const config = useRuntimeConfig()
-    return {
-      url: config.public.supabaseUrl || DEFAULT_SUPABASE_URL,
-      anonKey: config.public.supabaseAnonKey || DEFAULT_SUPABASE_ANON_KEY,
+    const url = config.public.supabaseUrl
+    const anonKey = config.public.supabaseAnonKey
+
+    // 如果沒有設定 Supabase 環境變數，返回 null（將使用本地 JSON 資料）
+    if (!url || !anonKey) {
+      logger.warn('Supabase 環境變數未設定，將使用本地 JSON 資料')
+      return null
     }
+
+    return { url, anonKey }
   } catch {
-    // Fallback for contexts where useRuntimeConfig is not available
-    return {
-      url: DEFAULT_SUPABASE_URL,
-      anonKey: DEFAULT_SUPABASE_ANON_KEY,
-    }
+    // useRuntimeConfig 不可用時，返回 null
+    return null
   }
 }
 
@@ -88,6 +92,29 @@ async function fetchWithTimeout<T>(
 const globalProducts = ref<Dehumidifier[]>([])
 const isGlobalLoading = ref(false)
 let hasLoaded = false
+
+// 快取的計算屬性（避免重複計算）
+const cachedAllBrands = computed(() => {
+  return [...new Set(globalProducts.value.map(prod => prod.brand))].sort()
+})
+
+const cachedPriceRange = computed(() => {
+  const products = globalProducts.value
+  if (products.length === 0) {
+    return { min: 0, max: 100000 }
+  }
+  // 使用 reduce 避免 Math.min/max 的 stack overflow 風險（大型陣列）
+  let min = Infinity
+  let max = -Infinity
+  for (const prod of products) {
+    if (prod.price < min) min = prod.price
+    if (prod.price > max) max = prod.price
+  }
+  return {
+    min: min === Infinity ? 0 : min,
+    max: max === -Infinity ? 100000 : max
+  }
+})
 
 // 從本地 JSON 檔案載入指定品類資料
 async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier[]> {
@@ -214,7 +241,7 @@ async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier
       }
     }
   } catch (e) {
-    console.warn(`Failed to load ${category} data:`, e)
+    logger.warn(`Failed to load ${category} data:`, e)
   }
 
   return products
@@ -241,12 +268,12 @@ async function supplementMissingCategories(existingProducts: Dehumidifier[]): Pr
   // 檢查每個品類是否有資料
   for (const category of categories) {
     const hasCategory = existingProducts.some(p =>
-      (p as any).category_slug === category ||
-      (category === 'dehumidifier' && !(p as any).category_slug)
+      p.category_slug === category ||
+      (category === 'dehumidifier' && !p.category_slug)
     )
 
     if (!hasCategory) {
-      console.log(`Supplementing missing category: ${category}`)
+      logger.log(`Supplementing missing category: ${category}`)
       const localProducts = await loadLocalCategoryProducts(category)
       allProducts.push(...localProducts)
     }
@@ -260,8 +287,20 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
     return globalProducts.value
   }
 
-  const { url, anonKey } = getSupabaseConfig()
+  const supabaseConfig = getSupabaseConfig()
   const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
+
+  // 如果 Supabase 未設定，直接使用本地資料
+  if (!supabaseConfig) {
+    const localProducts = await loadLocalProducts()
+    if (localProducts.length > 0) {
+      globalProducts.value = localProducts as Dehumidifier[]
+      hasLoaded = true
+    }
+    return globalProducts.value
+  }
+
+  const { url, anonKey } = supabaseConfig
 
   try {
     // 分品類載入，避免 Supabase 1000 筆限制導致資料被截斷
@@ -282,7 +321,7 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
         const flattenedData = data.map(flattenProductSpecs)
         allProducts.push(...flattenedData)
       } catch (e) {
-        console.warn(`Failed to fetch ${category} from Supabase:`, e)
+        logger.warn(`Failed to fetch ${category} from Supabase:`, e)
         // 該品類載入失敗，從本地補充
         const localProducts = await loadLocalCategoryProducts(category)
         allProducts.push(...localProducts)
@@ -293,7 +332,7 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
     hasLoaded = true
     return globalProducts.value
   } catch (error) {
-    console.error('Failed to fetch products from Supabase:', error)
+    logger.error('Failed to fetch products from Supabase:', error)
     // 備用方案：從本地 JSON 載入（支援多品類）
     const localProducts = await loadLocalProducts()
     if (localProducts.length > 0) {
@@ -311,8 +350,20 @@ export async function useProductsSSR() {
     return { data: ref(globalProducts.value), error: ref(null) }
   }
 
-  const { url, anonKey } = getSupabaseConfig()
+  const supabaseConfig = getSupabaseConfig()
   const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
+
+  // 如果 Supabase 未設定，直接使用本地資料
+  if (!supabaseConfig) {
+    const localProducts = await loadLocalProducts()
+    if (localProducts.length > 0) {
+      globalProducts.value = localProducts as Dehumidifier[]
+      hasLoaded = true
+    }
+    return { data: ref(globalProducts.value), error: ref(null) }
+  }
+
+  const { url, anonKey } = supabaseConfig
 
   // 使用 useAsyncData 一次性載入所有品類
   const { data, error } = await useAsyncData<Dehumidifier[]>(
@@ -390,20 +441,9 @@ export const useProducts = () => {
   const allProducts = readonly(globalProducts)
   const isLoading = readonly(isGlobalLoading)
 
-  const getAllBrands = (): string[] => {
-    return [...new Set(globalProducts.value.map(prod => prod.brand))].sort()
-  }
-
-  const getPriceRange = (): { min: number; max: number } => {
-    if (globalProducts.value.length === 0) {
-      return { min: 0, max: 100000 }
-    }
-    const prices = globalProducts.value.map(prod => prod.price)
-    return {
-      min: Math.min(...prices),
-      max: Math.max(...prices)
-    }
-  }
+  // 使用快取的 computed（向後相容：保留函數形式）
+  const getAllBrands = (): string[] => cachedAllBrands.value
+  const getPriceRange = (): { min: number; max: number } => cachedPriceRange.value
 
   const filterProducts = (filters: FilterState): Dehumidifier[] => {
     return globalProducts.value.filter(product => {

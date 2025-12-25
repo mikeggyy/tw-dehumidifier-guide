@@ -1,4 +1,5 @@
 import type { Product, Dehumidifier } from '~/types'
+import { getProductSpec } from '~/types'
 
 export interface BrandInfo {
   slug: string
@@ -123,15 +124,22 @@ export function useBrandConfig() {
       return brandInfo.aliases.some(alias => upperBrand.includes(alias.toUpperCase()))
     })
 
-    const categories = [...new Set(brandProducts.map(p => (p as any).category_slug || 'dehumidifier'))]
-    const prices = brandProducts.map(p => p.price)
+    const categories = [...new Set(brandProducts.map(p => getProductSpec<string>(p, 'category_slug') || 'dehumidifier'))]
+
+    // 使用迴圈計算價格範圍，避免 Math.min/max 的 stack overflow 風險
+    let minPrice = Infinity
+    let maxPrice = -Infinity
+    for (const p of brandProducts) {
+      if (p.price < minPrice) minPrice = p.price
+      if (p.price > maxPrice) maxPrice = p.price
+    }
 
     return {
       totalProducts: brandProducts.length,
       categories,
       priceRange: {
-        min: prices.length > 0 ? Math.min(...prices) : 0,
-        max: prices.length > 0 ? Math.max(...prices) : 0
+        min: brandProducts.length > 0 ? minPrice : 0,
+        max: brandProducts.length > 0 ? maxPrice : 0
       },
       products: brandProducts
     }
@@ -144,7 +152,7 @@ export function useBrandConfig() {
   ): (Product | Dehumidifier)[] => {
     return [...products].filter(p => {
       const upperBrand = p.brand.toUpperCase()
-      const productCategory = (p as any).category_slug || 'dehumidifier'
+      const productCategory = getProductSpec<string>(p, 'category_slug') || 'dehumidifier'
       return brandInfo.aliases.some(alias => upperBrand.includes(alias.toUpperCase())) &&
              productCategory === categorySlug
     })

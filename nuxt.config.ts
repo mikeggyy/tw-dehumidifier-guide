@@ -23,14 +23,16 @@ export default defineNuxtConfig({
   ],
 
   // Runtime configuration (環境變數)
+  // 注意: 生產環境必須設定環境變數，不再提供硬編碼的預設值
   runtimeConfig: {
     // Private keys (server-side only)
     // supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY,
 
     // Public keys (exposed to client)
     public: {
-      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://tqyefifafabyudtyjfam.supabase.co',
-      supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_ioNYT5D-3-ZPObp82HK5Yg_EEFwrGD5',
+      // Supabase 設定 - 必須透過環境變數設定
+      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || '',
+      supabaseAnonKey: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY || '',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.jiadian-tw.work',
       // SEO: Google Search Console 驗證碼 (可選)
       googleSiteVerification: process.env.NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
@@ -62,12 +64,19 @@ export default defineNuxtConfig({
         { property: 'og:type', content: 'website' },
         { property: 'og:locale', content: 'zh_TW' },
         { property: 'og:site_name', content: '比比看' },
+        { property: 'og:image', content: 'https://www.jiadian-tw.work/og-image.png' },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
         // Twitter Card
         { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: 'https://www.jiadian-tw.work/og-image.png' },
         // Site Name (輔助 Google 識別網站名稱)
         { name: 'application-name', content: '比比看' }
       ],
       link: [
+        // hreflang - 語言標籤
+        { rel: 'alternate', hreflang: 'zh-TW', href: 'https://www.jiadian-tw.work/' },
+        { rel: 'alternate', hreflang: 'x-default', href: 'https://www.jiadian-tw.work/' },
         // Favicon - 多格式支援 (Google 偏好 PNG/ICO，不支援 SVG)
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon-48.png' },
@@ -77,7 +86,10 @@ export default defineNuxtConfig({
         // DNS Prefetch for external resources
         { rel: 'dns-prefetch', href: 'https://tqyefifafabyudtyjfam.supabase.co' },
         { rel: 'preconnect', href: 'https://tqyefifafabyudtyjfam.supabase.co' },
-        { rel: 'dns-prefetch', href: 'https://www.googletagmanager.com' }
+        { rel: 'dns-prefetch', href: 'https://www.googletagmanager.com' },
+        // MOMO CDN for product images
+        { rel: 'dns-prefetch', href: 'https://i3.momoshop.com.tw' },
+        { rel: 'preconnect', href: 'https://i3.momoshop.com.tw', crossorigin: 'anonymous' }
       ],
       // Google Analytics 4
       script: [

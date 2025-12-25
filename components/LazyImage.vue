@@ -22,21 +22,45 @@ const props = withDefaults(defineProps<{
   priority: false,
 })
 
+// 檢查是否為 MOMO 圖片 (支援動態尺寸調整和 WebP)
+const isMomoImage = computed(() => props.src?.includes('i.momo.com.tw') || false)
+
 // 根據原始圖片 URL 生成不同尺寸的 srcset
-// MOMO 圖片支援調整尺寸參數
 const srcset = computed(() => {
   if (!props.src) return ''
 
-  // 如果是 MOMO 圖片，可以透過 URL 參數調整尺寸
-  // 格式: https://i.momo.com.tw/xxx.jpg
   const sizes = [150, 300, 450, 600]
 
-  // 對於一般圖片，返回原始尺寸
-  // 未來可以接入圖片 CDN 進行動態調整
+  if (isMomoImage.value) {
+    // MOMO 圖片格式: https://i.momo.com.tw/xxx.jpg
+    // 可透過 URL 參數調整尺寸
+    const baseUrl = props.src.split('?')[0]
+    return sizes
+      .map(size => `${baseUrl}?w=${size} ${size}w`)
+      .join(', ')
+  }
+
+  // 非 MOMO 圖片返回原始尺寸
   return sizes
     .map(size => `${props.src} ${size}w`)
     .join(', ')
 })
+
+// WebP 格式的 srcset（用於 picture 元素的 source）
+const webpSrcset = computed(() => {
+  if (!props.src || !isMomoImage.value) return ''
+
+  const sizes = [150, 300, 450, 600]
+  const baseUrl = props.src.split('?')[0]
+
+  // MOMO 圖片支援 format 參數轉換為 WebP
+  return sizes
+    .map(size => `${baseUrl}?w=${size}&format=webp ${size}w`)
+    .join(', ')
+})
+
+// 是否支援 WebP（僅 MOMO 圖片）
+const supportsWebp = computed(() => isMomoImage.value)
 
 // 首屏圖片不使用 lazy loading
 const loadingStrategy = computed(() => props.priority ? 'eager' : 'lazy')
@@ -86,7 +110,36 @@ onMounted(() => {
     />
 
     <!-- Actual image with width/height for CLS prevention -->
+    <!-- 使用 picture 標籤支援 WebP 格式（瀏覽器會自動選擇最佳格式） -->
+    <picture v-if="supportsWebp">
+      <source
+        type="image/webp"
+        :srcset="webpSrcset"
+        :sizes="sizes"
+      />
+      <img
+        ref="imageRef"
+        :src="src"
+        :alt="alt"
+        :width="width"
+        :height="height"
+        :srcset="srcset"
+        :sizes="sizes"
+        :class="[
+          'w-full h-full object-cover transition-all duration-700 ease-out',
+          isLoaded ? 'opacity-100 scale-100 blur-0' : 'opacity-0 scale-105 blur-sm',
+          props.class
+        ]"
+        :loading="loadingStrategy"
+        :fetchpriority="priorityValue"
+        decoding="async"
+        @load="onLoad"
+        @error="onError"
+      />
+    </picture>
+    <!-- 非 MOMO 圖片使用一般 img 標籤 -->
     <img
+      v-else
       ref="imageRef"
       :src="src"
       :alt="alt"

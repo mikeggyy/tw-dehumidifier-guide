@@ -16,7 +16,7 @@ const route = useRoute()
 const { getBrandBySlug, getBrandStats, getProductsByBrandAndCategory } = useBrandConfig()
 const { allProducts } = useProducts()
 const { categoryList } = useCategoryConfig()
-const { SITE_URL, SITE_NAME, setBreadcrumbStructuredData } = useStructuredData()
+const { SITE_URL, SITE_NAME, setBreadcrumbStructuredData, setBrandStructuredData, setCollectionPageStructuredData } = useStructuredData()
 
 const brandSlug = computed(() => route.params.brand as string)
 const brandInfo = computed(() => getBrandBySlug(brandSlug.value))
@@ -64,6 +64,8 @@ useHead({
     { property: 'og:url', content: `${SITE_URL}/brand/${brandSlug.value}` },
     { property: 'og:image', content: ogImage },
     { property: 'og:image:alt', content: `${brandInfo.value?.name} - 家電比比看` },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
     // Twitter Card
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:site', content: '@jiadian_tw' },
@@ -83,6 +85,27 @@ setBreadcrumbStructuredData([
   { name: '品牌專頁', url: `${SITE_URL}/brand` },
   { name: brandInfo.value?.name || '', url: `${SITE_URL}/brand/${brandSlug.value}` }
 ])
+
+// Brand 結構化資料
+if (brandInfo.value && brandStats.value) {
+  setBrandStructuredData({
+    name: brandInfo.value.name,
+    slug: brandSlug.value,
+    description: brandInfo.value.description,
+    country: brandInfo.value.country,
+    officialUrl: brandInfo.value.officialUrl,
+    productCount: brandStats.value.totalProducts,
+    categories: brandStats.value.categories,
+  })
+
+  // CollectionPage 結構化資料
+  setCollectionPageStructuredData({
+    name: `${brandInfo.value.name} 全系列商品`,
+    description: pageDescription,
+    url: `${SITE_URL}/brand/${brandSlug.value}`,
+    numberOfItems: brandStats.value.totalProducts,
+  })
+}
 </script>
 
 <template>
