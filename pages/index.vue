@@ -52,6 +52,8 @@ useHead({
   title: '比比看 - 台灣家電規格比較 2025 | 除濕機、空氣清淨機、冷氣',
   meta: [
     { name: 'description', content: '台灣最完整的家電規格比較網站，收錄除濕機、空氣清淨機、冷氣、電暖器、電風扇等品類，比較 Panasonic、Hitachi、LG 等品牌的規格與價格。' },
+    // SEO - 確保首頁被索引
+    { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
     // Open Graph
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: SITE_NAME },
