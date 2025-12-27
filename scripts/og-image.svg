@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb"/>
+      <stop offset="50%" style="stop-color:#4f46e5"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa"/>
+      <stop offset="100%" style="stop-color:#a78bfa"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="100" cy="100" r="200" fill="white" opacity="0.05"/>
+  <circle cx="1100" cy="530" r="250" fill="white" opacity="0.05"/>
+  <circle cx="900" cy="150" r="100" fill="white" opacity="0.03"/>
+
+  <!-- Logo icon background -->
+  <rect x="500" y="140" width="200" height="200" rx="40" fill="white" opacity="0.15"/>
+  <rect x="510" y="150" width="180" height="180" rx="35" fill="white"/>
+
+  <!-- Logo text -->
+  <text x="600" y="285" font-family="system-ui, -apple-system, sans-serif" font-size="120" font-weight="bold" fill="url(#bgGrad)" text-anchor="middle">比</text>
+
+  <!-- Site name -->
+  <text x="600" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">比比看</text>
+
+  <!-- Tagline -->
+  <text x="600" y="470" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="white" opacity="0.9" text-anchor="middle">台灣家電規格比較平台</text>
+
+  <!-- Categories -->
+  <text x="600" y="530" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="white" opacity="0.7" text-anchor="middle">除濕機 | 空氣清淨機 | 冷氣 | 電暖器 | 電風扇</text>
+
+  <!-- URL -->
+  <text x="600" y="590" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="white" opacity="0.5" text-anchor="middle">www.jiadian-tw.work</text>
+</svg>
