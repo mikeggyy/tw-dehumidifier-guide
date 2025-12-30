@@ -1,4 +1,5 @@
 // 品類設定系統 - 定義各品類的規格、篩選器、排序等
+import type { StructuredDataFAQ } from '~/composables/useStructuredData'
 
 export interface SpecConfig {
   key: string
@@ -41,7 +42,7 @@ export interface CategoryConfig {
   sortOptions: { value: string; label: string }[]
   popularBrands: string[]   // 用於熱門度計算
   cpValueSpec?: string      // 用於計算 CP 值的規格 key
-  faqs?: FAQItem[]          // 常見問題 (用於 SEO)
+  faqs?: StructuredDataFAQ[] // 常見問題 (用於 SEO)
   priceRanges?: PriceRange[] // 品類專屬價格區間
   keySpecs?: string[]       // 卡片上顯示的關鍵規格 keys
 }

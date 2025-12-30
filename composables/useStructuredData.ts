@@ -21,7 +21,8 @@ interface ProductData {
   inStock?: boolean
 }
 
-interface FAQItem {
+// 簡化的 FAQ 類型，用於結構化資料
+export interface StructuredDataFAQ {
   question: string
   answer: string
 }
@@ -176,7 +177,7 @@ export function useStructuredData() {
   }
 
   // FAQPage structured data - 用於商品頁的常見問答
-  const setFAQStructuredData = (faqs: FAQItem[]) => {
+  const setFAQStructuredData = (faqs: StructuredDataFAQ[]) => {
     if (!faqs || faqs.length === 0) return
 
     const jsonLd = {

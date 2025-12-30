@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ChevronDown, HelpCircle } from 'lucide-vue-next'
-import type { FAQItem } from '~/composables/useFaqConfig'
+import type { StructuredDataFAQ } from '~/composables/useStructuredData'
 
 defineProps<{
-  faqs: FAQItem[]
+  faqs: StructuredDataFAQ[]
   categoryName: string
 }>()
 
