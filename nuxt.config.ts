@@ -67,9 +67,6 @@ export default defineNuxtConfig({
         { property: 'og:image', content: 'https://www.jiadian-tw.work/og-image.png' },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
-        // Twitter Card
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:image', content: 'https://www.jiadian-tw.work/og-image.png' },
         // Site Name (輔助 Google 識別網站名稱)
         { name: 'application-name', content: '比比看' }
       ],
@@ -146,6 +143,16 @@ export default defineNuxtConfig({
       { loc: '/guide/faq', changefreq: 'weekly', priority: 0.8 },
       // 品牌頁面
       { loc: '/brand', changefreq: 'weekly', priority: 0.8 },
+      { loc: '/brand/panasonic', changefreq: 'weekly', priority: 0.7 },
+      { loc: '/brand/hitachi', changefreq: 'weekly', priority: 0.7 },
+      { loc: '/brand/sharp', changefreq: 'weekly', priority: 0.7 },
+      { loc: '/brand/lg', changefreq: 'weekly', priority: 0.7 },
+      { loc: '/brand/mitsubishi', changefreq: 'weekly', priority: 0.7 },
+      { loc: '/brand/daikin', changefreq: 'weekly', priority: 0.7 },
+      { loc: '/brand/dyson', changefreq: 'weekly', priority: 0.7 },
+      { loc: '/brand/sampo', changefreq: 'weekly', priority: 0.7 },
+      { loc: '/brand/teco', changefreq: 'weekly', priority: 0.7 },
+      { loc: '/brand/tatung', changefreq: 'weekly', priority: 0.7 },
     ],
   },
 
@@ -167,8 +174,7 @@ export default defineNuxtConfig({
         '/guide/faq',
         // Brand pages
         '/brand',
-        // Compare page
-        '/compare',
+        // Note: /compare is excluded from prerender as it's noindex (user-specific comparison data)
       ],
       // Ignore static files that are served from public folder
       ignore: ['/manifest.json', '/favicon.svg', '/favicon.ico', '/favicon-16.png', '/favicon-32.png', '/favicon-48.png', '/icon-192.png', '/icon-512.png', '/screenshot-wide.png', '/screenshot-narrow.png'],

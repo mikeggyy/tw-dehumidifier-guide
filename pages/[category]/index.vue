@@ -134,13 +134,8 @@ const { SITE_URL } = useStructuredData()
 const pageUrl = computed(() => `${SITE_URL}/${categorySlug.value}`)
 const pageTitle = computed(() => `${categoryConfig.value?.name || ''}規格比較 2025 | 比比看`)
 const pageDescription = computed(() => categoryConfig.value?.seoDescription || `${categoryConfig.value?.name}規格比較，收錄多款商品，比較品牌、價格、規格。`)
-// 使用第一個商品的圖片作為 OG Image
-const ogImage = computed(() => {
-  if (categoryProducts.value.length > 0) {
-    return categoryProducts.value[0].image_url
-  }
-  return `${SITE_URL}/og-image.png`
-})
+// 使用統一的 OG Image (1200x630)
+const ogImage = `${SITE_URL}/og-image.png`
 
 useHead({
   title: pageTitle.value,
@@ -153,17 +148,10 @@ useHead({
     { property: 'og:title', content: pageTitle.value },
     { property: 'og:description', content: pageDescription.value },
     { property: 'og:url', content: pageUrl.value },
-    { property: 'og:image', content: ogImage.value },
+    { property: 'og:image', content: ogImage },
     { property: 'og:image:alt', content: `${categoryConfig.value?.name}規格比較` },
     { property: 'og:image:width', content: '1200' },
     { property: 'og:image:height', content: '630' },
-    // Twitter Card
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:site', content: '@jiadian_tw' },
-    { name: 'twitter:title', content: pageTitle.value },
-    { name: 'twitter:description', content: pageDescription.value },
-    { name: 'twitter:image', content: ogImage.value },
-    { name: 'twitter:image:alt', content: `${categoryConfig.value?.name}規格比較` },
   ],
   link: [
     { rel: 'canonical', href: pageUrl.value },

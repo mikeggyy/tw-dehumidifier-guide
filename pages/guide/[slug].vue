@@ -45,15 +45,11 @@ useHead({
     { property: 'og:url', content: `${SITE_URL}/guide/${slug.value}` },
     { property: 'og:image', content: ogImage },
     { property: 'og:image:alt', content: guide.value.title },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
     { property: 'article:published_time', content: guide.value.updatedAt },
     { property: 'article:modified_time', content: guide.value.updatedAt },
-    // Twitter Card
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:site', content: '@jiadian_tw' },
-    { name: 'twitter:title', content: guide.value.seoTitle },
-    { name: 'twitter:description', content: guide.value.seoDescription },
-    { name: 'twitter:image', content: ogImage },
-    { name: 'twitter:image:alt', content: guide.value.title },
+    { property: 'article:author', content: '比比看' },
   ],
   link: [
     { rel: 'canonical', href: `${SITE_URL}/guide/${slug.value}` }

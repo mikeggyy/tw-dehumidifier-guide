@@ -393,15 +393,6 @@ useHead({
     { property: 'og:url', content: pageUrl },
     { property: 'og:image', content: product.value?.image_url || '' },
     { property: 'og:image:alt', content: product.value?.name || '' },
-    { property: 'og:image:width', content: '800' },
-    { property: 'og:image:height', content: '800' },
-    // Twitter Card
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:site', content: '@jiadian_tw' },
-    { name: 'twitter:title', content: pageTitle },
-    { name: 'twitter:description', content: pageDescription },
-    { name: 'twitter:image', content: product.value?.image_url || '' },
-    { name: 'twitter:image:alt', content: product.value?.name || '' },
     // Product specific
     { property: 'product:price:amount', content: String(product.value?.price || 0) },
     { property: 'product:price:currency', content: 'TWD' },

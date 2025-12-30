@@ -3,7 +3,7 @@ import { structuredDataLogger as logger } from '~/utils/logger'
 
 // 網站基本設定
 const SITE_URL = 'https://www.jiadian-tw.work'
-const SITE_NAME = '家電比比看'
+const SITE_NAME = '比比看'
 
 interface ProductData {
   name: string
@@ -121,7 +121,7 @@ export function useStructuredData() {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: '比比看',
-      alternateName: ['家電比比看', '比比看家電'],
+      alternateName: ['家電比比看', '比比看家電', '比比看 家電規格比較'],
       description: '台灣最完整的家電規格比較網站，幫你找到最適合的除濕機、空氣清淨機、冷氣、電暖器、電風扇等家電',
       url: SITE_URL,
       inLanguage: 'zh-TW',
@@ -129,7 +129,7 @@ export function useStructuredData() {
         '@type': 'SearchAction',
         target: {
           '@type': 'EntryPoint',
-          urlTemplate: `${SITE_URL}/dehumidifier?q={search_term_string}`,
+          urlTemplate: `${SITE_URL}/?q={search_term_string}`,
         },
         'query-input': 'required name=search_term_string',
       },

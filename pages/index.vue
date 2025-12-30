@@ -62,12 +62,8 @@ useHead({
     { property: 'og:url', content: SITE_URL },
     { property: 'og:image', content: `${SITE_URL}/og-image.png` },
     { property: 'og:image:alt', content: '比比看 - 台灣家電規格比較平台' },
-    // Twitter Card
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:site', content: '@jiadian_tw' },
-    { name: 'twitter:title', content: '比比看 - 台灣家電規格比較 2025 | 除濕機、空氣清淨機、冷氣、電暖器比價' },
-    { name: 'twitter:description', content: '比比看是台灣最完整的家電規格比較網站，收錄除濕機、空氣清淨機、冷氣、電暖器、電風扇等品類，比較 Panasonic、Hitachi、LG、SHARP 等品牌的規格與價格，幫你快速找到最適合的家電產品。' },
-    { name: 'twitter:image:alt', content: '比比看 - 台灣家電規格比較平台' },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
   ],
   link: [
     { rel: 'canonical', href: SITE_URL },

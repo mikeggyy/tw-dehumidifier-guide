@@ -31,14 +31,9 @@ useHead({
     { property: 'og:description', content: pageDescription },
     { property: 'og:url', content: `${SITE_URL}/guide` },
     { property: 'og:image', content: ogImage },
-    { property: 'og:image:alt', content: '選購指南 - 家電比比看' },
-    // Twitter Card
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:site', content: '@jiadian_tw' },
-    { name: 'twitter:title', content: pageTitle },
-    { name: 'twitter:description', content: pageDescription },
-    { name: 'twitter:image', content: ogImage },
-    { name: 'twitter:image:alt', content: '選購指南 - 家電比比看' },
+    { property: 'og:image:alt', content: '選購指南 - 比比看' },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
   ],
   link: [
     { rel: 'canonical', href: `${SITE_URL}/guide` }
