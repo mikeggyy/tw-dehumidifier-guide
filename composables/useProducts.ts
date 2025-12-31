@@ -390,112 +390,26 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
 }
 
 // SSR-friendly 資料載入（使用 Nuxt 的 useAsyncData）
+// 在 prerender/SSG 時使用本地 JSON，確保 build 穩定性
 export async function useProductsSSR() {
   // 如果已經載入過，直接返回
   if (hasLoaded && globalProducts.value.length > 0) {
     return { data: ref(globalProducts.value), error: ref(null) }
   }
 
-  // 整個函數使用 try-catch 包覆，確保任何錯誤都能優雅處理
-  try {
-    const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
-
-    // 嘗試取得 Supabase 設定
-    let supabaseConfig: { url: string; anonKey: string } | null = null
-    try {
-      supabaseConfig = getSupabaseConfig()
-    } catch (e) {
-      logger.warn('Failed to get Supabase config:', e)
-    }
-
-    // 如果 Supabase 未設定，直接使用本地資料
-    if (!supabaseConfig) {
-      logger.log('Supabase not configured, using local JSON data')
-      const localProducts = await loadLocalProducts()
-      if (localProducts.length > 0) {
-        globalProducts.value = localProducts as Dehumidifier[]
-        hasLoaded = true
-      }
-      return { data: ref(globalProducts.value), error: ref(null) }
-    }
-
-    const { url, anonKey } = supabaseConfig
-
-    // 使用 useAsyncData 一次性載入所有品類
-    const { data, error } = await useAsyncData<Dehumidifier[]>(
-      'all-products',
-      async () => {
-        const allProducts: Dehumidifier[] = []
-
-        // 使用 $fetch 並行載入所有品類
-        const fetchPromises = categories.map(async (category) => {
-          try {
-            const products = await $fetch<Dehumidifier[]>(
-              `${url}/rest/v1/products?in_stock=eq.true&category_slug=eq.${category}&limit=1000`,
-              {
-                headers: {
-                  'apikey': anonKey,
-                  'Authorization': `Bearer ${anonKey}`,
-                },
-                timeout: 8000, // 8 秒超時
-              }
-            )
-            // 展平 specs 到頂層欄位
-            let flattenedProducts = (products || []).map(flattenProductSpecs)
-
-            // 除濕機品類需要額外過濾，排除誤分類的商品
-            if (category === 'dehumidifier') {
-              flattenedProducts = flattenedProducts.filter(p => !shouldExcludeDehumidifierProduct(p))
-            }
-
-            return flattenedProducts
-          } catch (e) {
-            // 該品類載入失敗，從本地補充
-            logger.warn(`Failed to fetch ${category} from Supabase, using local data:`, e)
-            return await loadLocalCategoryProducts(category)
-          }
-        })
-
-        const results = await Promise.all(fetchPromises)
-        results.forEach(products => {
-          if (products.length > 0) {
-            allProducts.push(...products)
-          }
-        })
-
-        return allProducts
-      },
-      {
-        default: () => [] as Dehumidifier[],
-      }
-    )
-
-    // 資料載入成功
-    if (data.value && data.value.length > 0) {
-      globalProducts.value = data.value
-      hasLoaded = true
-    } else {
-      // 無論是否有錯誤，只要沒有資料就使用本地 JSON
-      // 這確保即使 Supabase 連線失敗，網站仍能正常運作
-      logger.log('No data from Supabase, falling back to local JSON')
-      const localProducts = await loadLocalProducts()
-      if (localProducts.length > 0) {
-        globalProducts.value = localProducts as Dehumidifier[]
-        hasLoaded = true
-      }
-    }
-
-    return { data: ref(globalProducts.value), error }
-  } catch (e) {
-    // 最終防線：如果任何錯誤發生，使用本地 JSON
-    logger.error('Critical error in useProductsSSR, falling back to local JSON:', e)
-    const localProducts = await loadLocalProducts()
-    if (localProducts.length > 0) {
-      globalProducts.value = localProducts as Dehumidifier[]
-      hasLoaded = true
-    }
-    return { data: ref(globalProducts.value), error: ref(null) }
+  // SSG/Prerender 時直接使用本地 JSON，確保 build 穩定
+  // 這樣做的好處：
+  // 1. Build 不依賴外部服務，更穩定
+  // 2. Build 速度更快
+  // 3. 資料由每日爬蟲更新，JSON 檔案始終是最新的
+  const localProducts = await loadLocalProducts()
+  if (localProducts.length > 0) {
+    globalProducts.value = localProducts as Dehumidifier[]
+    hasLoaded = true
+    logger.log(`Loaded ${localProducts.length} products from local JSON`)
   }
+
+  return { data: ref(globalProducts.value), error: ref(null) }
 }
 
 export const useProducts = () => {
