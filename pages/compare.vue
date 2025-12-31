@@ -21,7 +21,7 @@ import {
 import { logger } from '~/utils/logger'
 
 // SSR data loading
-await useProductsSSR()
+useProductsSSR()
 
 const { loadSharedCompare, categoryFromUrl } = useShareableCompare()
 const { getCategoryConfig } = useCategoryConfig()

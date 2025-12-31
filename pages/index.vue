@@ -39,7 +39,7 @@ const CompareModal = defineAsyncComponent(() => import('~/components/CompareModa
 const { showBanner: showCookieBanner } = useCookieConsent()
 
 // SSR 資料預載 - 在伺服器端就先載入資料
-await useProductsSSR()
+useProductsSSR()
 
 // 首頁 SEO - 結構化資料
 const { setWebsiteStructuredData, setOrganizationStructuredData, SITE_URL, SITE_NAME } = useStructuredData()

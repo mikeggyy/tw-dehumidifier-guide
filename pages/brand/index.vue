@@ -8,7 +8,7 @@ import { useStructuredData } from '~/composables/useStructuredData'
 import BrandCard from '~/components/BrandCard.vue'
 import SiteHeader from '~/components/SiteHeader.vue'
 
-await useProductsSSR()
+useProductsSSR()
 
 const { getAllBrands, getBrandStats } = useBrandConfig()
 const { allProducts } = useProducts()

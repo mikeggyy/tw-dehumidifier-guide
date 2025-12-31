@@ -9,7 +9,7 @@ import SiteHeader from '~/components/SiteHeader.vue'
 import GuideRecommendedProducts from '~/components/GuideRecommendedProducts.vue'
 
 // SSR 預載商品資料（用於推薦商品區塊）
-await useProductsSSR()
+useProductsSSR()
 
 const route = useRoute()
 const { getGuideBySlug, getAllGuides } = useGuideConfig()

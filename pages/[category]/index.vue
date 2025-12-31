@@ -113,7 +113,7 @@ if (!categoryConfig.value) {
 }
 
 // SSR 資料預載
-await useProductsSSR()
+useProductsSSR()
 
 // Cookie 同意橫幅狀態
 const { showBanner: showCookieBanner } = useCookieConsent()

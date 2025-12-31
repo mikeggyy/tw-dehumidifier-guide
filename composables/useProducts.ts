@@ -1,7 +1,14 @@
 import { ref, readonly, computed } from 'vue'
-import { useAsyncData, useRuntimeConfig } from '#imports'
+import { useRuntimeConfig } from '#imports'
 import type { Dehumidifier, FilterState, SortOption } from '~/types'
 import { productsLogger as logger } from '~/utils/logger'
+
+// 靜態 import JSON 檔案，確保在 Vercel build 時能正確載入
+import productsData from '~/data/products.json'
+import airPurifiersData from '~/data/air_purifiers.json'
+import airConditionersData from '~/data/air_conditioners.json'
+import heatersData from '~/data/heaters.json'
+import fansData from '~/data/fans.json'
 
 // Supabase 配置 - 使用 runtimeConfig
 // 注意：必須設定 NUXT_PUBLIC_SUPABASE_URL 和 NUXT_PUBLIC_SUPABASE_ANON_KEY 環境變數
@@ -151,13 +158,13 @@ const cachedPriceRange = computed(() => {
   }
 })
 
-// 從本地 JSON 檔案載入指定品類資料
-async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier[]> {
+// 從靜態 import 的 JSON 檔案載入指定品類資料
+function loadLocalCategoryProducts(category: string): Dehumidifier[] {
   const products: Dehumidifier[] = []
 
   try {
     if (category === 'dehumidifier') {
-      const data = await import('~/data/products.json')
+      const data = productsData
       if (data.products && data.products.length > 0) {
         products.push(...data.products.map((p: any) => ({
           ...p,
@@ -165,7 +172,7 @@ async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier
         })))
       }
     } else if (category === 'air-purifier') {
-      const data = await import('~/data/air_purifiers.json')
+      const data = airPurifiersData
       if (data.products && data.products.length > 0) {
         products.push(...data.products.map((p: any) => {
           // 從 features 提取功能資訊
@@ -197,7 +204,7 @@ async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier
         }))
       }
     } else if (category === 'air-conditioner') {
-      const data = await import('~/data/air_conditioners.json')
+      const data = airConditionersData
       if (data.products && data.products.length > 0) {
         products.push(...data.products.map((p: any) => {
           // 展平 specs 到頂層
@@ -221,7 +228,7 @@ async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier
         }))
       }
     } else if (category === 'heater') {
-      const data = await import('~/data/heaters.json')
+      const data = heatersData
       if (data.products && data.products.length > 0) {
         products.push(...data.products.map((p: any) => {
           // 展平 specs 到頂層
@@ -242,7 +249,7 @@ async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier
         }))
       }
     } else if (category === 'fan') {
-      const data = await import('~/data/fans.json')
+      const data = fansData
       if (data.products && data.products.length > 0) {
         products.push(...data.products.map((p: any) => {
           // 從 features 提取遙控器和定時功能
@@ -283,12 +290,12 @@ async function loadLocalCategoryProducts(category: string): Promise<Dehumidifier
 }
 
 // 從本地 JSON 檔案載入所有品類資料
-async function loadLocalProducts(): Promise<Dehumidifier[]> {
+function loadLocalProducts(): Dehumidifier[] {
   const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
   const allProducts: Dehumidifier[] = []
 
   for (const category of categories) {
-    const products = await loadLocalCategoryProducts(category)
+    const products = loadLocalCategoryProducts(category)
     allProducts.push(...products)
   }
 
@@ -389,9 +396,9 @@ async function fetchProducts(): Promise<Dehumidifier[]> {
   }
 }
 
-// SSR-friendly 資料載入（使用 Nuxt 的 useAsyncData）
+// SSR-friendly 資料載入
 // 在 prerender/SSG 時使用本地 JSON，確保 build 穩定性
-export async function useProductsSSR() {
+export function useProductsSSR() {
   // 如果已經載入過，直接返回
   if (hasLoaded && globalProducts.value.length > 0) {
     return { data: ref(globalProducts.value), error: ref(null) }
@@ -402,7 +409,7 @@ export async function useProductsSSR() {
   // 1. Build 不依賴外部服務，更穩定
   // 2. Build 速度更快
   // 3. 資料由每日爬蟲更新，JSON 檔案始終是最新的
-  const localProducts = await loadLocalProducts()
+  const localProducts = loadLocalProducts()
   if (localProducts.length > 0) {
     globalProducts.value = localProducts as Dehumidifier[]
     hasLoaded = true

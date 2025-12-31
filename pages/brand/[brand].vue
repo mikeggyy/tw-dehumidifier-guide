@@ -10,7 +10,7 @@ import ProductCard from '~/components/ProductCard.vue'
 import SiteHeader from '~/components/SiteHeader.vue'
 import type { Dehumidifier } from '~/types'
 
-await useProductsSSR()
+useProductsSSR()
 
 const route = useRoute()
 const { getBrandBySlug, getBrandStats, getProductsByBrandAndCategory } = useBrandConfig()

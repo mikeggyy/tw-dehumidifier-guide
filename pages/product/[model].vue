@@ -29,7 +29,7 @@ import SiteHeader from '~/components/SiteHeader.vue'
 import { CURRENT_YEAR } from '~/composables/useBibiConfig'
 
 // SSR 資料預載
-await useProductsSSR()
+useProductsSSR()
 
 const route = useRoute()
 const { getProductBySlug, getProductSlug, allProducts } = useProducts()
