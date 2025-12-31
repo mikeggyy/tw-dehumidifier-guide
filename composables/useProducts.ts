@@ -396,11 +396,19 @@ export async function useProductsSSR() {
     return { data: ref(globalProducts.value), error: ref(null) }
   }
 
-  const supabaseConfig = getSupabaseConfig()
   const categories = ['dehumidifier', 'air-purifier', 'air-conditioner', 'heater', 'fan']
+
+  // 嘗試取得 Supabase 設定
+  let supabaseConfig: { url: string; anonKey: string } | null = null
+  try {
+    supabaseConfig = getSupabaseConfig()
+  } catch (e) {
+    logger.warn('Failed to get Supabase config:', e)
+  }
 
   // 如果 Supabase 未設定，直接使用本地資料
   if (!supabaseConfig) {
+    logger.log('Supabase not configured, using local JSON data')
     const localProducts = await loadLocalProducts()
     if (localProducts.length > 0) {
       globalProducts.value = localProducts as Dehumidifier[]
@@ -427,6 +435,7 @@ export async function useProductsSSR() {
                 'apikey': anonKey,
                 'Authorization': `Bearer ${anonKey}`,
               },
+              timeout: 10000, // 10 秒超時
             }
           )
           // 展平 specs 到頂層欄位
@@ -438,8 +447,9 @@ export async function useProductsSSR() {
           }
 
           return flattenedProducts
-        } catch {
+        } catch (e) {
           // 該品類載入失敗，從本地補充
+          logger.warn(`Failed to fetch ${category} from Supabase, using local data:`, e)
           return await loadLocalCategoryProducts(category)
         }
       })
@@ -458,11 +468,14 @@ export async function useProductsSSR() {
     }
   )
 
+  // 資料載入成功
   if (data.value && data.value.length > 0) {
     globalProducts.value = data.value
     hasLoaded = true
-  } else if (!error.value) {
-    // 備用方案：從本地 JSON 載入（支援多品類）
+  } else {
+    // 無論是否有錯誤，只要沒有資料就使用本地 JSON
+    // 這確保即使 Supabase 連線失敗，網站仍能正常運作
+    logger.log('No data from Supabase, falling back to local JSON')
     const localProducts = await loadLocalProducts()
     if (localProducts.length > 0) {
       globalProducts.value = localProducts as Dehumidifier[]
