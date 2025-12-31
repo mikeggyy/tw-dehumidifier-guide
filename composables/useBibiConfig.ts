@@ -2,6 +2,12 @@ import { computed } from 'vue'
 import type { Category } from '~/types'
 
 /**
+ * 動態年份常數（用於 SEO 和版權資訊）
+ * 每年自動更新，不需手動修改
+ */
+export const CURRENT_YEAR = new Date().getFullYear()
+
+/**
  * 網站基本設定（集中管理 SEO 相關常數）
  */
 export const bibiSiteConfig = {
@@ -15,8 +21,8 @@ export const bibiSiteConfig = {
   defaultDescription: '比較台灣各大品牌家電規格與價格，包含除濕機、空氣清淨機、冷氣、電暖器等，幫你找到最適合的家電產品。',
   defaultImage: 'https://www.jiadian-tw.work/og-image.png',
 
-  // 版權資訊
-  copyright: '© 2025 比比看. 本站包含聯盟行銷連結。',
+  // 版權資訊（使用動態年份）
+  get copyright() { return `© ${CURRENT_YEAR} 比比看. 本站包含聯盟行銷連結。` },
   disclaimer: '價格與規格僅供參考，請以官方公告為準。',
 
   // 聯盟行銷聲明

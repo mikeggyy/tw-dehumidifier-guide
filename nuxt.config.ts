@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
+// 動態年份（build 時決定）
+const CURRENT_YEAR = new Date().getFullYear()
+
 // Category slugs for multi-category support
 const categorySlugs = [
   'dehumidifier',
@@ -46,13 +49,13 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'zh-TW'
       },
-      title: '比比看 - 台灣家電規格比較 2025 | 除濕機、空氣清淨機、冷氣',
+      title: `比比看 - 台灣家電規格比較 ${CURRENT_YEAR} | 除濕機、空氣清淨機、冷氣`,
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         {
           name: 'description',
-          content: '2025 最完整的家電規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供除濕機、空氣清淨機、冷氣等家電的規格、價格比較，幫你找到最適合的家電。'
+          content: `${CURRENT_YEAR} 最完整的家電規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供除濕機、空氣清淨機、冷氣等家電的規格、價格比較，幫你找到最適合的家電。`
         },
         // PWA
         { name: 'theme-color', content: '#2563eb' },

@@ -94,6 +94,7 @@ import { useStructuredData } from '~/composables/useStructuredData'
 import { useRoute, useHead, createError } from '#imports'
 import { useCookieConsent } from '~/composables/useCookieConsent'
 import { useToast } from '~/composables/useToast'
+import { CURRENT_YEAR } from '~/composables/useBibiConfig'
 
 const route = useRoute()
 const categorySlug = computed(() => route.params.category as string)
@@ -132,7 +133,7 @@ const categoryProducts = computed(() => {
 // SEO - 完整 Meta Tags
 const { SITE_URL } = useStructuredData()
 const pageUrl = computed(() => `${SITE_URL}/${categorySlug.value}`)
-const pageTitle = computed(() => `${categoryConfig.value?.name || ''}規格比較 2025 | 比比看`)
+const pageTitle = computed(() => `${categoryConfig.value?.name || ''}規格比較 ${CURRENT_YEAR} | 比比看`)
 const pageDescription = computed(() => categoryConfig.value?.seoDescription || `${categoryConfig.value?.name}規格比較，收錄多款商品，比較品牌、價格、規格。`)
 // 使用統一的 OG Image (1200x630)
 const ogImage = `${SITE_URL}/og-image.png`

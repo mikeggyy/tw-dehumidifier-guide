@@ -1,3 +1,5 @@
+import { CURRENT_YEAR } from '~/composables/useBibiConfig'
+
 export interface GuideSection {
   id: string
   title: string
@@ -21,10 +23,10 @@ export const guides: Guide[] = [
   {
     slug: 'dehumidifier-buying-guide',
     categorySlug: 'dehumidifier',
-    title: '2025 除濕機選購指南',
-    seoTitle: '除濕機怎麼選？2025 完整選購指南 | 比比看家電',
+    title: `${CURRENT_YEAR} 除濕機選購指南`,
+    seoTitle: `除濕機怎麼選？${CURRENT_YEAR} 完整選購指南 | 比比看家電`,
     seoDescription: '除濕機選購全攻略，教你看懂日除濕量、能效等級、噪音值等關鍵規格，推薦適合台灣氣候的除濕機款式。',
-    updatedAt: '2025-01-01',
+    updatedAt: `${CURRENT_YEAR}-01-01`,
     readingTime: 8,
     sections: [
       {
@@ -150,10 +152,10 @@ export const guides: Guide[] = [
   {
     slug: 'air-purifier-buying-guide',
     categorySlug: 'air-purifier',
-    title: '2025 空氣清淨機選購指南',
-    seoTitle: '空氣清淨機怎麼選？2025 完整選購指南 | 比比看家電',
+    title: `${CURRENT_YEAR} 空氣清淨機選購指南`,
+    seoTitle: `空氣清淨機怎麼選？${CURRENT_YEAR} 完整選購指南 | 比比看家電`,
     seoDescription: '空氣清淨機選購攻略，教你看懂 CADR 值、濾網等級、適用坪數，推薦適合台灣空氣品質的空氣清淨機。',
-    updatedAt: '2025-01-01',
+    updatedAt: `${CURRENT_YEAR}-01-01`,
     readingTime: 7,
     sections: [
       {
@@ -260,10 +262,10 @@ export const guides: Guide[] = [
   {
     slug: 'air-conditioner-buying-guide',
     categorySlug: 'air-conditioner',
-    title: '2025 冷氣選購指南',
-    seoTitle: '冷氣怎麼選？2025 變頻冷氣選購完整指南 | 比比看家電',
+    title: `${CURRENT_YEAR} 冷氣選購指南`,
+    seoTitle: `冷氣怎麼選？${CURRENT_YEAR} 變頻冷氣選購完整指南 | 比比看家電`,
     seoDescription: '冷氣選購攻略，教你計算適合的噸數、認識 CSPF 能效、比較變頻與定頻差異，推薦高 CP 值冷氣。',
-    updatedAt: '2025-01-01',
+    updatedAt: `${CURRENT_YEAR}-01-01`,
     readingTime: 8,
     sections: [
       {
@@ -377,7 +379,7 @@ export const guides: Guide[] = [
     title: '除濕機 vs 空氣清淨機：該買哪一台？',
     seoTitle: '除濕機和空氣清淨機差在哪？該買哪一台？| 比比看家電',
     seoDescription: '除濕機和空氣清淨機功能大不同！本文比較兩者差異、適用情境，幫你選擇最適合的家電。',
-    updatedAt: '2025-01-01',
+    updatedAt: `${CURRENT_YEAR}-01-01`,
     readingTime: 5,
     sections: [
       {
@@ -466,10 +468,10 @@ export const guides: Guide[] = [
   {
     slug: 'heater-buying-guide',
     categorySlug: 'heater',
-    title: '2025 電暖器選購指南',
-    seoTitle: '電暖器怎麼選？2025 完整選購指南 | 比比看家電',
+    title: `${CURRENT_YEAR} 電暖器選購指南`,
+    seoTitle: `電暖器怎麼選？${CURRENT_YEAR} 完整選購指南 | 比比看家電`,
     seoDescription: '電暖器選購攻略，比較葉片式、陶瓷式、鹵素燈等類型差異，教你選擇安全又省電的電暖器。',
-    updatedAt: '2025-01-01',
+    updatedAt: `${CURRENT_YEAR}-01-01`,
     readingTime: 6,
     sections: [
       {
@@ -568,10 +570,10 @@ export const guides: Guide[] = [
   {
     slug: 'fan-buying-guide',
     categorySlug: 'fan',
-    title: '2025 電風扇選購指南',
-    seoTitle: '電風扇怎麼選？2025 完整選購指南 | 比比看家電',
+    title: `${CURRENT_YEAR} 電風扇選購指南`,
+    seoTitle: `電風扇怎麼選？${CURRENT_YEAR} 完整選購指南 | 比比看家電`,
     seoDescription: '電風扇選購攻略，比較DC變頻、循環扇、大廈扇等類型，教你選擇省電又涼爽的電風扇。',
-    updatedAt: '2025-01-01',
+    updatedAt: `${CURRENT_YEAR}-01-01`,
     readingTime: 6,
     sections: [
       {

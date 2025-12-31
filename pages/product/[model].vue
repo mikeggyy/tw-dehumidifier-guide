@@ -26,6 +26,7 @@ import {
   getEnergyColor,
 } from '~/utils/product'
 import SiteHeader from '~/components/SiteHeader.vue'
+import { CURRENT_YEAR } from '~/composables/useBibiConfig'
 
 // SSR 資料預載
 await useProductsSSR()
@@ -144,7 +145,7 @@ const jsonLd = computed(() => ({
 
 // Dynamic SEO
 useHead({
-  title: `${product.value?.name} - 規格與價格比較 (2025)`,
+  title: `${product.value?.name} - 規格與價格比較 (${CURRENT_YEAR})`,
   meta: [
     {
       name: 'description',
@@ -152,7 +153,7 @@ useHead({
     },
     {
       property: 'og:title',
-      content: `${product.value?.name} (2025)`
+      content: `${product.value?.name} (${CURRENT_YEAR})`
     },
     {
       property: 'og:description',
@@ -565,7 +566,7 @@ const roomSuitability = computed(() => {
     <footer class="bg-white border-t border-gray-200 mt-16 pb-24 md:pb-0">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="text-center text-gray-500 text-sm">
-          <p>© 2025 比比看. 本站包含聯盟行銷連結。</p>
+          <p>© {{ CURRENT_YEAR }} 比比看. 本站包含聯盟行銷連結。</p>
           <p class="mt-1">價格與規格僅供參考，請以官方公告為準。</p>
         </div>
       </div>

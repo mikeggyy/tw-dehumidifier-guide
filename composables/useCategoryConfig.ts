@@ -1,5 +1,6 @@
 // 品類設定系統 - 定義各品類的規格、篩選器、排序等
 import type { StructuredDataFAQ } from '~/composables/useStructuredData'
+import { CURRENT_YEAR } from '~/composables/useBibiConfig'
 
 export interface SpecConfig {
   key: string
@@ -61,8 +62,8 @@ const dehumidifierConfig: CategoryConfig = {
   namePlural: '款除濕機',
   icon: 'Droplets',
   description: '比較各品牌除濕機規格、價格，找到最適合你的選擇',
-  seoTitle: '除濕機比較推薦 2025 - 規格、價格一次看',
-  seoDescription: '2025 最完整的除濕機規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供日除濕量、噪音、能效比較。',
+  seoTitle: `除濕機比較推薦 ${CURRENT_YEAR} - 規格、價格一次看`,
+  seoDescription: `${CURRENT_YEAR} 最完整的除濕機規格比較網站，收錄 Panasonic、Hitachi、LG 等品牌，提供日除濕量、噪音、能效比較。`,
   specs: [
     {
       key: 'daily_capacity',
@@ -216,8 +217,8 @@ const airPurifierConfig: CategoryConfig = {
   namePlural: '款空氣清淨機',
   icon: 'Wind',
   description: '比較各品牌空氣清淨機規格、CADR值、價格',
-  seoTitle: '空氣清淨機比較推薦 2025 - CADR、坪數、濾網一次看',
-  seoDescription: '2025 最完整的空氣清淨機規格比較，收錄各大品牌，提供 CADR、適用坪數、濾網成本比較。',
+  seoTitle: `空氣清淨機比較推薦 ${CURRENT_YEAR} - CADR、坪數、濾網一次看`,
+  seoDescription: `${CURRENT_YEAR} 最完整的空氣清淨機規格比較，收錄各大品牌，提供 CADR、適用坪數、濾網成本比較。`,
   specs: [
     {
       key: 'cadr',
@@ -408,8 +409,8 @@ const airConditionerConfig: CategoryConfig = {
   namePlural: '款冷氣',
   icon: 'Snowflake',
   description: '比較各品牌冷氣規格、能效、價格',
-  seoTitle: '冷氣比較推薦 2025 - 能效、坪數、價格一次看',
-  seoDescription: '2025 最完整的冷氣規格比較，收錄變頻、分離式、窗型冷氣，提供能效、適用坪數、噪音比較。',
+  seoTitle: `冷氣比較推薦 ${CURRENT_YEAR} - 能效、坪數、價格一次看`,
+  seoDescription: `${CURRENT_YEAR} 最完整的冷氣規格比較，收錄變頻、分離式、窗型冷氣，提供能效、適用坪數、噪音比較。`,
   specs: [
     {
       key: 'cooling_capacity',
@@ -620,8 +621,8 @@ const heaterConfig: CategoryConfig = {
   namePlural: '款電暖器',
   icon: 'Flame',
   description: '比較各品牌電暖器規格、功率、價格',
-  seoTitle: '電暖器比較推薦 2025 - 功率、類型、價格一次看',
-  seoDescription: '2025 最完整的電暖器規格比較，收錄葉片式、陶瓷式、鹵素電暖器，提供功率、適用坪數比較。',
+  seoTitle: `電暖器比較推薦 ${CURRENT_YEAR} - 功率、類型、價格一次看`,
+  seoDescription: `${CURRENT_YEAR} 最完整的電暖器規格比較，收錄葉片式、陶瓷式、鹵素電暖器，提供功率、適用坪數比較。`,
   specs: [
     {
       key: 'heating_power',
@@ -806,8 +807,8 @@ const fanConfig: CategoryConfig = {
   namePlural: '款電風扇',
   icon: 'Fan',
   description: '比較各品牌電風扇、循環扇規格、價格',
-  seoTitle: '電風扇比較推薦 2025 - DC扇、循環扇價格一次看',
-  seoDescription: '2025 最完整的電風扇規格比較，收錄 DC 變頻扇、循環扇、大廈扇，提供風量、噪音比較。',
+  seoTitle: `電風扇比較推薦 ${CURRENT_YEAR} - DC扇、循環扇價格一次看`,
+  seoDescription: `${CURRENT_YEAR} 最完整的電風扇規格比較，收錄 DC 變頻扇、循環扇、大廈扇，提供風量、噪音比較。`,
   specs: [
     {
       key: 'fan_type',  // 對應資料庫 specs.fan_type
