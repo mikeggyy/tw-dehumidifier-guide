@@ -142,6 +142,7 @@ useHead({
   meta: [
     // Basic meta
     { name: 'description', content: pageDescription.value },
+    { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
     // Open Graph
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: '比比看' },

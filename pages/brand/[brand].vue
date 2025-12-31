@@ -56,8 +56,9 @@ useHead({
   title: pageTitle,
   meta: [
     { name: 'description', content: pageDescription },
+    { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
     // Open Graph
-    { property: 'og:type', content: 'website' },
+    { property: 'og:type', content: 'product.group' },
     { property: 'og:site_name', content: SITE_NAME },
     { property: 'og:title', content: pageTitle },
     { property: 'og:description', content: pageDescription },

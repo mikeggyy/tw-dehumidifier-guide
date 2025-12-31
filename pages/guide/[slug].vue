@@ -37,6 +37,7 @@ useHead({
   title: guide.value.seoTitle,
   meta: [
     { name: 'description', content: guide.value.seoDescription },
+    { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
     // Open Graph
     { property: 'og:type', content: 'article' },
     { property: 'og:site_name', content: SITE_NAME },
